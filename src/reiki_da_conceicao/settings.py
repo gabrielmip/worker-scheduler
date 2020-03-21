@@ -81,6 +81,11 @@ DATABASES = {
     }
 }
 
+GOOGLE_API = {
+    'CREDENTIALS': os.path.join(BASE_DIR, '.credentials.json'),
+    'TOKEN': os.path.join(BASE_DIR, '.token.pickle')
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
