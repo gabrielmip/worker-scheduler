@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'scheduler',
     'workforce',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -67,6 +68,12 @@ TEMPLATES = [
         },
     },
 ]
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locales'),
+]
+
 
 WSGI_APPLICATION = 'reiki_da_conceicao.wsgi.application'
 

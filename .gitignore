@@ -1,6 +1,7 @@
 poetry.lock
 db.sqlite3
 __pycache__
+**/*.pyc
 .vscode
 .token.pickle
 .credentials.json
