@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Calendar, Worker
+from .models import Calendar, Worker, Availability
 
 
 class WorkerAdmin(admin.ModelAdmin):
@@ -9,4 +9,5 @@ class WorkerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Calendar)
+admin.site.register(Availability)
 admin.site.register(Worker, WorkerAdmin)
