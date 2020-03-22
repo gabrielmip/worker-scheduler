@@ -7,10 +7,6 @@ class WorkerAdmin(admin.ModelAdmin):
         self.exclude = ('calendar',)
         return super().add_view(request, form_url=form_url, extra_context=extra_context)
 
-    def save_model(self, request, obj, form, change):
-        print(obj.name)
-        return super().save_model(request, obj, form, change)
-
 
 admin.site.register(Calendar)
 admin.site.register(Worker, WorkerAdmin)

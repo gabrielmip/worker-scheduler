@@ -23,7 +23,7 @@ def create_calendar(name, timezone):
         "timeZone": timezone
     }
     created = GOOGLE_CONNECTOR.calendars().insert(body=body).execute()
-    
+
     return created['id']
 
 
@@ -52,7 +52,7 @@ def create_event(name, calendar, start, end):
     body = {
         "summary": name,
         "start": {
-          "dateTime": start.isoformat()
+            "dateTime": start.isoformat()
         },
         "end": {
             "dateTime": end.isoformat()
@@ -61,4 +61,3 @@ def create_event(name, calendar, start, end):
     created = GOOGLE_CONNECTOR.events().insert(calendarId=calendar['id'], body=body).execute()
 
     return created['id']
-
