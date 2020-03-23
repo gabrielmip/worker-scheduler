@@ -9,7 +9,7 @@ def can_user_schedule_event(email_address):
     except User.DoesNotExist:
         return True
 
-    return user.workevent_set.filter(start__gte=arrow.get().datetime).count() > 0
+    return user.workevent_set.filter(start__gte=arrow.get().datetime).count() == 0
 
 
 def create_event(email_address, user_name, calendar_id, start_time, end_time):
