@@ -1,8 +1,46 @@
 import random
 import logging
 
+from scheduler.repositories.calendar_repository import (
+    get_active_worker_calendars,
+    get_range_to_analyse_availability
+)
 
-def _get_timeslots_to_analyse(start_time, end_time):
+
+def get_one_free_timeslot_by_hour():
+    worker_calendars = get_active_worker_calendars()
+    hash_slot = lambda x: f'{x[0].day} - {x[0].hour}'
+    timeslot_by_hour_in_day = {}
+
+    for timeslot in _get_timeslots_to_analyse():
+        if hash_slot(timeslot) in timeslot_by_hour_in_day:
+            continue
+
+        available, calendar_id = is_timeslot_available(timeslot, worker_calendars)
+
+        if available:
+            timeslot_by_hour_in_day[hash_slot(timeslot)] = {
+                'timeslot': timeslot,
+                'calendar_id': calendar_id
+            }
+
+    return [*timeslot_by_hour_in_day.values()]
+
+
+def is_timeslot_available(timeslot, calendars):
+    random.shuffle(calendars)
+
+    for calendar in calendars:
+        if _is_calendar_available_for_timeslot(calendar['busy_timeslots'], timeslot):
+            logging.debug(f"{timeslot[0].format('HH:mm')}-{timeslot[1].format('HH:mm')}: {calendar['id']}")
+            return True, calendar['id']
+
+    return False, None
+
+
+def _get_timeslots_to_analyse():
+    start_time, end_time = get_range_to_analyse_availability()
+
     time_being_analysed = start_time
     while time_being_analysed < end_time:
         yield (time_being_analysed, time_being_analysed.shift(minutes=15))
@@ -26,35 +64,3 @@ def _is_calendar_available_for_timeslot(busy_times, timeslot):
     )
 
     return timeslot_not_conflicting
-
-
-def is_timeslot_available(timeslot, busy_times_by_calendar):
-    calendars = [*busy_times_by_calendar.keys()]
-    random.shuffle(calendars)
-
-    for calendar in calendars:
-        busy_times = busy_times_by_calendar[calendar]
-
-        if _is_calendar_available_for_timeslot(busy_times, timeslot):
-            logging.debug(f"{timeslot[0].format('HH:mm')}-{timeslot[1].format('HH:mm')}: {calendar}")
-            return True, calendar
-
-    return False, None
-
-
-def get_one_free_timeslot_by_hour(busy_times_by_calendar, working_day_start, working_day_end):
-    timeslot_by_hour = {}
-
-    for timeslot in _get_timeslots_to_analyse(working_day_start, working_day_end):
-        if timeslot[0].hour in timeslot_by_hour:
-            continue
-
-        available, calendar = is_timeslot_available(timeslot, busy_times_by_calendar)
-
-        if available:
-            timeslot_by_hour[timeslot[0].hour] = {
-                'timeslot': timeslot,
-                'calendar': calendar
-            }
-
-    return [*timeslot_by_hour.values()]

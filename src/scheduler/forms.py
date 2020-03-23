@@ -11,5 +11,8 @@ class ScheduleAnAppointment(forms.Form):
         )
 
     full_name = forms.CharField(label=_('Your full name'), max_length=200)
-    email_address = forms.EmailField(label=_('Email address'), help_text=_('We will send an email with a reminder 15 minutes before the Reiki starts.'))
+    email_address = forms.EmailField(
+        label=_('Email address'),
+        help_text=_('We will send an email with a reminder 15 minutes before the Reiki starts.')
+    )
 
