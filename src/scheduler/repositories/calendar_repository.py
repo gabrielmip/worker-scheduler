@@ -28,7 +28,7 @@ def get_active_worker_calendars():
 
 
 def get_range_to_analyse_availability():
-    reference_time = arrow.now().replace(minute=0, second=0)
+    reference_time = arrow.now().replace(minute=0, second=0, microsecond=0)
 
     return (reference_time, reference_time.shift(days=+3))
 
@@ -42,18 +42,23 @@ def _get_week_busy_timeslots_by_calendar(workers):
 
 def _availability_as_datetime(availability, reference_datetime, worker_timezone):
     reference_day_of_the_week = reference_datetime.datetime.weekday() + 1
-    initial_days_to_shift = (0
+    initial_days_to_shift = (availability.day_of_the_week - reference_day_of_the_week
         if reference_day_of_the_week <= availability.day_of_the_week
         else (7 - reference_day_of_the_week + availability.day_of_the_week))
 
     availability_end_as_datetime = (reference_datetime.shift(days=initial_days_to_shift)
         .replace(
             hour=availability.end_time.hour,
-            minute=availability.end_time.minute
+            minute=availability.end_time.minute,
+            second=0,
+            microsecond=0
         ))
     availability_start_as_datetime = availability_end_as_datetime.replace(
         hour=availability.start_time.hour,
-        minute=availability.start_time.minute)
+        minute=availability.start_time.minute,
+        second=0,
+        microsecond=0
+    )
 
     weeks_to_shift = (1 if availability_end_as_datetime < reference_datetime else 0)
 

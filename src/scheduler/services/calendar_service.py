@@ -31,7 +31,8 @@ def is_timeslot_available(timeslot, calendars):
     random.shuffle(calendars)
 
     for calendar in calendars:
-        if _is_calendar_available_for_timeslot(calendar['busy_timeslots'], timeslot):
+        if (_is_calendar_available_for_timeslot(calendar['busy_timeslots'], timeslot)
+            and not _is_calendar_available_for_timeslot(calendar['availabilities'], timeslot)):
             logging.debug(f"{timeslot[0].format('HH:mm')}-{timeslot[1].format('HH:mm')}: {calendar['id']}")
             return True, calendar['id']
 
