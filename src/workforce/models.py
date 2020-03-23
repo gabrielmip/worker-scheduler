@@ -44,3 +44,24 @@ class Availability(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
+
+
+class User(models.Model):
+    def __str__(self):
+        return f"{self.full_name} ({self.email_address})"
+
+    email_address = models.EmailField()
+    full_name = models.CharField(max_length=200)
+    photo = models.ImageField()
+
+
+class WorkEvent(models.Model):
+    def __str__(self):
+        return f"{self.name}: {self.start} - {self.end}"
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
+    event_id = models.CharField('Google agenda event ID', max_length=200)
+    name = models.CharField(max_length=200)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
