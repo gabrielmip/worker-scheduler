@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>{% trans "Welcome" %}!</h1>
+
+    <form action="/scheduler/process" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="{% trans 'Schedule' %}">
+    </form>
+{% endblock %}

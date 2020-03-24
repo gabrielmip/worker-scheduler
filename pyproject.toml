@@ -15,6 +15,7 @@ google-auth-httplib2 = "^0.0.3"
 google-auth-oauthlib = "^0.4.1"
 arrow = "^0.15.5"
 Pillow = "^7.0.0"
+django-crispy-forms = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
 rope = "^0.16.0"

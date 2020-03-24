@@ -28,3 +28,6 @@ def create_event(email_address, user_name, calendar_id, start_time, end_time):
         start=start_time.isoformat(),
         end=end_time.isoformat())
 
+
+def get_event_from_id(event_id):
+    return WorkEvent.objects.get(pk=event_id)

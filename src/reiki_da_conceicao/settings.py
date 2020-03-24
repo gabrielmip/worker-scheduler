@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'scheduler',
     'workforce',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +53,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'reiki_da_conceicao.urls'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'user_pictures')
 
 TEMPLATES = [
     {
@@ -93,6 +96,7 @@ GOOGLE_API = {
     'TOKEN': os.path.join(BASE_DIR, '.token.pickle')
 }
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

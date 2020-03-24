@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+    {% trans "Your reservation is done. We will send a reminder at" %} {{ event.user.email_address }} {% trans "close to the starting time." %}
+{% endblock %}

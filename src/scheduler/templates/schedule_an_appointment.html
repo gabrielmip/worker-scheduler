@@ -1,9 +1,0 @@
-{% load i18n %}
-
-<h1>{% trans "Welcome" %}!</h1>
-
-<form action="/scheduler/process" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="{% trans 'Schedule' %}">
-</form>

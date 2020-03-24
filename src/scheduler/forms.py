@@ -22,7 +22,6 @@ class ScheduleAnAppointment(forms.Form):
         super().__init__(*args, **kwargs)
         free_timeslots = get_one_free_timeslot_by_hour()
         dropdown_choices = free_timeslots_to_choices(free_timeslots)
-        print(dropdown_choices)
 
         self.fields['timeslots_available'] = forms.ChoiceField(
             label=_('Next available timeslots'),
@@ -35,3 +34,6 @@ class ScheduleAnAppointment(forms.Form):
         help_text=_('We will send an email with a reminder 15 minutes before the Reiki starts.')
     )
 
+
+class UploadPhoto(forms.Form):
+    photo = forms.ImageField(label=_('Your picture'))
