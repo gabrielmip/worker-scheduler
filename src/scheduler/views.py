@@ -4,7 +4,8 @@ from django.shortcuts import render
 
 from scheduler.forms import ScheduleAnAppointment, UploadPhoto
 from scheduler.repositories.event_repository import (
-    can_user_schedule_event, create_event, get_event_from_id
+    can_user_schedule_event, create_event, get_event_from_id,
+    update_event_description_with_photo_url
 )
 
 
@@ -28,6 +29,7 @@ def upload_photo(request):
         event = get_event_from_id(event_id)
         event.user.photo = form.cleaned_data['photo']
         event.user.save()
+        update_event_description_with_photo_url(event)
 
         return render(request, 'reservation_success.html', {'event': event})
 

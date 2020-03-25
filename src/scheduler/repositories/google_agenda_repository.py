@@ -48,9 +48,10 @@ def get_freebusy_from_calendars(calendars, start, end, timezone):
     }
 
 
-def create_event(name, calendar_id, start, end):
+def create_event(name, description, calendar_id, start, end):
     body = {
         "summary": name,
+        "description": description,
         "start": {
             "dateTime": start.isoformat()
         },
@@ -61,3 +62,12 @@ def create_event(name, calendar_id, start, end):
     created = GOOGLE_CONNECTOR.events().insert(calendarId=calendar_id, body=body).execute()
 
     return created['id']
+
+
+def edit_event_description(event_id, calendar_id, description):
+    body = {
+        "description": description
+    }
+
+    return GOOGLE_CONNECTOR.events().patch(calendarId=calendar_id, body=body, eventId=event_id).execute()
+
