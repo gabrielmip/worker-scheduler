@@ -13,6 +13,6 @@
     <form action="{% url 'welcome' %}" method="post">
         {% csrf_token %}
         <input type="hidden" id="user_timezone_field" name="user_timezone" value="">
-        <input type="submit" value="{% trans 'Let\'s go' %}">
+        <input class="btn btn-primary" type="submit" value="{% trans 'I want to book' %}">
     </form>
 {% endblock %}
