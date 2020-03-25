@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block content %}
+    <script src="{% static 'scheduler/timezone_getter.js' %}"></script>
+
+    <h1>{% trans "Welcome" %}!</h1>
+
+    <form action="{% url 'welcome' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" id="user_timezone_field" name="user_timezone" value="">
+        <input type="submit" value="{% trans 'Let\'s go' %}">
+    </form>
+{% endblock %}

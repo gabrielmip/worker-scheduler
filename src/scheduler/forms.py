@@ -3,6 +3,7 @@ from django import forms
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
+from django.utils.formats import date_format
 
 from scheduler.services.calendar_service import get_one_free_timeslot_by_hour
 from scheduler.repositories.event_repository import can_user_schedule_event, get_user_next_event
@@ -23,24 +24,28 @@ def validate_email_has_no_future_event_associated(value):
         )
 
 
-def free_timeslots_to_choices(timeslots):
+def free_timeslots_to_choices(timeslots, user_timezone):
     def timeslot_to_identifier(calendar_id, timeslot):
         return f"{calendar_id}|{timeslot[0].isoformat()}|{timeslot[1].isoformat()}"
 
     return [
         (
             timeslot_to_identifier(**timeslot),
-            timeslot['timeslot'][0].format('dddd, HH:mm')
+            date_format(
+                timeslot['timeslot'][0].to(user_timezone).datetime,
+                format='l, P',
+                use_l10n=True
+            )
         )
         for timeslot in timeslots
     ]
 
 
 class ScheduleAnAppointment(forms.Form):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user_timezone, *args, **kwargs):
         super().__init__(*args, **kwargs)
         free_timeslots = get_one_free_timeslot_by_hour()
-        dropdown_choices = free_timeslots_to_choices(free_timeslots)
+        dropdown_choices = free_timeslots_to_choices(free_timeslots, user_timezone)
 
         self.fields['timeslots_available'] = forms.ChoiceField(
             label=_('Next available timeslots'),

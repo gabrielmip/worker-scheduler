@@ -1,21 +1,32 @@
 import arrow
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
 from scheduler.forms import ScheduleAnAppointment, UploadPhoto
+from scheduler.user_timezone_capture.session_settings import TIMEZONE_KEY
 from scheduler.repositories.event_repository import (
-    can_user_schedule_event, create_event, get_event_from_id,
+    create_event,
+    get_event_from_id,
     update_event_description_with_photo_url
 )
 
 
+def get_welcome_page(request):
+    if request.method == 'GET':
+        return render(request, 'welcome.html')
+
+    if request.method == 'POST':
+        request.session[TIMEZONE_KEY] = request.POST['user_timezone']
+        return HttpResponseRedirect(reverse('schedule'))
+
+
 def get_reservation_page(request):
     if request.method == 'GET':
-        form = ScheduleAnAppointment()
+        form = ScheduleAnAppointment(request.session[TIMEZONE_KEY])
         return render(request, 'choose_timeslot.html', {'form': form})
 
     if request.method == 'POST':
-        print(request.POST)
         return _make_reservation(request)
 
     return HttpResponseBadRequest('Method not supported')
@@ -37,21 +48,18 @@ def upload_photo(request):
 
 
 def _make_reservation(request):
-    form = ScheduleAnAppointment(request.POST)
+    form = ScheduleAnAppointment(request.session[TIMEZONE_KEY], request.POST)
 
     if not form.is_valid():
         return render(request, 'choose_timeslot.html', {'form': form})
 
-    if can_user_schedule_event(form.cleaned_data['email_address']):
-        new_work_event = _create_event_from_form_data(form.cleaned_data)
-        context = {'event': new_work_event, 'form': UploadPhoto()}
-        template_to_render = ('reservation_success.html'
-            if bool(new_work_event.user.photo)
-            else 'upload_photo.html')
+    new_work_event = _create_event_from_form_data(form.cleaned_data)
+    context = {'event': new_work_event, 'form': UploadPhoto()}
+    template_to_render = ('reservation_success.html'
+        if bool(new_work_event.user.photo)
+        else 'upload_photo.html')
 
-        return render(request, template_to_render, context)
-
-    return HttpResponse('User already has a session scheduled.')
+    return render(request, template_to_render, context)
 
 
 def _create_event_from_form_data(form_data):
