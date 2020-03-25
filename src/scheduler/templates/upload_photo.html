@@ -6,7 +6,7 @@
 {% block content %}
     <p>{% trans "Nice! Now, to perform reiki remotelly, we need a picture of your face. Please, choose a good one pressing the button below." %}</p>
 
-    <form enctype="multipart/form-data" action="/scheduler/upload_photo" method="post">
+    <form enctype="multipart/form-data" action="{% url 'upload_photo' %}" method="post">
         {% csrf_token %}
         {{ form | crispy }}
         <input type="hidden" name="email_address" value="{{ event.user.email_address }}">

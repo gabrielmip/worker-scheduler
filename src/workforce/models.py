@@ -1,7 +1,10 @@
+import os
+
 import arrow
 from django.db import models
 from django.utils.translation import gettext_lazy
 
+from workforce.utils import build_path_for_user_picture
 import scheduler.repositories.google_agenda_repository as google_repo
 
 
@@ -52,7 +55,7 @@ class User(models.Model):
 
     email_address = models.EmailField()
     full_name = models.CharField(max_length=200)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to=build_path_for_user_picture)
 
 
 class WorkEvent(models.Model):

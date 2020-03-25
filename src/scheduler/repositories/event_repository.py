@@ -12,6 +12,14 @@ def can_user_schedule_event(email_address):
     return user.workevent_set.filter(start__gte=arrow.get().datetime).count() == 0
 
 
+def get_user_next_event(email_address):
+    return (WorkEvent.objects
+        .filter(user__email_address=email_address)
+        .filter(start__gte=arrow.get().datetime)
+        .order_by('start')
+        .get())
+
+
 def create_event(email_address, user_name, calendar_id, start_time, end_time):
     try:
         user = User.objects.get(email_address=email_address)
