@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-25 04:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: scheduler/forms.py:16
+msgid "Oops, it looks like you already have a reservation. It is scheduled for"
+msgstr ""
+
+#: scheduler/forms.py:51
+msgid "Next available timeslots"
+msgstr "Próximos horários disponíveis"
+
+#: scheduler/forms.py:55
+msgid "Your full name"
+msgstr "Seu nome completo"
+
+#: scheduler/forms.py:57
+msgid "Email address"
+msgstr "Endereço de email"
+
+#: scheduler/forms.py:58
+msgid ""
+"We will send an email with a reminder 15 minutes before the Reiki starts."
+msgstr ""
+"Vamos te enviar um email com um lembrete 15 minutos antes do início da sessão."
+
+#: scheduler/forms.py:64
+msgid "Your picture"
+msgstr "Sua foto"
+
+#: scheduler/templates/choose_timeslot.html:8
+#: scheduler/templates/welcome.html:11
+msgid "Welcome"
+msgstr "Bem-vindo"
+
+#: scheduler/templates/choose_timeslot.html:13
+msgid "Make reservation"
+msgstr "Marcar"
+
+#: scheduler/templates/reservation_success.html:6
+msgid "Your reservation is done. We will send a reminder at"
+msgstr "Sua reserva está feita. Nós enviaremos um lembrete em"
+
+#: scheduler/templates/reservation_success.html:6
+msgid "close to the starting time."
+msgstr "perto do horário de início."
+
+#: scheduler/templates/reservation_success.html:7
+msgid "Go to the home page"
+msgstr "Ir para a tela inicial"
+
+#: scheduler/templates/upload_photo.html:7
+msgid ""
+"Nice! Now, to perform reiki remotelly, we need a picture of your face. "
+"Please, choose a good one pressing the button below."
+msgstr ""
+"Legal! Agora, para fazer o reiki remotamente, precisamos de uma foto do seu rosto."
+"Por favor, escolha uma boa pressionando o botão abaixo."
+
+#: scheduler/templates/upload_photo.html:14
+msgid "Save photo"
+msgstr "Salvar foto"
+
+#: scheduler/templates/welcome.html:16
+msgid "I want to book"
+msgstr "Quero marcar"
+
+#: workforce/models.py:38
+msgid "Disconsider worker when looking for free timeslots"
+msgstr "Desconsiderar trabalhador quando estiver procurando por horários vagos"
