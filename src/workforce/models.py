@@ -55,6 +55,7 @@ class User(models.Model):
 
     email_address = models.EmailField()
     full_name = models.CharField(max_length=200)
+    timezone = models.CharField(max_length=200, default='America/Sao_Paulo')
     photo = models.ImageField(upload_to=build_path_for_user_picture)
 
 

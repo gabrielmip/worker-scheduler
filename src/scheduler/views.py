@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from scheduler.forms import ScheduleAnAppointment, UploadPhoto
 from scheduler.user_timezone_capture.session_settings import TIMEZONE_KEY
+from scheduler.services.emails_service import setup_email_sending
 from scheduler.repositories.event_repository import (
     create_event,
     delete_event_from_id,
@@ -62,7 +63,8 @@ def _make_reservation(request):
     if not form.is_valid():
         return render(request, 'choose_timeslot.html', {'form': form})
 
-    new_work_event = _create_event_from_form_data(form.cleaned_data)
+    new_work_event = _create_event_from_form_data(form.cleaned_data, request.session[TIMEZONE_KEY])
+    setup_email_sending(new_work_event)
     context = {'event': new_work_event, 'form': UploadPhoto()}
     template_to_render = ('reservation_success.html'
         if bool(new_work_event.user.photo)
@@ -71,7 +73,7 @@ def _make_reservation(request):
     return render(request, template_to_render, context)
 
 
-def _create_event_from_form_data(form_data):
+def _create_event_from_form_data(form_data, user_timezone):
     calendar_id, start_time_string, end_time_string = form_data['timeslots_available'].split('|')
     start_time = arrow.get(start_time_string)
     end_time = arrow.get(end_time_string)
@@ -79,6 +81,7 @@ def _create_event_from_form_data(form_data):
     return create_event(
         form_data['email_address'],
         form_data['full_name'],
+        user_timezone,
         calendar_id,
         start_time,
         end_time)

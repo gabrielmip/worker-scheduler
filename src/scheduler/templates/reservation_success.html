@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% load i18n %}
+{% load tz %}
 
 {% block content %}
     <h2 class="title">{% trans "Confirmação" %}</h2>
 
+    {% timezone event.user.timezone %}
     <p class="form-instruction">
         {% trans "Pronto! Sua reserva está feita para" %}
         {{ event.start | date }},
@@ -14,6 +16,7 @@
         {{ event.user.email_address }}
         {% trans "perto do horário de início da sessão." %}
     </p>
+    {% endtimezone %}
 
     <p class="form-instruction form-instruction-box">
         {% trans "A sessão dura 15 minutos e recomenda-se que seja feita em um lugar mais tranquilo." %}

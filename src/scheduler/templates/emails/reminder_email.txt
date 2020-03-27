@@ -1,0 +1,10 @@
+{% load i18n %}
+{% load tz %}
+{% timezone event.user.timezone %}
+{% trans "Oi" %} {{ event.user.full_name }}, {% trans "tudo bem" %}?
+
+{% trans "Sua sessão de Reiki a distância, marcada para às" %} {{ event.start | time }} {% trans "está prestes a começar." %}
+{% trans "Reserve um local tranquilo e aproveite." %}
+
+{% trans "Abraços!" %}
+{% endtimezone %}

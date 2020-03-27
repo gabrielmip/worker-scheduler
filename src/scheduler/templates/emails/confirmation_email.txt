@@ -1,0 +1,14 @@
+{% load i18n %}
+{% load tz %}
+{% timezone event.user.timezone %}
+{% trans "Oi" %} {{ event.user.full_name }}, {% trans "tudo bem" %}?
+
+{% trans "Estamos enviando este email para confirmar sua sessão de Reiki a distância." %}
+{% trans "A sessão foi marcada para o dia" %} {{ event.start | date }}, {% trans "às" %} {{ event.start | time }}.
+{% trans "Lembre-se de reservar um local tranquilo para a sessão." %}
+
+{% trans "Abraços!" %}
+
+{% trans "Obs.: acesse o link abaixo caso precise cancelar sua sessão." %}
+{{ cancelling_url }}
+{% endtimezone %}

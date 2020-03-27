@@ -9,13 +9,13 @@ from scheduler.services.calendar_service import get_one_free_timeslot_by_hour
 from scheduler.repositories.event_repository import can_user_schedule_event, get_user_next_event
 
 
-def validate_email_has_no_future_event_associated(value):
+def validate_no_future_event_associated(value):
     if not can_user_schedule_event(value):
         next_event = get_user_next_event(value)
         worker = next_event.calendar.worker_set.get()
         base_message = _('Ops, parece que você já tem uma sessão reservada. Ela está marcada para')
         start_time_as_string = (arrow.get(next_event.start)
-            .to(worker.timezone)
+            .to(next_event.user.timezone)
             .format('DD/MM, HH[h]mm'))
 
         raise ValidationError(
@@ -56,7 +56,7 @@ class ScheduleAnAppointment(forms.Form):
     email_address = forms.EmailField(
         label=_('Endereço de email'),
         help_text=_('Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'),
-        validators=[validators.EmailValidator, validate_email_has_no_future_event_associated]
+        validators=[validators.EmailValidator, validate_no_future_event_associated]
     )
 
 

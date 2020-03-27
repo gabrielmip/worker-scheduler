@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'scheduler',
     'workforce',
+    'background_task',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',

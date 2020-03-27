@@ -32,11 +32,11 @@ def get_user_next_event(email_address):
         .get())
 
 
-def create_event(email_address, user_name, calendar_id, start_time, end_time):
+def create_event(email_address, user_name, user_timezone, calendar_id, start_time, end_time):
     try:
         user = User.objects.get(email_address=email_address)
     except User.DoesNotExist:
-        user = User.objects.create(email_address=email_address, full_name=user_name)
+        user = User.objects.create(email_address=email_address, full_name=user_name, timezone=user_timezone)
 
     description = (build_event_user_photo_url(user)
         if bool(user.photo)
@@ -48,8 +48,8 @@ def create_event(email_address, user_name, calendar_id, start_time, end_time):
         calendar_id=calendar_id,
         name=user_name,
         event_id=new_google_event_id,
-        start=start_time.isoformat(),
-        end=end_time.isoformat())
+        start=start_time.datetime,
+        end=end_time.datetime)
 
 
 def get_event_from_id(event_id):
