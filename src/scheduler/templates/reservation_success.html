@@ -3,8 +3,16 @@
 {% load i18n %}
 
 {% block content %}
-    <p>{% trans "Your reservation is done. We will send a reminder at" %} {{ event.user.email_address }} {% trans "close to the starting time." %}</p>
+    <h2 class="title">Confirmação</h2>
+
+    <p class="form-instruction">
+        {% trans "Pronto! Sua reserva está feita. Nós enviaremos um lembrete no email" %}
+        {{ event.user.email_address }}
+        {% trans "perto do horário de início da sessão." %}
+        {% trans "Você já pode fechar esta janela." %}
+    </p>
+
     <a href="{% url 'welcome' %}">
-        <button class="btn btn-primary">{% trans 'Go to the home page' %}</button>
+        <button class="btn btn-primary cta-button">{% trans 'Ir para a tela inicial' %}</button>
     </a>
 {% endblock %}

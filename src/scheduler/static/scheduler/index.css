@@ -1,0 +1,28 @@
+.title {
+    margin: 40px 0;
+}
+
+h1, h2 {
+    font-weight: bold;
+}
+
+h2.title {
+    margin-bottom: 27px;
+}
+
+.quote {
+    margin: 40px 0 80px;
+}
+
+.cta-button {
+    margin-top: 15px;
+}
+
+.container {
+    max-width: 700px;
+    padding-bottom: 20px;
+}
+
+.form-instruction {
+    margin-bottom: 30px;
+}

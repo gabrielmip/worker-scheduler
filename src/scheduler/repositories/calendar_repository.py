@@ -30,7 +30,7 @@ def get_active_worker_calendars():
 def get_range_to_analyse_availability():
     reference_time = arrow.now().replace(minute=0, second=0, microsecond=0)
 
-    return (reference_time, reference_time.shift(days=+3))
+    return (reference_time, reference_time.shift(weeks=+1))
 
 
 def _get_week_busy_timeslots_by_calendar(workers):

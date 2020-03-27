@@ -8,11 +8,32 @@
 {% block content %}
     <script src="{% static 'scheduler/timezone_getter.js' %}"></script>
 
-    <h1>{% trans "Welcome" %}!</h1>
+    <h1 class="title">Reiki do Santa Inês</h1>
+
+    <blockquote class="blockquote text-right quote">
+        <p class="mb-0">{% trans "Só por hoje" %}</p>
+        <p class="mb-0">{% trans "Não te zangues" %}</p>
+        <p class="mb-0">{% trans "Não te preocupes" %}</p>
+        <p class="mb-0">{% trans "Seja grato" %}</p>
+        <p class="mb-0">{% trans "Seja diligente" %}</p>
+        <p class="mb-0">{% trans "Seja bondoso com os outros" %}</p>
+        <footer class="blockquote-footer">{% "Os cinco princípios do Reiki" %}</footer>
+    </blockquote>
+
+
+    <p>{% trans "Oi, gente!" %}</p>
+    <p>
+        {% trans "Neste período de quarentena, nós, do Reiki do bairro Santa Inês,
+            continuamos nos oferecendo para prestar nossos serviços. Porém,
+            por causa do momento atual, realizaremos somente Reikis a
+            distância. Se você se interessar em marcar uma sessão com a gente,
+            basta clicar no botão abaixo."
+        %}
+    </p>
 
     <form action="{% url 'welcome' %}" method="post">
         {% csrf_token %}
         <input type="hidden" id="user_timezone_field" name="user_timezone" value="">
-        <input class="btn btn-primary" type="submit" value="{% trans 'I want to book' %}">
+        <input class="btn btn-primary cta-button" type="submit" value="{% trans 'Quero marcar' %}">
     </form>
 {% endblock %}

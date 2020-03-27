@@ -13,7 +13,7 @@ def validate_email_has_no_future_event_associated(value):
     if not can_user_schedule_event(value):
         next_event = get_user_next_event(value)
         worker = next_event.calendar.worker_set.get()
-        base_message = _('Oops, it looks like you already have a reservation. It is scheduled for')
+        base_message = _('Ops, parece que você já tem uma sessão reservada. Ela está marcada para')
         start_time_as_string = (arrow.get(next_event.start)
             .to(worker.timezone)
             .format('DD/MM, HH[h]mm'))
@@ -48,17 +48,17 @@ class ScheduleAnAppointment(forms.Form):
         dropdown_choices = free_timeslots_to_choices(free_timeslots, user_timezone)
 
         self.fields['timeslots_available'] = forms.ChoiceField(
-            label=_('Next available timeslots'),
+            label=_('Próximos horários disponíveis'),
             choices=dropdown_choices
         )
 
-    full_name = forms.CharField(label=_('Your full name'), max_length=200)
+    full_name = forms.CharField(label=_('Seu nome completo'), max_length=200)
     email_address = forms.EmailField(
-        label=_('Email address'),
-        help_text=_('We will send an email with a reminder 15 minutes before the Reiki starts.'),
+        label=_('Endereço de email'),
+        help_text=_('Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'),
         validators=[validators.EmailValidator, validate_email_has_no_future_event_associated]
     )
 
 
 class UploadPhoto(forms.Form):
-    photo = forms.ImageField(label=_('Your picture'))
+    photo = forms.ImageField(label=_('Sua foto'))

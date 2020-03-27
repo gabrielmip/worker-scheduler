@@ -4,13 +4,18 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <p>{% trans "Nice! Now, to perform reiki remotelly, we need a picture of your face. Please, choose a good one pressing the button below." %}</p>
+    <h2 class="title">{% trans "Foto de rosto" %}</h2>
+
+    <p class="form-instruction">
+        {% trans "Legal! Agora, só está faltando uma foto do seu rosto." %}
+        {% trans "Escolha uma foto clicando no botão abaixo." %}
+    </p>
 
     <form enctype="multipart/form-data" action="{% url 'upload_photo' %}" method="post">
         {% csrf_token %}
         {{ form | crispy }}
         <input type="hidden" name="email_address" value="{{ event.user.email_address }}">
         <input type="hidden" name="event_id" value="{{ event.id }}">
-        <input class="btn btn-primary" type="submit" value="{% trans 'Save photo' %}">
+        <input class="btn btn-primary cta-button" type="submit" value="{% trans 'Enviar foto' %}">
     </form>
 {% endblock %}
