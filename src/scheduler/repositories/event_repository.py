@@ -53,4 +53,17 @@ def create_event(email_address, user_name, calendar_id, start_time, end_time):
 
 
 def get_event_from_id(event_id):
-    return WorkEvent.objects.get(pk=event_id)
+    try:
+        return WorkEvent.objects.get(pk=event_id)
+    except WorkEvent.DoesNotExist:
+        return None
+
+
+def delete_event_from_id(event_id):
+    try:
+        work_event = WorkEvent.objects.get(pk=event_id)
+        google_repo.delete_event(work_event.event_id, work_event.calendar_id)
+        work_event.delete()
+    except WorkEvent.DoesNotExist:
+        return None
+

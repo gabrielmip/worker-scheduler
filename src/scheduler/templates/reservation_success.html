@@ -3,13 +3,20 @@
 {% load i18n %}
 
 {% block content %}
-    <h2 class="title">Confirmação</h2>
+    <h2 class="title">{% trans "Confirmação" %}</h2>
 
     <p class="form-instruction">
-        {% trans "Pronto! Sua reserva está feita. Nós enviaremos um lembrete no email" %}
+        {% trans "Pronto! Sua reserva está feita para" %}
+        {{ event.start | date }},
+        {% trans "às" %}
+        {{ event.start | time }}.
+        {% trans "Nós enviaremos um lembrete no email" %}
         {{ event.user.email_address }}
         {% trans "perto do horário de início da sessão." %}
-        {% trans "Você já pode fechar esta janela." %}
+    </p>
+
+    <p class="form-instruction form-instruction-box">
+        {% trans "A sessão dura 15 minutos e recomenda-se que seja feita em um lugar mais tranquilo." %}
     </p>
 
     <a href="{% url 'welcome' %}">

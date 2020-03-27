@@ -15,7 +15,7 @@
         {% csrf_token %}
         {{ form | crispy }}
         <input type="hidden" name="email_address" value="{{ event.user.email_address }}">
-        <input type="hidden" name="event_id" value="{{ event.id }}">
+        <input type="hidden" name="event_id" value="{{ event.event_id }}">
         <input class="btn btn-primary cta-button" type="submit" value="{% trans 'Enviar foto' %}">
     </form>
 {% endblock %}

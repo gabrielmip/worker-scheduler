@@ -64,6 +64,10 @@ def create_event(name, description, calendar_id, start, end):
     return created['id']
 
 
+def delete_event(event_id, calendar_id):
+    return GOOGLE_CONNECTOR.events().delete(eventId=event_id, calendarId=calendar_id).execute()
+
+
 def edit_event_description(event_id, calendar_id, description):
     body = {
         "description": description

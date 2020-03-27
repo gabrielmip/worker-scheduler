@@ -62,9 +62,9 @@ class WorkEvent(models.Model):
     def __str__(self):
         return f"{self.name}: {self.start} - {self.end}"
 
+    event_id = models.CharField('Google agenda event ID', max_length=200, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
-    event_id = models.CharField('Google agenda event ID', max_length=200)
     name = models.CharField(max_length=200)
     start = models.DateTimeField()
     end = models.DateTimeField()

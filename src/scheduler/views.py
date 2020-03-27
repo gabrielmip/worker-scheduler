@@ -7,6 +7,7 @@ from scheduler.forms import ScheduleAnAppointment, UploadPhoto
 from scheduler.user_timezone_capture.session_settings import TIMEZONE_KEY
 from scheduler.repositories.event_repository import (
     create_event,
+    delete_event_from_id,
     get_event_from_id,
     update_event_description_with_photo_url
 )
@@ -44,7 +45,15 @@ def upload_photo(request):
 
         return render(request, 'reservation_success.html', {'event': event})
 
-    return HttpResponse('')
+
+def cancel_work_event(request, event_id):
+    if request.method == 'GET':
+        event = get_event_from_id(event_id)
+        return render(request, 'cancel_work_event.html', {'event': event})
+
+    if request.method == 'POST':
+        delete_event_from_id(event_id)
+        return HttpResponseRedirect(reverse('welcome'))
 
 
 def _make_reservation(request):
