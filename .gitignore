@@ -9,3 +9,5 @@ __pycache__
 .coverage
 **/uploads/*
 src/project/emails.py
+production_settings_extension.py
+src/static/
