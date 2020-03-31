@@ -67,7 +67,7 @@ class User(models.Model):
 
 class WorkEvent(models.Model):
     def __str__(self):
-        return f"{self.name}: {self.start} - {self.end}"
+        return f"{str(self.user)}: {self.start} - {self.end}"
 
     event_id = models.IntegerField(unique=True, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
