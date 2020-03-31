@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block content %}
+<h2 class="title">
+    {% trans "Minha agenda" %}
+</h2>
+
+<ul>
+{% for event in today_events %}
+    <li>
+
+    </li>
+    <img src="{{ event.user.photo.url }}" alt="">
+    {{event.user.full_name}}
+{% endfor %}
+</ul>
+
+{% endblock %}

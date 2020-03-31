@@ -10,12 +10,13 @@ def create_event(email_address, user_name, user_timezone, calendar_id, start_tim
     except User.DoesNotExist:
         user = User.objects.create(email_address=email_address, full_name=user_name, timezone=user_timezone)
 
-    return WorkEvent.objects.create(
+    WorkEvent.objects.create(
         user=user,
         calendar_id=calendar_id,
         name=user_name,
         start=start_time.datetime,
         end=end_time.datetime)
+    return WorkEvent.objects.latest('event_id')
 
 
 def get_event_from_id(event_id):

@@ -19,7 +19,6 @@ def get_active_worker_calendars():
     return [
         {
             'id': worker.calendar_id,
-            'name': worker.calendar.name,
             'availabilities': _map_availabilities_to_date(worker.availability_set.all(), worker.timezone),
             'busy_timeslots': busy_timeslots_by_calendar[worker.calendar_id]
         }
