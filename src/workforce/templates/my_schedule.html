@@ -24,7 +24,10 @@
 </div>
 
 {% for event in today_events %}
-<div class="event-start-time">{{event.start | time}}</div>
+<div class="event-start-time">
+    <i class="fas fa-clock"></i>
+    {{event.start | time}}
+</div>
 <div class="event">
     <div class="user-photo-container">
         <img

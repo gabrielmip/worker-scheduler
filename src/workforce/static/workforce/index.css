@@ -2,16 +2,25 @@
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     box-sizing: border-box;
     display: flex;
     box-shadow: 1px 2px 4px 1px #9ab96b;
 }
 
 .event-start-time {
-    font-weight: bold;
-    font-size: 38px;
+    color: #eee;
+    font-size: 17px;
     margin-bottom: 0px;
+    background: #1a8a4c;
+    padding: 5px 12px;
+    display: inline;
+    margin-left: 19px;
+    border-radius: 5px 5px 0 0;
+}
+
+.event-start-time i {
+    margin-right: 4px;
 }
 
 .user-photo {
