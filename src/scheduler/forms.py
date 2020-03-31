@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 from django.utils.formats import date_format
 
 from scheduler.services.calendar_service import get_one_free_timeslot_by_hour
-from scheduler.repositories.event_repository import can_user_schedule_event, get_user_next_event
+from scheduler.services.events_service import can_user_schedule_event, get_user_next_event
 
 
 def validate_no_future_event_associated(value):
