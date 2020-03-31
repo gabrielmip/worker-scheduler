@@ -1,5 +1,6 @@
 from datetime import time, datetime, date
 
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -14,7 +15,6 @@ def get_my_schedule(request):
 
     worker = request.user.worker
     today_events = _get_today_events(worker)
-    breakpoint()
     events_hash = _calculate_event_hash(today_events)
 
     return render(request, 'my_schedule.html', {
