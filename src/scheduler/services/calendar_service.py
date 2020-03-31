@@ -44,8 +44,8 @@ def _get_timeslots_to_analyse():
 
     time_being_analysed = start_time
     while time_being_analysed < end_time:
-        yield (time_being_analysed, time_being_analysed.shift(minutes=15))
-        time_being_analysed = time_being_analysed.shift(minutes=15)
+        yield (time_being_analysed, time_being_analysed.shift(minutes=20))
+        time_being_analysed = time_being_analysed.shift(minutes=20)
 
 
 def _is_timeslot_outside_range(timeslot, date_range):

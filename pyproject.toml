@@ -17,9 +17,10 @@ arrow = "^0.15.5"
 Pillow = "^7.0.0"
 django-crispy-forms = "^1.9.0"
 django-background-tasks = "^1.2.5"
-gunicorn = "^20.0.4"
 sysrsync = "^0.2.1"
 fabric = "^2.5.0"
+whitenoise = "^5.0.1"
+gunicorn = "^20.0.4"
 
 [tool.poetry.dev-dependencies]
 rope = "^0.16.0"

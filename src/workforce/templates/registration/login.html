@@ -1,0 +1,22 @@
+{% extends 'workforce_base.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<h2 class="title">
+    {% trans "Área do trabalhador" %}
+</h2>
+
+<p class="form-instruction" style="margin-top: 20px">
+    {% trans "Olá, trabalhador!" %}<br>
+    {% trans "Insira login e senha para ter acesso à sua agenda e poder editar sua disponibilidade." %}
+</p>
+
+<form method="post" class="login-form">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-primary cta-button" type="submit">{% trans "Entrar" %}</button>
+</form>
+{% endblock %}

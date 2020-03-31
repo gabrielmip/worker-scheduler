@@ -1,2 +1,0 @@
-class GoogleCredentialsException(Exception):
-    pass

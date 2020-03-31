@@ -22,6 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('config/', admin.site.urls),
     path('', include('scheduler.urls')),
+    path('', include('workforce.urls')),
 ]
 
 urlpatterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

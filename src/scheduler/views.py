@@ -1,5 +1,5 @@
 import arrow
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -9,8 +9,7 @@ from scheduler.services.emails_service import setup_email_sending
 from scheduler.repositories.event_repository import (
     create_event,
     delete_event_from_id,
-    get_event_from_id,
-    update_event_description_with_photo_url
+    get_event_from_id
 )
 
 
@@ -42,7 +41,6 @@ def upload_photo(request):
         event = get_event_from_id(event_id)
         event.user.photo = form.cleaned_data['photo']
         event.user.save()
-        update_event_description_with_photo_url(event)
 
         return render(request, 'reservation_success.html', {'event': event})
 
@@ -84,4 +82,5 @@ def _create_event_from_form_data(form_data, user_timezone):
         user_timezone,
         calendar_id,
         start_time,
-        end_time)
+        end_time,
+        form_data['comment'])

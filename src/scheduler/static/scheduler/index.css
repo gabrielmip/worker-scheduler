@@ -1,3 +1,8 @@
+body {
+    background: #E5FCC2;
+    font-family: 'Sen', sans-serif;
+}
+
 .title {
     margin: 40px 0;
 }
@@ -16,6 +21,8 @@ h2.title {
 
 .cta-button {
     margin-top: 15px;
+    background-color: #237ddd;
+    border-color: #237ddd;
 }
 
 .container {
@@ -25,4 +32,23 @@ h2.title {
 
 .form-instruction {
     margin-bottom: 30px;
+}
+
+.header {
+    padding-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header .navbar-brand {
+    color: #eee;
+    font-weight: 800;
+}
+
+.navbar {
+    background: #0B486B;
+}
+
+.login-form {
+    margin: 30px 0;
 }

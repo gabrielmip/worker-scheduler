@@ -1,7 +1,7 @@
 import arrow
 from django.conf import settings
 
-from scheduler.repositories.google_agenda_repository import get_freebusy_from_calendars
+from scheduler.repositories.event_repository import get_all_events_by_calendar
 from workforce.models import Worker
 
 
@@ -19,7 +19,6 @@ def get_active_worker_calendars():
     return [
         {
             'id': worker.calendar_id,
-            'name': worker.calendar.name,
             'availabilities': _map_availabilities_to_date(worker.availability_set.all(), worker.timezone),
             'busy_timeslots': busy_timeslots_by_calendar[worker.calendar_id]
         }
@@ -34,10 +33,10 @@ def get_range_to_analyse_availability():
 
 
 def _get_week_busy_timeslots_by_calendar(workers):
-    calendars = [{'id': w.calendar_id} for w in workers]
+    calendar_ids = [w.calendar_id for w in workers]
     start, end = get_range_to_analyse_availability()
 
-    return get_freebusy_from_calendars(calendars, start, end, settings.TIME_ZONE)
+    return get_all_events_by_calendar(calendar_ids, start, end)
 
 
 def _availability_as_datetime(availability, reference_datetime, worker_timezone):
