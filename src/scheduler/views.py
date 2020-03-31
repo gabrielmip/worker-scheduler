@@ -25,7 +25,10 @@ def get_welcome_page(request):
 def get_reservation_page(request):
     if request.method == 'GET':
         form = ScheduleAnAppointment(request.session[TIMEZONE_KEY])
-        return render(request, 'choose_timeslot.html', {'form': form})
+        return render(request, 'choose_timeslot.html', {
+            'form': form,
+            'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0)
+        })
 
     if request.method == 'POST':
         return _make_reservation(request)

@@ -7,7 +7,7 @@
 {% block content %}
     <h2 class="title">{% trans "Horários disponíveis" %}</h2>
 
-    {% if form.fields['timeslots_available'] %}
+    {% if has_timeslots_available %}
         <p class="form-instruction">
             Precisaremos das informações abaixo para podermos te identificar.
             O endereço de email servirá para podermos enviar para você um pequeno
