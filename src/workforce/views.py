@@ -1,5 +1,6 @@
 from datetime import time, datetime, date
 
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -40,7 +41,8 @@ def _get_today_events(worker):
     today_min = datetime.combine(datetime.today(), time.min)
     today_max = datetime.combine(datetime.today(), time.max)
 
-    return worker.calendar.workevent_set.filter(start__range=(today_min, today_max))
+    events = worker.calendar.workevent_set.filter(start__range=(today_min, today_max))
+    return [*filter(lambda e: bool(e.user.photo), events)]
 
 
 def _calculate_event_hash(work_events):
