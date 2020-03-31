@@ -58,6 +58,7 @@ class ScheduleAnAppointment(forms.Form):
         help_text=_('Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'),
         validators=[validators.EmailValidator, validate_no_future_event_associated]
     )
+    comment = forms.CharField(label=_('Caso deseje tratar algo em especial, escreva abaixo'), required=False)
 
 
 class UploadPhoto(forms.Form):

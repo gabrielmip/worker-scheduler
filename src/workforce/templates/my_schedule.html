@@ -1,23 +1,63 @@
-{% extends 'base.html' %}
+{% extends 'workforce_base.html' %}
 
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load tz %}
 
 
 {% block content %}
+{% timezone worker_timezone %}
+<link rel="stylesheet" href="{% static 'workforce/index.css' %}"></link>
+
 <h2 class="title">
-    {% trans "Minha agenda" %}
+    {% trans "Agenda de hoje" %}
 </h2>
 
-<ul>
+<div class="message-for-worker">
+    <p>{% trans "Olá" %}, {{worker_name}}!</p>
+    <p>
+        {% trans 'Aqui, ficam as sessões marcadas para você no dia de hoje.' %}
+        {% trans 'A tela recarregará quando novas sessões forem marcadas.' %}
+    </p>
+    <p>{% trans 'Tenha um ótimo dia de trabalho.' %}</p>
+</div>
+
 {% for event in today_events %}
-    <li>
-
-    </li>
-    <img src="{{ event.user.photo.url }}" alt="">
-    {{event.user.full_name}}
+<div class="event-start-time">{{event.start | time}}</div>
+<div class="event">
+    <div class="user-photo-container">
+        <img
+            class="user-photo"
+            src="{{ event.user.photo.url }}"
+            alt="Foto de {{ event.user.full_name }}">
+    </div>
+    <div class="event-description">
+        <div class="event-description-category">
+            {% trans "Nome" %}
+        </div>
+        <div class="event-description-value">
+            {{event.user.full_name}}
+        </div>
+        <div class="event-description-category">
+            {% trans "Comentário" %}
+        </div>
+        <div class="event-description-value">
+            {{event.comment}}
+            {% if event.comment == '' %}
+            {% trans 'Sem comentário' %}
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endfor %}
-</ul>
 
+{% if not today_events %}
+<div>
+    {% trans "Você ainda não tem nenhuma sessão marcada para hoje." %}
+</div>
+{% endif %}
+
+
+{% endtimezone %}
 {% endblock %}

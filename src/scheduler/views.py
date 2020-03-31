@@ -82,4 +82,5 @@ def _create_event_from_form_data(form_data, user_timezone):
         user_timezone,
         calendar_id,
         start_time,
-        end_time)
+        end_time,
+        form_data['comment'])

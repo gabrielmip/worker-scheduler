@@ -1,0 +1,43 @@
+.event {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    display: flex;
+    box-shadow: 1px 2px 4px 1px #9ab96b;
+}
+
+.event-start-time {
+    font-weight: bold;
+    font-size: 38px;
+    margin-bottom: 0px;
+}
+
+.user-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.user-photo-container {
+    max-width: 40%;
+}
+
+.event-description {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.event-description-category {
+    font-weight: 1000;
+}
+
+.event-description-value {
+    margin-bottom: 15px;
+}
+
+.message-for-worker {
+    margin-bottom: 30px;
+}

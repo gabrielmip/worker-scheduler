@@ -53,6 +53,6 @@ class WorkEvent(models.Model):
     event_id = models.IntegerField(unique=True, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    comment = models.CharField(max_length=500, default='')
     start = models.DateTimeField()
     end = models.DateTimeField()
