@@ -1,0 +1,27 @@
+Instruções
+
+
+
+Criação de usuário
+
+- Acessar https://reikidosantaines.site/config
+- Inserir usuário e senha nos campos que aparecerem e clicar em Acessar
+- Na nova página, na linha escrita "Usuários", clicar em "+ Adicionar".
+- Definir um nome de usuário, como "robsonjcp", uma senha e clicar em adidionar.
+- Tendo criado o usuário, é necessário que se complete o cadastro com mais informações. Para isso:
+    - Clique em Usuários, encontre o usuário criado e clique no nome dele.
+    - Nesta nova tela, preencha email, primeiro nome e último nome, que são informações necessárias para o site.
+    - Nesta mesma tela, clique em "Membro da equipe" na seção de Permissões, clique duas vezes em cima dos grupos nos quais deseja adicionar o trabalhador.
+    - Por fim, clique em Salvar.
+
+Adicionar um usuário como trabalhador
+- Acessar a página inicial https://reikidosantaines.site/config/ e realizar login novamente, se necessário.
+- Encontrar a linha Pessoas trabalhadoras e clicar em "+ Adicionar"
+- Em Auth user, selecionar o usuário e clicar em Salvar.
+- Voltar para a página inicial, encontrar a linha Disponibilidades, clicar em "+ Adicionar" e, para cada intervalo de tempo disponível pelo trabalhador, faça:
+    - Selecione o trabalhador no campo "Worker"
+    - Selecione o dia da semana
+    - Selecione data de início no fuso do trabalhador (ignore o aviso logo abaixo do campo)
+    - Selecione data de término no fuso do trabalhador (ignore o aviso logo abaixo do campo)
+    - Clique em Salvar e adicionar outro.
+
