@@ -9,6 +9,9 @@ def get_my_schedule(request):
     if not hasattr(request, 'user') or not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
+    if not hasattr(request.user, 'worker'):
+        return HttpResponse('Você não foi cadastrado como trabalhador. Peça às pessoas administradoras do sistema que te adicione.')
+
     worker = request.user.worker
     today_events = _get_today_events(worker)
     events_hash = _calculate_event_hash(today_events)
