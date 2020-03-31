@@ -7,8 +7,20 @@
 
 
 {% block content %}
+
 {% timezone worker_timezone %}
 <link rel="stylesheet" href="{% static 'workforce/index.css' %}"></link>
+<script src="{% static 'workforce/get_events_hash.js' %}"></script>
+<script>
+    let events_hash = "{{events_hash}}";
+</script>
+
+<div id="refresh-warner">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div>
+        {% trans "Há atualizações na sua agenda. Por favor, atualize a página." %}
+    </div>
+</div>
 
 <h2 class="title">
     {% trans "Agenda de hoje" %}
@@ -30,10 +42,12 @@
 </div>
 <div class="event">
     <div class="user-photo-container">
+        <a href="{{ event.user.photo.url }}">
         <img
             class="user-photo"
             src="{{ event.user.photo.url }}"
             alt="Foto de {{ event.user.full_name }}">
+        </a>
     </div>
     <div class="event-description">
         <div class="event-description-category">

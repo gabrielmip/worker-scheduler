@@ -50,3 +50,22 @@
 .message-for-worker {
     margin-bottom: 30px;
 }
+
+#refresh-warner {
+    width: 350px;
+    background-color: var(--orange);
+    border-radius: 5px;
+    padding: 10px 20px;
+    position: fixed;
+    top: 80px;
+    left: 41vw;
+    color: white;
+    box-shadow: 1px 4px 6px 1px rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+}
+
+#refresh-warner i {
+    font-size: 28px;
+    margin-right: 9px;
+}
