@@ -62,7 +62,10 @@ def _make_reservation(request):
     form = ScheduleAnAppointment(request.session[TIMEZONE_KEY], request.POST)
 
     if not form.is_valid():
-        return render(request, 'choose_timeslot.html', {'form': form})
+        return render(request, 'choose_timeslot.html', {
+            'form': form,
+            'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0)
+        })
 
     new_work_event = _create_event_from_form_data(form.cleaned_data, request.session[TIMEZONE_KEY])
     setup_email_sending(new_work_event)
