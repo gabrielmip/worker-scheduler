@@ -49,6 +49,9 @@ class ScheduleAnAppointment(forms.Form):
 
         self.fields['timeslots_available'] = forms.ChoiceField(
             label=_('Próximos horários disponíveis'),
+            error_messages={
+                'invalid_choice': _('Ops, alguém acabou de escolher este horário... Por favor, escolha novamente.')
+            },
             choices=dropdown_choices
         )
 
