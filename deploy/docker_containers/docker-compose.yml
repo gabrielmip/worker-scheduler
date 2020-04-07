@@ -1,9 +1,0 @@
-version: "3.7"
-services:
-    worker_scheduler:
-        build: './worker_scheduler'
-        ports:
-            - "8000:8000"
-        volumes:
-            - /home/gabriel/worker-scheduler:/app
-        restart: always
