@@ -7,6 +7,7 @@ from django.utils.formats import date_format
 
 from scheduler.services.calendar_service import get_one_free_timeslot_by_hour
 from scheduler.services.events_service import can_user_schedule_event, get_user_next_event
+from scheduler.services.user_service import get_user_by_email_address
 
 
 def validate_no_future_event_associated(value):
@@ -41,27 +42,38 @@ def free_timeslots_to_choices(timeslots, user_timezone):
     ]
 
 
+def build_free_timeslots_field(user_timezone):
+    free_timeslots = get_one_free_timeslot_by_hour()
+    dropdown_choices = free_timeslots_to_choices(free_timeslots, user_timezone)
+
+    return forms.ChoiceField(
+        label=_('Próximos horários disponíveis'),
+        error_messages={
+            'invalid_choice': _('Ops, alguém acabou de escolher este horário... Por favor, escolha novamente.')
+        },
+        choices=dropdown_choices
+    )
+
+
+class UserLogin(forms.Form):
+    email_address = forms.EmailField(
+        label=_('Endereço de email'),
+        validators=[validators.EmailValidator, validate_no_future_event_associated]
+    )
+
+
 class ScheduleAnAppointment(forms.Form):
     def __init__(self, user_timezone, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        free_timeslots = get_one_free_timeslot_by_hour()
-        dropdown_choices = free_timeslots_to_choices(free_timeslots, user_timezone)
+        self.fields['timeslots_available'] = build_free_timeslots_field(user_timezone)
 
-        self.fields['timeslots_available'] = forms.ChoiceField(
-            label=_('Próximos horários disponíveis'),
-            error_messages={
-                'invalid_choice': _('Ops, alguém acabou de escolher este horário... Por favor, escolha novamente.')
-            },
-            choices=dropdown_choices
-        )
 
-    full_name = forms.CharField(label=_('Seu nome completo'), max_length=200)
-    email_address = forms.EmailField(
-        label=_('Endereço de email'),
-        help_text=_('Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'),
-        validators=[validators.EmailValidator, validate_no_future_event_associated]
-    )
     comment = forms.CharField(label=_('Caso deseje tratar algo em especial, escreva abaixo'), required=False)
+
+
+class UserInformation(forms.Form):
+    full_name = forms.CharField(label=_('Seu nome completo'), max_length=200)
+    photo = forms.ImageField(label=_('Sua foto'))
 
 
 class UploadPhoto(forms.Form):

@@ -3,9 +3,10 @@ from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from scheduler.forms import ScheduleAnAppointment, UploadPhoto
+from scheduler.forms import ScheduleAnAppointment, UploadPhoto, UserLogin, UserInformation
 from scheduler.user_timezone_capture.session_settings import TIMEZONE_KEY
 from scheduler.services.emails_service import setup_email_sending
+from scheduler.services.user_service import get_user_by_email_address
 from scheduler.repositories.event_repository import (
     create_event,
     delete_event_from_id,
@@ -19,7 +20,32 @@ def get_welcome_page(request):
 
     if request.method == 'POST':
         request.session[TIMEZONE_KEY] = request.POST['user_timezone']
-        return HttpResponseRedirect(reverse('schedule'))
+        return HttpResponseRedirect(reverse('user_login'))
+
+
+def get_user_login_page(request):
+    # FIX THIS user_information.html is not right
+    if request.method == 'GET':
+        form = UserLogin()
+        return render(request, 'user_identification.html', {'form': form})
+
+    if request.method == 'POST':
+        form = UserLogin(request.POST)
+        if not form.is_valid():
+            return render(request, 'user_identification.html', {'form': form})
+
+        email_address = request.POST.get('email_address')
+        # Fix this UserInformation form is not right
+        # nothing is right here really
+        user_information_form = UserInformation(email_address)
+        appointment_form = ScheduleAnAppointment(request.session[TIMEZONE_KEY])
+
+        return render(request, 'choose_timeslot.html', {
+            'form': appointment_form,
+            'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0)
+        })
+
+    return HttpResponseBadRequest('Method not supported')
 
 
 def get_reservation_page(request):
