@@ -1,9 +1,11 @@
 from datetime import time, datetime, date
 
+import arrow
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from workforce.models import WorkEvent
 
 
 def get_my_schedule(request):
@@ -38,11 +40,16 @@ def get_my_schedule_hash(request):
 
 
 def _get_today_events(worker):
-    today_min = datetime.combine(datetime.today(), time.min)
-    today_max = datetime.combine(datetime.today(), time.max)
+    def get_today_time(time_limit):
+        today_at_limit = datetime.combine(datetime.today(), time_limit)
+        return arrow.get(today_at_limit).replace(tzinfo=worker.timezone).datetime
 
-    events = worker.calendar.workevent_set.filter(start__range=(today_min, today_max)).order_by('start')
-    return [*filter(lambda e: bool(e.user.photo), events)]
+    today_min = get_today_time(time.min)
+    today_max = get_today_time(time.max)
+
+    return (worker.calendar.workevent_set
+        .filter(start__range=(today_min, today_max))
+        .order_by('start'))
 
 
 def _calculate_event_hash(work_events):
