@@ -55,6 +55,7 @@ h2.title {
 
 .welcome-button {
     display: inline-block;
+    margin-bottom: 10px;
 }
 
 .welcome-actions-container {
