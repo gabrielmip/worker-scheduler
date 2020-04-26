@@ -9,7 +9,7 @@ from scheduler.repositories.calendar_repository import (
 
 def get_one_free_timeslot_by_hour():
     worker_calendars = get_active_worker_calendars()
-    hash_slot = lambda x: f'{x[0].day} - {x[0].hour}'
+    hash_slot = lambda x: f'{x[0].day} - {x[0].hour} - {x[0].minute}'
     timeslot_by_hour_in_day = {}
 
     for timeslot in _get_timeslots_to_analyse():

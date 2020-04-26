@@ -17,5 +17,5 @@ def get_user_next_event(email_address):
         .filter(user__email_address=email_address)
         .filter(start__gte=arrow.get().datetime)
         .order_by('start')
-        .get())
+        .first())
 

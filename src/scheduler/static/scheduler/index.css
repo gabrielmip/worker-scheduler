@@ -1,6 +1,7 @@
 body {
     background: #E5FCC2;
     font-family: 'Sen', sans-serif;
+    scroll-behavior: smooth;
 }
 
 .title {
@@ -20,7 +21,6 @@ h2.title {
 }
 
 .cta-button {
-    margin-top: 15px;
     background-color: #237ddd;
     border-color: #237ddd;
 }
@@ -51,4 +51,35 @@ h2.title {
 
 .login-form {
     margin: 30px 0;
+}
+
+.welcome-button {
+    display: inline-block;
+}
+
+.welcome-actions-container {
+    transition: opacity 0.2s;
+}
+
+#registered-email-form {
+    margin-top: 40px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+#registered-email-form > * {
+    display: block !important;
+    margin-bottom: 10px;
+}
+
+#registered-email-form > label {
+    margin: 1px;
+}
+
+#registered-email {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    width: 300px;
+    border-radius: 4px;
+    color: #333;
 }

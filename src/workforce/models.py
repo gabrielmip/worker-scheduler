@@ -1,9 +1,11 @@
 import arrow
+import pytz
 from django.db import models
 from django.contrib.auth.models import User as AuthUser
 from django.utils.translation import gettext_lazy as _
 
 from workforce.utils import build_path_for_user_picture
+TIMEZONES_AS_CHOICES = [(a, a.replace('_', ' ')) for a in pytz.common_timezones]
 
 
 class Calendar(models.Model):
@@ -28,7 +30,11 @@ class Worker(models.Model):
         super().save(**kwargs)
 
     auth_user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
-    timezone = models.CharField(_('Fuso horário'), max_length=200, default='America/Sao_Paulo')
+    timezone = models.CharField(
+        _('Fuso horário'),
+        max_length=200,
+        choices=TIMEZONES_AS_CHOICES,
+        default='America/Sao_Paulo')
     on_vacations = models.BooleanField(_('Considerar que esta pessoa está de folga'), default=False)
     calendar = models.ForeignKey(Calendar, null=True, on_delete=models.SET_NULL)
 
@@ -55,10 +61,17 @@ class User(models.Model):
     def __str__(self):
         return f"{self.full_name} ({self.email_address})"
 
-    email_address = models.EmailField()
-    full_name = models.CharField(max_length=200)
-    timezone = models.CharField(max_length=200, default='America/Sao_Paulo')
-    photo = models.ImageField(upload_to=build_path_for_user_picture)
+    full_name = models.CharField(verbose_name=_('Seu nome completo'), max_length=200)
+    email_address = models.EmailField(
+        verbose_name=_('Endereço de email'),
+        unique=True,
+        help_text=_('Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'))
+    timezone = models.CharField(
+        verbose_name=_('Fuso horário'),
+        max_length=200,
+        choices=TIMEZONES_AS_CHOICES,
+        default='America/Sao_Paulo')
+    photo = models.ImageField(verbose_name=_('Uma foto do seu rosto'), upload_to=build_path_for_user_picture)
 
     class Meta:
         verbose_name = _('Paciente')

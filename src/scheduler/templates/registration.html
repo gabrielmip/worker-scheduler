@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <h2 class="title">{% trans "Cadastro" %}</h2>
+
+    {% if is_new %}
+    <p class="form-instruction">
+        Precisaremos das informações abaixo para podermos te identificar.
+        O endereço de email servirá para podermos enviar para você um pequeno
+        lembrete pouco antes do horário de início da sessão.
+        A foto do rosto serve para fazermos o Reiki a distância.
+    </p>
+    {% elif missing_fields %}
+    <div class="alert alert-primary form-instruction" role="alert">
+        Algumas informações importantes sobre você estão faltando.
+        Preciso que você as preencha para poder marcar novas sessões.
+    </div>
+    {% endif %}
+
+    <form enctype="multipart/form-data" action="{% url 'registration' %}" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-primary cta-button" type="submit" value="{% trans 'Salvar' %}">
+    </form>
+{% endblock %}

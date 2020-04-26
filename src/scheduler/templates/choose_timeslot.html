@@ -5,15 +5,32 @@
 
 
 {% block content %}
-    <h2 class="title">{% trans "Horários disponíveis" %}</h2>
+    <h2 class="title">{% trans "Marcar sessão" %}</h2>
 
+    <p class="form-instruction">
+        Olá, {{ user.full_name }}!
+    </p>
+
+    {% if next_event %}
+    <p class="form-instruction">
+        Parece que você já tem uma sessão marcada com a gente no dia
+        {{ next_event.start | date }},
+        {% trans "às" %}
+        {{ next_event.start | time }}.
+        Por ora, só permitimos uma sessão marcada por pessoa.
+    </p>
+    <p class="form-instruction">
+        Se deseja cancelar, clique no link de cancelamento no email que enviamos para {{ next_event.user.email_address }}.
+        {% if not has_timeslots_available %}
+        <strong>Obs.: Se estiver cancelando para poder remarcar em outro horário, saiba que não há horários disponíveis nos próximos 7 dias.</strong>
+        {% endif %}
+    </p>
+    {% endif %}
+
+
+
+    {% if not next_event %}
     {% if has_timeslots_available %}
-        <p class="form-instruction">
-            Precisaremos das informações abaixo para podermos te identificar.
-            O endereço de email servirá para podermos enviar para você um pequeno
-            lembrete pouco antes do horário de início da sessão.
-        </p>
-
         <form action="{% url 'schedule' %}" method="post">
             {% csrf_token %}
             {{ form|crispy }}
@@ -27,4 +44,6 @@
             <button class="btn btn-light">{% trans 'Voltar para a tela inicial' %}</button>
         </a>
     {% endif %}
+    {% endif %}
+
 {% endblock %}

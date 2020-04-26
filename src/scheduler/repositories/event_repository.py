@@ -4,18 +4,14 @@ from django.conf import settings
 from workforce.models import User, WorkEvent, Calendar
 
 
-def create_event(email_address, user_name, user_timezone, calendar_id, start_time, end_time, comment):
-    try:
-        user = User.objects.get(email_address=email_address)
-    except User.DoesNotExist:
-        user = User.objects.create(email_address=email_address, full_name=user_name, timezone=user_timezone)
-
+def create_event(user, calendar_id, start_time, end_time, comment):
     WorkEvent.objects.create(
         user=user,
         calendar_id=calendar_id,
         start=start_time.datetime,
         end=end_time.datetime,
         comment=comment)
+
     return WorkEvent.objects.latest('event_id')
 
 

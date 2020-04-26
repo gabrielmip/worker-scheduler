@@ -1,0 +1,5 @@
+from scheduler.views.cancel_work_event import cancel_work_event
+from scheduler.views.welcome_page import get_welcome_page
+from scheduler.views.choose_timeslot import choose_timeslot_page
+from scheduler.views.user_registration import register_user
+from scheduler.views.reservation_success import reservation_success
