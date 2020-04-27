@@ -84,3 +84,20 @@ h2.title {
     border-radius: 4px;
     color: #333;
 }
+
+@media (max-width: 600px) {
+    .event {
+        flex-direction: column;
+        padding: 12px 12px 2px 12px !important;
+    }
+    .user-photo-container {
+        max-width: unset !important;
+    }
+    .event-description {
+        margin-left: 0px !important;
+        margin-top: 10px;
+    }
+    .event-description-value {
+        margin-bottom: 5px !important;
+    }
+}

@@ -41,7 +41,8 @@ def get_my_schedule_hash(request):
 
 def _get_today_events(worker):
     def get_today_time(time_limit):
-        today_at_limit = datetime.combine(datetime.today(), time_limit)
+        today_for_worker = arrow.get(datetime.today()).to(worker.timezone).date()
+        today_at_limit = datetime.combine(today_for_worker, time_limit)
         return arrow.get(today_at_limit).replace(tzinfo=worker.timezone).datetime
 
     today_min = get_today_time(time.min)
