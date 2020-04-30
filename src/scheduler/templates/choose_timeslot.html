@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load tz %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
@@ -12,6 +13,7 @@
     </p>
 
     {% if next_event %}
+    {% timezone event.user.timezone %}
     <p class="form-instruction">
         Parece que você já tem uma sessão marcada com a gente no dia
         {{ next_event.start | date }},
@@ -25,6 +27,7 @@
         <strong>Obs.: Se estiver cancelando para poder remarcar em outro horário, saiba que não há horários disponíveis nos próximos 7 dias.</strong>
         {% endif %}
     </p>
+    {% endtimezone %}
     {% endif %}
 
 
