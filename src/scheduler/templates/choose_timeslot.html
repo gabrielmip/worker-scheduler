@@ -13,7 +13,7 @@
     </p>
 
     {% if next_event %}
-    {% timezone event.user.timezone %}
+    {% timezone user.timezone %}
     <p class="form-instruction">
         Parece que você já tem uma sessão marcada com a gente no dia
         {{ next_event.start | date }},
