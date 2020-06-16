@@ -11,7 +11,6 @@ from workforce.views import (
     get_my_schedule_hash
 )
 
-
 urlpatterns = [
     path('', get_welcome_page, name="welcome"),
     path('login', auth_views.LoginView.as_view(), name='login'),

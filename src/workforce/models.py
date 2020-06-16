@@ -50,7 +50,9 @@ class Availability(models.Model):
         return f"{str(self.worker.auth_user)}: {self.get_day_of_the_week_display()} {self.start_time} - {self.end_time}"
 
     worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
-    day_of_the_week = models.IntegerField(_('Dia da semana'), choices=enumerate(arrow.locales.BrazilianPortugueseLocale.day_names))
+    day_of_the_week = models.IntegerField(
+        _('Dia da semana'),
+        choices=enumerate(arrow.locales.BrazilianPortugueseLocale.day_names))
     start_time = models.TimeField(_('Hora de início'))
     end_time = models.TimeField(_('Hora de término'))
 
@@ -67,13 +69,16 @@ class User(models.Model):
     email_address = models.EmailField(
         verbose_name=_('Endereço de email'),
         unique=True,
-        help_text=_('Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'))
+        help_text=_(
+            'Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'))
     timezone = models.CharField(
         verbose_name=_('Fuso horário'),
         max_length=200,
         choices=TIMEZONES_AS_CHOICES,
         default='America/Sao_Paulo')
-    photo = models.ImageField(verbose_name=_('Uma foto do seu rosto'), upload_to=build_path_for_user_picture)
+    photo = models.ImageField(
+        verbose_name=_('Uma foto do seu rosto'),
+        upload_to=build_path_for_user_picture)
 
     class Meta:
         verbose_name = _('Paciente')

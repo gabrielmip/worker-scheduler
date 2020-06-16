@@ -19,7 +19,9 @@ def get_active_worker_calendars():
     return [
         {
             'id': worker.calendar_id,
-            'availabilities': _map_availabilities_to_date(worker.availability_set.all(), worker.timezone),
+            'availabilities': _map_availabilities_to_date(
+                worker.availability_set.all(),
+                worker.timezone),
             'busy_timeslots': busy_timeslots_by_calendar[worker.calendar_id]
         }
         for worker in workers
@@ -42,16 +44,16 @@ def _get_week_busy_timeslots_by_calendar(workers):
 def _availability_as_datetime(availability, reference_datetime, worker_timezone):
     reference_day_of_the_week = reference_datetime.datetime.weekday() + 1
     initial_days_to_shift = (availability.day_of_the_week - reference_day_of_the_week
-        if reference_day_of_the_week <= availability.day_of_the_week
-        else (7 - reference_day_of_the_week + availability.day_of_the_week))
+                             if reference_day_of_the_week <= availability.day_of_the_week
+                             else (7 - reference_day_of_the_week + availability.day_of_the_week))
 
     availability_end_as_datetime = (reference_datetime.shift(days=initial_days_to_shift)
-        .replace(
-            hour=availability.end_time.hour,
-            minute=availability.end_time.minute,
-            second=0,
-            microsecond=0
-        ))
+                                    .replace(
+                                        hour=availability.end_time.hour,
+                                        minute=availability.end_time.minute,
+                                        second=0,
+                                        microsecond=0
+                                    ))
     availability_start_as_datetime = availability_end_as_datetime.replace(
         hour=availability.start_time.hour,
         minute=availability.start_time.minute,
@@ -69,8 +71,8 @@ def _availability_as_datetime(availability, reference_datetime, worker_timezone)
 
 def _availability_to_utc(datetime, weeks_to_shift, worker_timezone):
     return (datetime.shift(weeks=weeks_to_shift)
-        .replace(tzinfo=worker_timezone)
-        .to(settings.TIME_ZONE))
+            .replace(tzinfo=worker_timezone)
+            .to(settings.TIME_ZONE))
 
 
 def _map_availabilities_to_date(availabilities, worker_timezone):
