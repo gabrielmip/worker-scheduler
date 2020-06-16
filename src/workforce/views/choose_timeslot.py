@@ -2,11 +2,11 @@ import arrow
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, reverse
 
-from scheduler.forms import ScheduleAnAppointment
-from scheduler.services.emails_service import setup_email_sending
-from scheduler.services.events_service import get_user_next_event
-from scheduler.repositories.event_repository import create_event
-from scheduler.services.user_service import get_user_object_from_email, has_missing_fields
+from workforce.forms import ScheduleAnAppointment
+from workforce.services.emails_service import setup_email_sending
+from workforce.services.events_service import get_user_next_event
+from workforce.repositories.event_repository import create_event
+from workforce.services.user_service import get_user_object_from_email, has_missing_fields
 
 
 def choose_timeslot_page(request):

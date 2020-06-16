@@ -1,8 +1,8 @@
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from scheduler.services.user_service import get_user_object_from_email, has_missing_fields
+from workforce.services.user_service import get_user_object_from_email, has_missing_fields
 
 
 def get_welcome_page(request):

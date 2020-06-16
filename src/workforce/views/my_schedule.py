@@ -1,11 +1,9 @@
-from datetime import time, datetime, date
+from datetime import time, datetime
 
 import arrow
-from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from workforce.models import WorkEvent
 
 
 def get_my_schedule(request):
@@ -13,7 +11,9 @@ def get_my_schedule(request):
         return HttpResponseRedirect(reverse('login'))
 
     if not hasattr(request.user, 'worker'):
-        return HttpResponse('Você não foi cadastrado como trabalhador. Peça às pessoas administradoras do sistema que te adicione.')
+        return HttpResponse(
+            'Você não foi cadastrado como trabalhador. Peça '
+            'às pessoas administradoras do sistema que te adicione.')
 
     worker = request.user.worker
     today_events = _get_today_events(worker)
@@ -49,8 +49,8 @@ def _get_today_events(worker):
     today_max = get_today_time(time.max)
 
     return (worker.calendar.workevent_set
-        .filter(start__range=(today_min, today_max))
-        .order_by('start'))
+            .filter(start__range=(today_min, today_max))
+            .order_by('start'))
 
 
 def _calculate_event_hash(work_events):

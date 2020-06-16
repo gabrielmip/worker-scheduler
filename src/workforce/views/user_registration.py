@@ -1,8 +1,8 @@
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 
-from scheduler.forms import Registration
-from scheduler.services.user_service import get_user_object_from_email, has_missing_fields
+from workforce.forms import Registration
+from workforce.services.user_service import get_user_object_from_email, has_missing_fields
 from workforce.models import User
 
 

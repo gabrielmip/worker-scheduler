@@ -21,7 +21,6 @@ from django.conf import settings
 
 urlpatterns = [
     path('config/', admin.site.urls),
-    path('', include('scheduler.urls')),
     path('', include('workforce.urls')),
 ]
 

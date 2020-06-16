@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Calendar, Worker, Availability, WorkEvent, User
+from workforce.models import Calendar, Worker, Availability, WorkEvent, User
 
 
 class WorkerAdmin(admin.ModelAdmin):

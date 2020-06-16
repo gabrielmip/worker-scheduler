@@ -1,7 +1,6 @@
 import random
-import logging
 
-from scheduler.repositories.calendar_repository import (
+from workforce.repositories.calendar_repository import (
     get_active_worker_calendars,
     get_range_to_analyse_availability
 )
@@ -32,8 +31,7 @@ def is_timeslot_available(timeslot, calendars):
 
     for calendar in calendars:
         if (_is_calendar_available_for_timeslot(calendar['busy_timeslots'], timeslot)
-            and not _is_calendar_available_for_timeslot(calendar['availabilities'], timeslot)):
-            logging.debug(f"{timeslot[0].format('HH:mm')}-{timeslot[1].format('HH:mm')}: {calendar['id']}")
+                and not _is_calendar_available_for_timeslot(calendar['availabilities'], timeslot)):
             return True, calendar['id']
 
     return False, None

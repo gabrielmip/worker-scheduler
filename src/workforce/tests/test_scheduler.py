@@ -32,7 +32,10 @@ class TestSessionScheduling(TestCase):
         self.client = Client()
 
     def test_no_redirect_when_user_not_exists(self):
-        response = self.client.post('/', {'registered_email': 'mumbojumbo@jumbomumbo.com'}, follow=True)
+        response = self.client.post(
+            '/',
+            {'registered_email': 'mumbojumbo@jumbomumbo.com'},
+            follow=True)
         self.assertEqual(len(response.redirect_chain), 0)
 
     def test_redirect_when_user_exists_but_incomplete(self):
@@ -106,8 +109,3 @@ class TestSessionScheduling(TestCase):
 
         possibly_updated_user = User.objects.get(pk=self.user_with_photo.id)
         self.assertEqual(possibly_updated_user.full_name, self.user_with_photo.full_name)
-
-
-
-
-

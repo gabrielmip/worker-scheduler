@@ -33,7 +33,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'scheduler',
     'workforce.apps.WorkforceConfig',
     'background_task',
     'crispy_forms',

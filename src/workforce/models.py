@@ -5,6 +5,8 @@ from django.contrib.auth.models import User as AuthUser
 from django.utils.translation import gettext_lazy as _
 
 from workforce.utils import build_path_for_user_picture
+
+
 TIMEZONES_AS_CHOICES = [(a, a.replace('_', ' ')) for a in pytz.common_timezones]
 
 

@@ -1,7 +1,6 @@
 import arrow
 
-from django.conf import settings
-from workforce.models import User, WorkEvent, Calendar
+from workforce.models import WorkEvent
 
 
 def create_event(user, calendar_id, start_time, end_time, comment):
@@ -31,10 +30,10 @@ def delete_event_from_id(event_id):
 
 def get_all_events_by_calendar(calendar_ids, start, end):
     work_events = (WorkEvent.objects
-        .filter(calendar_id__in=calendar_ids)
-        .filter(start__gte=arrow.get(start).datetime)
-        .filter(end__lt=arrow.get(end).datetime)
-        .all())
+                   .filter(calendar_id__in=calendar_ids)
+                   .filter(start__gte=arrow.get(start).datetime)
+                   .filter(end__lt=arrow.get(end).datetime)
+                   .all())
 
     by_calendar = {calendar_id: [] for calendar_id in calendar_ids}
 

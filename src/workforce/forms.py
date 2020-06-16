@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 from django.conf import settings
 from babel.dates import format_datetime
 
-from scheduler.services.calendar_service import get_one_free_timeslot_by_hour
+from workforce.services.calendar_service import get_one_free_timeslot_by_hour
 from workforce.models import User
 
 
@@ -27,7 +27,7 @@ def free_timeslots_to_choices(timeslots, user_timezone):
 class Registration(forms.ModelForm):
     class Meta:
         model = User
-        exclude = []
+        fields = ['full_name', 'email_address', 'timezone', 'photo']
 
 
 class ScheduleAnAppointment(forms.Form):
@@ -39,9 +39,15 @@ class ScheduleAnAppointment(forms.Form):
         self.fields['timeslots_available'] = forms.ChoiceField(
             label=_('Próximos horários disponíveis'),
             error_messages={
-                'invalid_choice': _('Ops, alguém acabou de escolher este horário... Por favor, escolha novamente.')
+                'invalid_choice': _(
+                    'Ops, alguém acabou de escolher este horário... '
+                    'Por favor, escolha novamente.'
+                )
             },
             choices=dropdown_choices
         )
 
-    comment = forms.CharField(label=_('Caso deseje tratar algo em especial, escreva abaixo'), required=False)
+    comment = forms.CharField(
+        label=_('Caso deseje tratar algo em especial, escreva abaixo'),
+        required=False
+    )
