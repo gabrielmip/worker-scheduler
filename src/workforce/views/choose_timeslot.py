@@ -6,7 +6,7 @@ from workforce.forms import ScheduleAnAppointment
 from workforce.services.emails_service import setup_email_sending
 from workforce.services.events_service import get_user_next_event
 from workforce.repositories.event_repository import create_event
-from workforce.services.user_service import get_user_object_from_email, has_missing_fields
+from workforce.repositories.user_repository import get_user_object_from_email, has_missing_fields
 
 
 def choose_timeslot_page(request):

@@ -1,6 +1,6 @@
 import random
 
-from workforce.repositories.calendar_repository import (
+from .active_calendars import (
     get_active_worker_calendars,
     get_range_to_analyse_availability
 )
