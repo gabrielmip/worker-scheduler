@@ -18,7 +18,7 @@ urlpatterns = [
     path('schedule', choose_timeslot_page, name="schedule"),
     path('registration', register_user, name="registration"),
     path('reservation_success', reservation_success, name="reservation_success"),
-    path('cancel/<event_id>', cancel_work_event, name="cancel_work_event"),
+    path('cancel/<token_or_id>', cancel_work_event, name="cancel_work_event"),
     path('my_schedule', get_my_schedule, name="my_schedule"),
     path('schedule_hash', get_my_schedule_hash, name="get_schedule_hash"),
 ]

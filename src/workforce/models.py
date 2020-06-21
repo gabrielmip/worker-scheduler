@@ -95,6 +95,7 @@ class WorkEvent(models.Model):
     comment = models.CharField(max_length=500, default='')
     start = models.DateTimeField()
     end = models.DateTimeField()
+    cancelling_token = models.CharField(max_length=256, default=None, null=True)
 
     class Meta:
         verbose_name = _('Evento de trabalho')
