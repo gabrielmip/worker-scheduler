@@ -36,7 +36,7 @@ def send_event_email(work_event_id, email_template_name, email_subject):
         possible to store it in a database.
     '''
     work_event = WorkEvent.objects.get(pk=work_event_id)
-    cancelling_url = f"{settings.EXTERNAL_URL_BASE_PATH}/cancel/{work_event.event_id}"
+    cancelling_url = f"{settings.EXTERNAL_URL_BASE_PATH}/cancel/{work_event.cancelling_token}"
     localized_event_start = arrow.get(work_event.start).to(work_event.user.timezone).datetime
     context = {
         'event': work_event,
