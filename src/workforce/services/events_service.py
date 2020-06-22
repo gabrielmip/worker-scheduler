@@ -29,12 +29,15 @@ def get_user_next_event(email_address):
 def get_event_to_delete(token_or_id):
     right_now = arrow.get().datetime
 
-    if not is_cancelling_token(token_or_id):
-        return (WorkEvent.objects
-                .filter(start__gte=right_now)
-                .filter(event_id=token_or_id)
-                .filter(cancelling_token=None)
-                .first())
+    if not is_cancelling_token(token_or_id) and token_or_id.isdigit():
+        try:
+            return (WorkEvent.objects
+                    .filter(start__gte=right_now)
+                    .filter(event_id=token_or_id)
+                    .filter(cancelling_token=None)
+                    .first())
+        except OverflowError: # int too big for the database
+            return None
     else:
         return (WorkEvent.objects
                 .filter(start__gte=right_now)
