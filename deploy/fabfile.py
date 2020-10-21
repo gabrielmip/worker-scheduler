@@ -5,7 +5,7 @@ import fabric
 import sysrsync
 
 
-ssh_destination = 'personal-site'
+ssh_destination = 'reiki-do-santa-ines'
 destination = "/home/gabriel/worker-scheduler"
 repo_base_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 source_files_root = os.path.join(repo_base_folder, "src")
@@ -19,7 +19,7 @@ def send_source_files():
     sysrsync.run(
         source=source_files_root,
         destination=os.path.join(destination, "src"),
-        destination_ssh="personal-site",
+        destination_ssh=ssh_destination,
         exclusions=ignored_patterns,
         verbose=True,
         options=["-a"])
@@ -58,7 +58,7 @@ def send_production_specific_files():
         sysrsync.run(
             source=f"{repo_base_folder}/{file_path}",
             destination=f"{destination}/{file_path}",
-            destination_ssh="personal-site",
+            destination_ssh=ssh_destination,
             verbose=True,
             options=["-a"])
 
