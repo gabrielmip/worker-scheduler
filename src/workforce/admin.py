@@ -2,14 +2,25 @@ from django.contrib import admin
 from workforce.models import Calendar, Worker, Availability, WorkEvent, User
 
 
-class WorkerAdmin(admin.ModelAdmin):
-    def add_view(self, request, form_url='', extra_context=None):
-        self.exclude = ('calendar',)
-        return super().add_view(request, form_url=form_url, extra_context=extra_context)
+class WorkEventAdmin(admin.ModelAdmin):
+    date_hierarchy = 'start'
+    list_display = ('full_name', 'email_address', 'comment', 'start', 'end', 'workers', 'calendar')
+
+    def full_name(self, event):
+        return event.user.full_name
+
+    def email_address(self, event):
+        return event.user.email_address
+
+    def workers(self, event):
+        return ', '.join([
+            worker.auth_user.first_name
+            for worker in event.calendar.worker_set.all()
+        ])
 
 
 admin.site.register(Calendar)
 admin.site.register(Availability)
-admin.site.register(Worker, WorkerAdmin)
-admin.site.register(WorkEvent)
+admin.site.register(Worker)
+admin.site.register(WorkEvent, WorkEventAdmin)
 admin.site.register(User)
