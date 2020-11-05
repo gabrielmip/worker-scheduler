@@ -29,24 +29,19 @@ class TestWorkerSchedule(TestCase):
 
 
     def test_considering_worker_when_negative_offsets_upper_limit(self):
-        ''' the Apr 1st for someone that lives in a -3 offset goes from
-            Mar 31st 21:00 to Apr 1st 20:59
-        '''
+        ''' the Apr 1st for someone that lives in a -3 offset goes from Mar 31st 21:00 to Apr 1st 20:59 '''
         created_event = create_event_at(time(23, 30), self.from_sao_paulo, self.user)
         retrieved_events = _get_today_events(self.from_sao_paulo)
         self.assertCountEqual(to_comparable(retrieved_events), to_comparable([created_event]))
 
 
     def test_considering_worker_when_negative_offsets_lower_limit(self):
-        ''' the Apr 1st for someone that lives in a -3 offset goes from
-            Mar 31st 21:00 to Apr 1st 20:59
-        '''
+        ''' the Apr 1st for someone that lives in a -3 offset goes from Mar 31st 21:00 to Apr 1st 20:59 '''
         created_event = create_event_at(time(0, 0), self.from_sao_paulo, self.user)
         retrieved_events = _get_today_events(self.from_sao_paulo)
         self.assertCountEqual(to_comparable(retrieved_events), to_comparable([created_event]))
 
 
-    @unittest.skip
     def test_considering_worker_when_positive_offsets_upper_limit(self):
         ''' the Apr 1st for someone that lives in a +9 offset goes from
             Apr 1st 9:00 to Apr 2st 8:59
@@ -56,7 +51,6 @@ class TestWorkerSchedule(TestCase):
         self.assertCountEqual(to_comparable(retrieved_events), to_comparable([created_event]))
 
 
-    @unittest.skip
     def test_considering_worker_when_positive_offsets_lower_limit(self):
         ''' the Apr 1st for someone that lives in a +9 offset goes from
             Apr 1st 9:00 to Apr 2st 8:59
@@ -79,7 +73,7 @@ class TestWorkerSchedule(TestCase):
         client = Client()
         client.force_login(self.auth_user_br)
         response = client.get('/my_schedule')
-        self.assertTrue(len(response.context['today_events']) == 2)
+        self.assertTrue(len(response.context['today_events']) == 2, 'Number of events differs')
         self.assertTrue(response.status_code == 200)
 
 
@@ -88,9 +82,10 @@ def to_comparable(events):
 
 
 def create_event_at(hour, worker, user):
-    start = arrow.get(datetime.combine(datetime.today(), hour)).replace(tzinfo=worker.timezone)
+    today_for_worker = arrow.get(datetime.today()).to(worker.timezone).date()
+    start = arrow.get(datetime.combine(today_for_worker, hour)).replace(tzinfo=worker.timezone)
     return WorkEvent.objects.create(
         user=user,
-        start=start.to('utc').datetime,
-        end=start.shift(minutes=20).to('utc').datetime,
+        start=start.datetime,
+        end=start.shift(minutes=20).datetime,
         calendar=worker.calendar)

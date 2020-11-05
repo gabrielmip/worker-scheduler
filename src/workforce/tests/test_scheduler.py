@@ -1,5 +1,8 @@
+import os
+from shutil import rmtree
 from io import BytesIO
 from PIL import Image
+from django.conf import settings
 from django.test import TestCase, Client
 from django.core.files.base import File
 from workforce.models import User
@@ -30,6 +33,12 @@ class TestSessionScheduling(TestCase):
         )
         self.user_with_photo = User.objects.latest('id')
         self.client = Client()
+
+    def tearDown(self):
+        users_with_photos = [user for user in User.objects.all() if bool(user.photo)]
+        uploads = {os.path.dirname(user.photo.path) for user in users_with_photos}
+        for upload in uploads:
+            rmtree(upload)
 
     def test_no_redirect_when_user_not_exists(self):
         response = self.client.post(
