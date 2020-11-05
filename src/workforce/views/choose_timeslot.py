@@ -43,6 +43,7 @@ def _make_reservation(request, email_address):
     user, _ = get_user_object_from_email(email_address)
     form = ScheduleAnAppointment(user, request.POST)
 
+    # TODO: Look at the 'choices' form field instead of using is_valid
     if not form.is_valid():
         return render(request, 'choose_timeslot.html', {
             'form': form,

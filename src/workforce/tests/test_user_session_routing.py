@@ -7,16 +7,14 @@ from django.test import TestCase, Client
 from django.core.files.base import File
 from workforce.models import User
 
-
-def create_some_image():
-    file_obj = BytesIO()
-    image = Image.new("RGBA", size=(25, 25), color=(255, 0, 0))
-    image.save(file_obj, 'png')
-    file_obj.seek(0)
-    return File(file=file_obj, name="bla.png")
+from .utils import (
+    get_client_with_user_in_session,
+    create_some_image,
+    delete_created_user_photos
+)
 
 
-class TestSessionScheduling(TestCase):
+class TestUserSessionRouting(TestCase):
     def setUp(self):
         User.objects.create(
             email_address="a@a.com",
@@ -35,10 +33,7 @@ class TestSessionScheduling(TestCase):
         self.client = Client()
 
     def tearDown(self):
-        users_with_photos = [user for user in User.objects.all() if bool(user.photo)]
-        uploads = {os.path.dirname(user.photo.path) for user in users_with_photos}
-        for upload in uploads:
-            rmtree(upload)
+        delete_created_user_photos()
 
     def test_no_redirect_when_user_not_exists(self):
         response = self.client.post(
@@ -47,21 +42,18 @@ class TestSessionScheduling(TestCase):
             follow=True)
         self.assertEqual(len(response.redirect_chain), 0)
 
-    def test_redirect_when_user_exists_but_incomplete(self):
+    def test_redirect_when_user_exists_but_is_incomplete(self):
         response = self.client.post('/', {
             'registered_email': self.user_without_photo.email_address
         })
         self.assertEqual(response.url, '/registration')
 
-    def test_redirect_to_schedule_if_exists_and_complete(self):
+    def test_redirect_to_schedule_if_exists_and_is_complete(self):
         response = self.client.post('/', {'registered_email': self.user_with_photo.email_address})
         self.assertEqual(response.url, '/schedule')
 
     def test_remove_cookies_from_welcome_request(self):
-        client = Client()
-        session = client.session
-        session['email_address'] = 'test@test.com'
-        session.save()
+        client = get_client_with_user_in_session(self.user_without_photo)
         response = client.get('/')
         self.assertFalse(
             response.client.session.has_key('email_address'),
@@ -80,10 +72,7 @@ class TestSessionScheduling(TestCase):
         self.assertTrue(len(response.redirect_chain) == 0, 'there was a redirection')
 
     def test_registration_redirect_when_user_is_complete(self):
-        client = Client()
-        session = client.session
-        session['email_address'] = self.user_with_photo.email_address
-        session.save()
+        client = get_client_with_user_in_session(self.user_with_photo)
         response = client.get('/registration', follow=True)
         self.assertGreater(len(response.redirect_chain), 0, 'complete user was not redirected')
 

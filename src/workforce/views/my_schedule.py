@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from workforce.utils import get_today_date_for_timezone
+
 
 def get_my_schedule(request):
     if not hasattr(request, 'user') or not request.user.is_authenticated:
@@ -41,7 +43,7 @@ def get_my_schedule_hash(request):
 
 def _get_today_events(worker):
     def get_today_time(time_limit):
-        today_for_worker = arrow.get(datetime.today()).to(worker.timezone).date()
+        today_for_worker = get_today_date_for_timezone(worker.timezone)
         today_at_limit = datetime.combine(today_for_worker, time_limit)
         return arrow.get(today_at_limit).replace(tzinfo=worker.timezone).datetime
 

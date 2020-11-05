@@ -1,0 +1,99 @@
+import os
+import datetime
+import unittest
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver import Chrome
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.select import Select
+from workforce.models import User, Worker, AuthUser, Availability
+from workforce.utils import get_today_date_for_timezone
+
+from .utils import create_some_image, delete_created_user_photos
+
+@unittest.skipUnless(
+    os.environ.get('INCLUDE_SELENIUM') == 'true',
+    'Skipping test because of missing env INCLUDE_SELENIUM'
+)
+class GenericDriverSetup(StaticLiveServerTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.selenium = Chrome()
+
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
+
+
+    def setUp(self):
+        User.objects.create(
+            email_address="b@a.com",
+            full_name="John Deo",
+            timezone="America/Sao_Paulo",
+            photo=create_some_image()
+        )
+        self.user_with_photo = User.objects.latest('id')
+
+
+    def tearDown(self):
+        delete_created_user_photos()
+
+
+    def insert_registered_email_and_click(self):
+        self.selenium.get(self.live_server_url)
+        self.selenium.find_element_by_id('user-is-registered-btn').click()
+
+        email_input = self.selenium.find_element_by_id('registered-email')
+        email_input.send_keys(self.user_with_photo.email_address)
+        email_input.submit()
+
+
+class TestNoTimeslotAvailable(GenericDriverSetup):
+    def test_insert_registered_email_and_click(self):
+        self.insert_registered_email_and_click()
+
+    def test_timeslot_choosing(self):
+        with self.assertRaises(NoSuchElementException):
+            timeslot_dropdown = self.selenium.find_element_by_name('timeslots_available')
+            timeslot_dropdown.select_by_index(0)
+
+class TestSuccessfulEventRequest(GenericDriverSetup):
+    def setUp(self) -> None:
+        super().setUp()
+        auth_user = AuthUser.objects.create_user('robinho', 'robinho')
+        worker = Worker.objects.create(
+            auth_user=auth_user,
+            timezone='Asia/Tokyo'
+        ) # +9 hours timezone offset
+        today_day_of_the_week = get_today_date_for_timezone(worker.timezone)
+        availability = Availability.objects.create(
+            worker=worker,
+            day_of_the_week=today_day_of_the_week.weekday(),
+            start_time=datetime.time(0, 0),
+            end_time=datetime.time(3, 0)
+        ) # 9 timeslots
+
+
+    def test_insert_registered_email_and_click(self):
+        self.insert_registered_email_and_click()
+
+
+    def test_timeslot_dropdown_has_options(self):
+        timeslot_dropdown_element = self.selenium.find_element_by_name('timeslots_available')
+        timeslot_dropdown = Select(timeslot_dropdown_element)
+        self.assertEquals(len(timeslot_dropdown.options), 9)
+
+
+    def can_select_timezone_and_submit(self):
+        current_work_event_count = WorkEvent.objects.count()
+
+        timeslot_dropdown = self.selenium.find_element_by_name('timeslots_available')
+        timeslot_dropdown.select_by_index(0)
+        timeslot_dropdown.submit()
+
+        updated_work_event_count = WorkEvent.objects.count()
+
+        self.assertEquals(updated_work_event_count, current_work_event_count + 1, 'Event was not created in database')
