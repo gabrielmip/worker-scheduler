@@ -6,15 +6,14 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver import Chrome
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
-from workforce.models import User, Worker, AuthUser, Availability
+from workforce.models import User, Worker, AuthUser, Availability, WorkEvent
 from workforce.utils import get_today_date_for_timezone
 
 from .utils import create_some_image, delete_created_user_photos
 
 @unittest.skipUnless(
-    os.environ.get('INCLUDE_SELENIUM') == 'true',
-    'Skipping test because of missing env INCLUDE_SELENIUM'
-)
+    os.environ.get('INCLUDE_E2E') == 'true',
+    'Skipping test because of missing env INCLUDE_E2E')
 class GenericDriverSetup(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
@@ -52,13 +51,16 @@ class GenericDriverSetup(StaticLiveServerTestCase):
 
 
 class TestNoTimeslotAvailable(GenericDriverSetup):
-    def test_insert_registered_email_and_click(self):
+    def setUp(self) -> None:
+        super().setUp()
         self.insert_registered_email_and_click()
 
     def test_timeslot_choosing(self):
         with self.assertRaises(NoSuchElementException):
-            timeslot_dropdown = self.selenium.find_element_by_name('timeslots_available')
+            element = self.selenium.find_element_by_name('timeslots_available')
+            timeslot_dropdown = Select(element)
             timeslot_dropdown.select_by_index(0)
+
 
 class TestSuccessfulEventRequest(GenericDriverSetup):
     def setUp(self) -> None:
@@ -68,32 +70,79 @@ class TestSuccessfulEventRequest(GenericDriverSetup):
             auth_user=auth_user,
             timezone='Asia/Tokyo'
         ) # +9 hours timezone offset
-        today_day_of_the_week = get_today_date_for_timezone(worker.timezone)
-        availability = Availability.objects.create(
+        today_day_of_the_week = get_today_date_for_timezone(worker.timezone).shift(days=1).date()
+        Availability.objects.create(
             worker=worker,
-            day_of_the_week=today_day_of_the_week.weekday(),
+            day_of_the_week=today_day_of_the_week.weekday() + 1,
             start_time=datetime.time(0, 0),
             end_time=datetime.time(3, 0)
         ) # 9 timeslots
-
-
-    def test_insert_registered_email_and_click(self):
         self.insert_registered_email_and_click()
 
+    def tearDown(self) -> None:
+        super().tearDown()
 
     def test_timeslot_dropdown_has_options(self):
         timeslot_dropdown_element = self.selenium.find_element_by_name('timeslots_available')
         timeslot_dropdown = Select(timeslot_dropdown_element)
         self.assertEquals(len(timeslot_dropdown.options), 9)
 
-
-    def can_select_timezone_and_submit(self):
+    def test_can_select_timezone_and_submit(self):
         current_work_event_count = WorkEvent.objects.count()
 
-        timeslot_dropdown = self.selenium.find_element_by_name('timeslots_available')
+        element = self.selenium.find_element_by_name('timeslots_available')
+        timeslot_dropdown = Select(element)
         timeslot_dropdown.select_by_index(0)
-        timeslot_dropdown.submit()
+        element.submit()
 
         updated_work_event_count = WorkEvent.objects.count()
 
         self.assertEquals(updated_work_event_count, current_work_event_count + 1, 'Event was not created in database')
+
+
+class TestSuccessfulEventRequestsSimultaneously(GenericDriverSetup):
+    def setUp(self) -> None:
+        super().setUp()
+        auth_user = AuthUser.objects.create_user('robinho', 'robinho')
+        worker = Worker.objects.create(
+            auth_user=auth_user,
+            timezone='Asia/Tokyo'
+        ) # +9 hours timezone offset
+        today_day_of_the_week = get_today_date_for_timezone(worker.timezone).shift(days=1).date()
+        Availability.objects.create(
+            worker=worker,
+            day_of_the_week=today_day_of_the_week.weekday() + 1,
+            start_time=datetime.time(0, 0),
+            end_time=datetime.time(3, 0)
+        ) # 9 timeslots
+        self.worker = worker
+        self.insert_registered_email_and_click()
+
+    def test_can_select_timezone_and_submit_successfully_simultaneously(self):
+        current_work_event_count = WorkEvent.objects.count()
+        timeslot_dropdown_element = self.selenium.find_element_by_name('timeslots_available')
+        timeslot_dropdown = Select(timeslot_dropdown_element)
+
+        option_to_be_selected_by_other = timeslot_dropdown.options[1]
+        _, start, end = (option_to_be_selected_by_other
+            .get_attribute('value')
+            .split('|'))
+        WorkEvent.objects.create(
+            start=start,
+            end=end,
+            calendar=self.worker.calendar,
+            user=self.user_with_photo
+        )
+
+        timeslot_dropdown.select_by_index(0)
+        timeslot_dropdown_element.submit()
+
+        updated_work_event_count = WorkEvent.objects.count()
+
+        self.assertEquals(
+            updated_work_event_count,
+            current_work_event_count + 2,
+            'Could not create event when another was created simultaneously'
+        )
+
+# TODO: create test case when a different timeslot is marked as used while I am choosing mine. Everything has to work

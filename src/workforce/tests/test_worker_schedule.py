@@ -84,7 +84,7 @@ def to_comparable(events):
 
 
 def create_event_at(hour, worker, user):
-    today_for_worker = get_today_date_for_timezone(worker.timezone)
+    today_for_worker = get_today_date_for_timezone(worker.timezone).date()
     start = arrow.get(datetime.combine(today_for_worker, hour)).replace(tzinfo=worker.timezone)
     return WorkEvent.objects.create(
         user=user,

@@ -10,4 +10,4 @@ def build_path_for_user_picture(user, filename):
 
 
 def get_today_date_for_timezone(timezone):
-    return arrow.get(datetime.datetime.today()).to(timezone).date()
+    return arrow.get(datetime.datetime.today()).to(timezone)
