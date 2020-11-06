@@ -1,6 +1,7 @@
 import arrow
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, reverse
+from django.views.decorators.cache import never_cache
 
 from workforce.forms import ScheduleAnAppointment
 from workforce.services.emails_service import setup_email_sending
@@ -9,6 +10,7 @@ from workforce.repositories.event_repository import create_event
 from workforce.repositories.user_repository import get_user_object_from_email, has_missing_fields
 
 
+@never_cache
 def choose_timeslot_page(request):
     if request.method == 'GET':
         if not request.session.get('email_address', False):
@@ -34,7 +36,12 @@ def choose_timeslot_page(request):
         if not request.session.get('email_address', False):
             return HttpResponseRedirect(reverse('welcome'))
 
-        return _make_reservation(request, request.session['email_address'])
+        email_address = request.session['email_address']
+
+        if get_user_next_event(email_address):
+            return HttpResponseRedirect(reverse('schedule'))
+
+        return _make_reservation(request, email_address)
 
     return HttpResponseBadRequest('Method not supported')
 
@@ -43,7 +50,6 @@ def _make_reservation(request, email_address):
     user, _ = get_user_object_from_email(email_address)
     form = ScheduleAnAppointment(user, request.POST)
 
-    # TODO: Look at the 'choices' form field instead of using is_valid
     if not form.is_valid():
         return render(request, 'choose_timeslot.html', {
             'form': form,
