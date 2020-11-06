@@ -1,6 +1,7 @@
 import os
 import datetime
 import arrow
+from tzlocal import get_localzone
 
 
 def build_path_for_user_picture(user, filename):
@@ -10,4 +11,4 @@ def build_path_for_user_picture(user, filename):
 
 
 def get_today_date_for_timezone(timezone):
-    return arrow.get(datetime.datetime.today()).to(timezone)
+    return arrow.get(datetime.datetime.today()).replace(tzinfo=get_localzone()).to(timezone)
