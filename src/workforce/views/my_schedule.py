@@ -1,3 +1,4 @@
+import re
 from datetime import time, datetime
 
 import arrow
@@ -67,4 +68,7 @@ def _calculate_event_hash(work_events):
     return hash(joined_work_events)
 
 def _get_requested_date(request):
-    return request.GET.get('date', datetime.now().strftime('%Y-%m-%d'))
+    from_request = request.GET.get('date', '').strip()
+    return (from_request
+            if len(from_request) > 0 and re.search(r'\d\d\d\d-\d\d-\d\d$', from_request)
+            else datetime.now().strftime('%Y-%m-%d'))
