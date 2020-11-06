@@ -144,5 +144,3 @@ class TestSuccessfulEventRequestsSimultaneously(GenericDriverSetup):
             current_work_event_count + 2,
             'Could not create event when another was created simultaneously'
         )
-
-# TODO: create test case when a different timeslot is marked as used while I am choosing mine. Everything has to work
