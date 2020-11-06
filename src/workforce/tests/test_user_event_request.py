@@ -1,3 +1,4 @@
+import time
 import os
 import datetime
 import unittest
@@ -35,6 +36,13 @@ class GenericDriverSetup(StaticLiveServerTestCase):
             photo=create_some_image()
         )
         self.user_with_photo = User.objects.latest('id')
+
+        User.objects.create(
+            email_address="b@b.com",
+            full_name="John Dope",
+            timezone="America/Sao_Paulo",
+        )
+        self.other_user = User.objects.latest('id')
 
 
     def tearDown(self):
@@ -131,7 +139,7 @@ class TestSuccessfulEventRequestsSimultaneously(GenericDriverSetup):
             start=start,
             end=end,
             calendar=self.worker.calendar,
-            user=self.user_with_photo
+            user=self.other_user
         )
 
         timeslot_dropdown.select_by_index(0)
