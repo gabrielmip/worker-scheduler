@@ -156,13 +156,14 @@ h2.title {
 }
 
 #refresh-warner {
-    width: 350px;
+    max-width: 300px;
     background-color: var(--orange);
     border-radius: 5px;
     padding: 10px 20px;
     position: fixed;
     top: 80px;
     left: 41vw;
+    left: calc(100vw - 330px);
     color: white;
     box-shadow: 1px 4px 6px 1px rgba(0, 0, 0, 0.4);
     display: none;

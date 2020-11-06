@@ -5,7 +5,7 @@ import arrow
 from django.test import TestCase, Client
 import workforce
 
-from workforce.views.my_schedule import _get_today_events
+from workforce.views.my_schedule import _get_events_from_date
 from workforce.models import Worker, WorkEvent, AuthUser, User
 from workforce.utils import get_today_date_for_timezone
 
@@ -33,14 +33,14 @@ class TestWorkerSchedule(TestCase):
     def test_considering_worker_when_negative_offsets_upper_limit(self):
         ''' the Apr 1st for someone that lives in a -3 offset goes from Mar 31st 21:00 to Apr 1st 20:59 '''
         created_event = create_event_at(time(23, 30), self.from_sao_paulo, self.user_without_photo)
-        retrieved_events = _get_today_events(self.from_sao_paulo)
+        retrieved_events = _get_events_from_date(self.from_sao_paulo, datetime.now())
         self.assertCountEqual(to_comparable(retrieved_events), to_comparable([created_event]))
 
 
     def test_considering_worker_when_negative_offsets_lower_limit(self):
         ''' the Apr 1st for someone that lives in a -3 offset goes from Mar 31st 21:00 to Apr 1st 20:59 '''
         created_event = create_event_at(time(0, 0), self.from_sao_paulo, self.user_without_photo)
-        retrieved_events = _get_today_events(self.from_sao_paulo)
+        retrieved_events = _get_events_from_date(self.from_sao_paulo, datetime.now())
         self.assertCountEqual(to_comparable(retrieved_events), to_comparable([created_event]))
 
 
@@ -49,7 +49,7 @@ class TestWorkerSchedule(TestCase):
             Apr 1st 9:00 to Apr 2st 8:59
         '''
         created_event = create_event_at(time(23, 30), self.from_japan, self.user_without_photo)
-        retrieved_events = _get_today_events(self.from_japan)
+        retrieved_events = _get_events_from_date(self.from_japan, datetime.now())
         self.assertCountEqual(to_comparable(retrieved_events), to_comparable([created_event]))
 
 
@@ -58,7 +58,7 @@ class TestWorkerSchedule(TestCase):
             Apr 1st 9:00 to Apr 2st 8:59
         '''
         created_event = create_event_at(time(0, 0), self.from_japan, self.user_without_photo)
-        retrieved_events = _get_today_events(self.from_japan)
+        retrieved_events = _get_events_from_date(self.from_japan, datetime.now())
         self.assertCountEqual(to_comparable(retrieved_events), to_comparable([created_event]))
 
 

@@ -10,5 +10,6 @@ def build_path_for_user_picture(user, filename):
     return os.path.join(user_hash, filename)
 
 
-def get_today_date_for_timezone(timezone):
-    return arrow.get(datetime.datetime.today()).replace(tzinfo=get_localzone()).to(timezone)
+def get_today_date_for_timezone(timezone,
+                                requested_date=datetime.datetime.today()):
+    return arrow.get(requested_date).replace(tzinfo=get_localzone()).to(timezone)

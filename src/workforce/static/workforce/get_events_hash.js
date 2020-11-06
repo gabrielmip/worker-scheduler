@@ -5,7 +5,7 @@ function getEventsHash() {
             processHashDifferenceCheck(this.responseText);
         }
     };
-    xhttp.open("GET", "/schedule_hash", true);
+    xhttp.open("GET", "/schedule_hash?date=" + requested_date, true);
     xhttp.send();
 }
 
@@ -26,4 +26,4 @@ function setTimerToCheckHashDifference() {
     }, getMinutesInMiliseconds(1));
 }
 
-getEventsHash();
+setTimerToCheckHashDifference();

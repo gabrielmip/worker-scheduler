@@ -13,6 +13,7 @@
 <script src="{% static 'workforce/get_events_hash.js' %}"></script>
 <script>
     let events_hash = "{{events_hash}}";
+    let requested_date = "{{requested_date}}";
 </script>
 
 <div id="refresh-warner">
@@ -23,16 +24,21 @@
 </div>
 
 <h2 class="title">
-    {% trans "Agenda de hoje" %}
+    {% trans "Sua agenda" %}
 </h2>
 
 <div class="message-for-worker">
     <p>{% trans "Olá" %}, {{worker_name}}!</p>
     <p>
-        {% trans 'Aqui, ficam as sessões marcadas para você no dia de hoje.' %}
+        {% trans 'Aqui, ficam as sessões marcadas para você no dia selecionado.' %}
         {% trans 'Vamos mostrar um aviso aqui na página quando novas sessões forem marcadas.' %}
     </p>
-    <p>{% trans 'Tenha um ótimo dia de trabalho.' %}</p>
+    <label for="selected-day"><strong>{% trans 'Selecionar dia' %}</strong>:</label>
+    <input
+        type="date"
+        name="selected-day"
+        id="selected-day"
+        class="form-control dateInput">
 </div>
 
 {% for event in today_events %}
@@ -77,10 +83,17 @@
 
 {% if not today_events %}
 <div>
-    {% trans "Você ainda não tem nenhuma sessão marcada para hoje." %}
+    {% trans "Você não tem nenhuma sessão marcada para o dia selecionado." %}
 </div>
 {% endif %}
 
+<script>
+    const datepicker = document.getElementById('selected-day');
+    datepicker.value = "{{ requested_date }}";
+    datepicker.addEventListener('change', (event) => {
+        window.location.href = "{% url 'my_schedule' %}" + "?date=" + event.target.value;
+    });
+</script>
 
 {% endtimezone %}
 {% endblock %}

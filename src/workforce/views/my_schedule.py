@@ -17,8 +17,9 @@ def get_my_schedule(request):
             'Você não foi cadastrado como trabalhador. Peça '
             'às pessoas administradoras do sistema que te adicione.')
 
+    requested_date = _get_requested_date(request)
     worker = request.user.worker
-    today_events = _get_today_events(worker)
+    today_events = _get_events_from_date(worker, requested_date)
     events_hash = _calculate_event_hash(today_events)
 
     return render(request, 'my_schedule.html', {
@@ -26,6 +27,7 @@ def get_my_schedule(request):
         'worker_name': worker.auth_user.first_name,
         'user': request.user,
         'events_hash': events_hash,
+        'requested_date': requested_date,
         'today_events': today_events
     })
 
@@ -35,15 +37,16 @@ def get_my_schedule_hash(request):
         return HttpResponseRedirect(reverse('login'))
 
     worker = request.user.worker
-    today_events = _get_today_events(worker)
+    requested_date = _get_requested_date(request)
+    today_events = _get_events_from_date(worker, requested_date)
     events_hash = _calculate_event_hash(today_events)
 
     return HttpResponse(events_hash)
 
 
-def _get_today_events(worker):
+def _get_events_from_date(worker, requested_date):
     def get_today_time(time_limit):
-        today_for_worker = get_today_date_for_timezone(worker.timezone).date()
+        today_for_worker = get_today_date_for_timezone(worker.timezone, requested_date).date()
         today_at_limit = datetime.combine(today_for_worker, time_limit)
         return arrow.get(today_at_limit).replace(tzinfo=worker.timezone).datetime
 
@@ -62,3 +65,6 @@ def _calculate_event_hash(work_events):
     ])
 
     return hash(joined_work_events)
+
+def _get_requested_date(request):
+    return request.GET.get('date', datetime.now().strftime('%Y-%m-%d'))
