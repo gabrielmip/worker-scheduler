@@ -21,7 +21,7 @@
         <a href="{% url 'welcome' %}">
             <button class="btn btn-light">{% trans 'Ir para a tela inicial' %}</button>
         </a>
-        <form style="display: inline-block" method="post" action="{% url 'cancel_work_event' event.event_id %}">
+        <form style="display: inline-block" method="post" action="{% url 'cancel_work_event' event.cancelling_token %}">
             {% csrf_token %}
             <input class="btn btn-danger" type="submit" value="{% trans 'Desmarcar sessão' %}">
         </form>
