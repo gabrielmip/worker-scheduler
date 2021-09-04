@@ -13,3 +13,4 @@ production_settings_extension.py
 src/static/
 .mypy_cache/
 src/coverage.xml
+src/htmlcov
