@@ -96,6 +96,8 @@ DATABASES = {
     }
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 GOOGLE_API = {
     'CREDENTIALS': os.path.join(BASE_DIR, '.credentials.json'),
     'TOKEN': os.path.join(BASE_DIR, '.token.pickle')
