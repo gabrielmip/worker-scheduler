@@ -42,7 +42,8 @@ def get_all_events_by_calendar(calendar_ids, start, end):
     by_calendar = {calendar_id: [] for calendar_id in calendar_ids}
 
     for work_event in work_events:
-        by_calendar[work_event.calendar_id].append(_work_event_to_timeslot(work_event))
+        by_calendar[work_event.calendar_id].append(
+            _work_event_to_timeslot(work_event))
 
     return by_calendar
 

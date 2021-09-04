@@ -27,7 +27,8 @@ def send_confirmation_email(work_event_id):
 
 @background()
 def schedule_work_event_reminder(work_event_id):
-    send_event_email(work_event_id, 'reminder_email', _('Lembrete de sessão de Reiki da distância'))
+    send_event_email(work_event_id, 'reminder_email', _(
+        'Lembrete de sessão de Reiki da distância'))
 
 
 def send_event_email(work_event_id, email_template_name, email_subject):
@@ -37,7 +38,8 @@ def send_event_email(work_event_id, email_template_name, email_subject):
     '''
     work_event = WorkEvent.objects.get(pk=work_event_id)
     cancelling_url = f"{settings.EXTERNAL_URL_BASE_PATH}/cancel/{work_event.cancelling_token}"
-    localized_event_start = arrow.get(work_event.start).to(work_event.user.timezone).datetime
+    localized_event_start = arrow.get(work_event.start).to(
+        work_event.user.timezone).datetime
     context = {
         'event': work_event,
         'localized_event_start': localized_event_start,

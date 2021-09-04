@@ -8,14 +8,15 @@ from .active_calendars import (
 
 def get_one_free_timeslot_by_hour():
     worker_calendars = get_active_worker_calendars()
-    hash_slot = lambda x: f'{x[0].day} - {x[0].hour} - {x[0].minute}'
+    def hash_slot(x): return f'{x[0].day} - {x[0].hour} - {x[0].minute}'
     timeslot_by_hour_in_day = {}
 
     for timeslot in _get_timeslots_to_analyse():
         if hash_slot(timeslot) in timeslot_by_hour_in_day:
             continue
 
-        available, calendar_id = is_timeslot_available(timeslot, worker_calendars)
+        available, calendar_id = is_timeslot_available(
+            timeslot, worker_calendars)
 
         if available:
             timeslot_by_hour_in_day[hash_slot(timeslot)] = {
@@ -47,8 +48,10 @@ def _get_timeslots_to_analyse():
 
 
 def _is_timeslot_outside_range(timeslot, date_range):
-    comes_before_range = (timeslot[0] <= date_range[0] and timeslot[1] <= date_range[0])
-    comes_after_range = (timeslot[0] >= date_range[1] and timeslot[1] >= date_range[1])
+    comes_before_range = (
+        timeslot[0] <= date_range[0] and timeslot[1] <= date_range[0])
+    comes_after_range = (timeslot[0] >= date_range[1]
+                         and timeslot[1] >= date_range[1])
 
     return comes_before_range or comes_after_range
 

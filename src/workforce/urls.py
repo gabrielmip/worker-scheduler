@@ -14,7 +14,8 @@ from workforce.views import (
 urlpatterns = [
     path('', get_welcome_page, name="welcome"),
     path('login', auth_views.LoginView.as_view(), name='login'),
-    path('logout', auth_views.LogoutView.as_view(), {'next_page': '/'}, name='logout'),
+    path('logout', auth_views.LogoutView.as_view(),
+         {'next_page': '/'}, name='logout'),
     path('schedule', choose_timeslot_page, name="schedule"),
     path('registration', register_user, name="registration"),
     path('reservation_success', reservation_success, name="reservation_success"),

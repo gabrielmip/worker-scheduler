@@ -25,7 +25,8 @@ def register_user(request):
         })
 
     if request.method == 'POST':
-        user_registration = Registration(request.POST, request.FILES, instance=user)
+        user_registration = Registration(
+            request.POST, request.FILES, instance=user)
 
         if not user_registration.is_valid():
             user, is_new = get_user_object_from_email(

@@ -49,7 +49,8 @@ class TestUserSessionRouting(TestCase):
         self.assertEqual(response.url, '/registration')
 
     def test_redirect_to_schedule_if_exists_and_is_complete(self):
-        response = self.client.post('/', {'registered_email': self.user_with_photo.email_address})
+        response = self.client.post(
+            '/', {'registered_email': self.user_with_photo.email_address})
         self.assertEqual(response.url, '/schedule')
 
     def test_remove_cookies_from_welcome_request(self):
@@ -61,7 +62,8 @@ class TestUserSessionRouting(TestCase):
 
     def test_registration_no_redirect_when_is_new(self):
         response = self.client.get('/registration', follow=True)
-        self.assertTrue(len(response.redirect_chain) == 0, 'there was a redirection')
+        self.assertTrue(len(response.redirect_chain) ==
+                        0, 'there was a redirection')
 
     def test_registration_no_redirect_when_has_missing_fields(self):
         client = Client()
@@ -69,15 +71,18 @@ class TestUserSessionRouting(TestCase):
         session['email_address'] = self.user_without_photo.email_address
         session.save()
         response = client.get('/registration', follow=True)
-        self.assertTrue(len(response.redirect_chain) == 0, 'there was a redirection')
+        self.assertTrue(len(response.redirect_chain) ==
+                        0, 'there was a redirection')
 
     def test_registration_redirect_when_user_is_complete(self):
         client = get_client_with_user_in_session(self.user_with_photo)
         response = client.get('/registration', follow=True)
-        self.assertGreater(len(response.redirect_chain), 0, 'complete user was not redirected')
+        self.assertGreater(len(response.redirect_chain), 0,
+                           'complete user was not redirected')
 
     def test_can_register_new_user(self):
-        previous_count = User.objects.filter(email_address='robert@pattin.son').count()
+        previous_count = User.objects.filter(
+            email_address='robert@pattin.son').count()
 
         response = Client().post('/registration', {
             'full_name': 'Robert Pattinson',
@@ -85,10 +90,13 @@ class TestUserSessionRouting(TestCase):
             'timezone': 'America/Sao_Paulo',
             'photo': create_some_image()
         }, follow=True)
-        self.assertGreater(len(response.redirect_chain), 0, 'new user was not redirected')
-        self.assertEqual(response.client.session.get('email_address'), 'robert@pattin.son')
+        self.assertGreater(len(response.redirect_chain), 0,
+                           'new user was not redirected')
+        self.assertEqual(response.client.session.get(
+            'email_address'), 'robert@pattin.son')
 
-        after_count = User.objects.filter(email_address='robert@pattin.son').count()
+        after_count = User.objects.filter(
+            email_address='robert@pattin.son').count()
         self.assertEqual(previous_count + 1, after_count)
 
     def test_cannot_change_address_to_existing_one(self):
@@ -106,4 +114,5 @@ class TestUserSessionRouting(TestCase):
         self.assertEqual(len(response.redirect_chain), 0)
 
         possibly_updated_user = User.objects.get(pk=self.user_with_photo.id)
-        self.assertEqual(possibly_updated_user.full_name, self.user_with_photo.full_name)
+        self.assertEqual(possibly_updated_user.full_name,
+                         self.user_with_photo.full_name)

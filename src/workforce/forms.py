@@ -34,7 +34,8 @@ class ScheduleAnAppointment(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         free_timeslots = get_one_free_timeslot_by_hour()
-        dropdown_choices = free_timeslots_to_choices(free_timeslots, user.timezone)
+        dropdown_choices = free_timeslots_to_choices(
+            free_timeslots, user.timezone)
 
         self.fields['timeslots_available'] = forms.ChoiceField(
             label=_('Próximos horários disponíveis'),

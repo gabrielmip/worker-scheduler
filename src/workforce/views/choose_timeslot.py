@@ -16,7 +16,8 @@ def choose_timeslot_page(request):
         if not request.session.get('email_address', False):
             return HttpResponseRedirect(reverse('welcome'))
 
-        user, is_new = get_user_object_from_email(request.session['email_address'])
+        user, is_new = get_user_object_from_email(
+            request.session['email_address'])
         missing_fields = has_missing_fields(user)
 
         if missing_fields or is_new:
@@ -63,7 +64,8 @@ def _make_reservation(request, email_address):
 
 
 def _create_event_from_form_data(form_data, user):
-    calendar_id, start_time_string, end_time_string = form_data['timeslots_available'].split('|')
+    calendar_id, start_time_string, end_time_string = form_data['timeslots_available'].split(
+        '|')
     start_time = arrow.get(start_time_string)
     end_time = arrow.get(end_time_string)
 

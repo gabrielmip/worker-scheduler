@@ -36,7 +36,7 @@ def get_event_to_delete(token_or_id):
                     .filter(event_id=token_or_id)
                     .filter(cancelling_token=None)
                     .first())
-        except OverflowError: # int too big for the database
+        except OverflowError:  # int too big for the database
             return None
     else:
         return (WorkEvent.objects

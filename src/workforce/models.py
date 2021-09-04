@@ -7,7 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from workforce.utils import build_path_for_user_picture
 
 
-TIMEZONES_AS_CHOICES = [(a, a.replace('_', ' ')) for a in pytz.common_timezones]
+TIMEZONES_AS_CHOICES = [(a, a.replace('_', ' '))
+                        for a in pytz.common_timezones]
 
 
 class Calendar(models.Model):
@@ -37,8 +38,10 @@ class Worker(models.Model):
         max_length=200,
         choices=TIMEZONES_AS_CHOICES,
         default='America/Sao_Paulo')
-    on_vacations = models.BooleanField(_('Considerar que esta pessoa está de folga'), default=False)
-    calendar = models.ForeignKey(Calendar, null=True, on_delete=models.SET_NULL)
+    on_vacations = models.BooleanField(
+        _('Considerar que esta pessoa está de folga'), default=False)
+    calendar = models.ForeignKey(
+        Calendar, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = _('Pessoa trabalhadora')
@@ -65,7 +68,8 @@ class User(models.Model):
     def __str__(self):
         return f"{self.full_name} ({self.email_address})"
 
-    full_name = models.CharField(verbose_name=_('Seu nome completo'), max_length=200)
+    full_name = models.CharField(verbose_name=_(
+        'Seu nome completo'), max_length=200)
     email_address = models.EmailField(
         verbose_name=_('Endereço de email'),
         unique=True,
@@ -95,7 +99,8 @@ class WorkEvent(models.Model):
     comment = models.CharField(max_length=500, default='')
     start = models.DateTimeField()
     end = models.DateTimeField()
-    cancelling_token = models.CharField(max_length=256, default=None, null=True)
+    cancelling_token = models.CharField(
+        max_length=256, default=None, null=True)
 
     class Meta:
         verbose_name = _('Evento de trabalho')

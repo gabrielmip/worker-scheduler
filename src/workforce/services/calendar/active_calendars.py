@@ -53,7 +53,7 @@ def _availability_as_datetime(availability, reference_datetime, worker_timezone)
                                         minute=availability.end_time.minute,
                                         second=0,
                                         microsecond=0
-                                    ))
+    ))
     availability_start_as_datetime = availability_end_as_datetime.replace(
         hour=availability.start_time.hour,
         minute=availability.start_time.minute,
@@ -61,11 +61,14 @@ def _availability_as_datetime(availability, reference_datetime, worker_timezone)
         microsecond=0
     )
 
-    weeks_to_shift = (1 if availability_end_as_datetime < reference_datetime else 0)
+    weeks_to_shift = (1 if availability_end_as_datetime <
+                      reference_datetime else 0)
 
     return (
-        _availability_to_utc(availability_start_as_datetime, weeks_to_shift, worker_timezone),
-        _availability_to_utc(availability_end_as_datetime, weeks_to_shift, worker_timezone),
+        _availability_to_utc(availability_start_as_datetime,
+                             weeks_to_shift, worker_timezone),
+        _availability_to_utc(availability_end_as_datetime,
+                             weeks_to_shift, worker_timezone),
     )
 
 
@@ -79,6 +82,7 @@ def _map_availabilities_to_date(availabilities, worker_timezone):
     reference_datetime = arrow.get()
 
     return [
-        _availability_as_datetime(availability, reference_datetime, worker_timezone)
+        _availability_as_datetime(
+            availability, reference_datetime, worker_timezone)
         for availability in availabilities
     ]

@@ -7,11 +7,14 @@ from django.core.files.base import File
 
 from workforce.models import User
 
+
 def delete_created_user_photos():
-    users_with_photos = [user for user in User.objects.all() if bool(user.photo)]
+    users_with_photos = [
+        user for user in User.objects.all() if bool(user.photo)]
     uploads = {os.path.dirname(user.photo.path) for user in users_with_photos}
     for upload in uploads:
         rmtree(upload)
+
 
 def create_some_image():
     file_obj = BytesIO()
@@ -19,6 +22,7 @@ def create_some_image():
     image.save(file_obj, 'png')
     file_obj.seek(0)
     return File(file=file_obj, name="bla.png")
+
 
 def get_client_with_user_in_session(user):
     client = Client()
