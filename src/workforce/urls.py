@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 
 from workforce.views import (
     choose_timeslot_page,
-    get_welcome_page,
+    WelcomePage,
     cancel_work_event,
     register_user,
     reservation_success,
@@ -12,7 +12,7 @@ from workforce.views import (
 )
 
 urlpatterns = [
-    path('', get_welcome_page, name="welcome"),
+    path('', WelcomePage.as_view(), name="welcome"),
     path('login', auth_views.LoginView.as_view(), name='login'),
     path('logout', auth_views.LogoutView.as_view(),
          {'next_page': '/'}, name='logout'),
