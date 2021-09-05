@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from workforce.services.events_service import (
+from workforce.services.events import (
     delete_event,
     get_event_to_delete,
 )

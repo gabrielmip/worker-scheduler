@@ -1,9 +1,6 @@
-import unittest
 from datetime import time, datetime
-
 import arrow
 from django.test import TestCase, Client
-import workforce
 
 from workforce.views.my_schedule import _get_events_from_date
 from workforce.models import Worker, WorkEvent, AuthUser, User

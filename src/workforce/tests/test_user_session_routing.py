@@ -1,10 +1,4 @@
-import os
-from shutil import rmtree
-from io import BytesIO
-from PIL import Image
-from django.conf import settings
 from django.test import TestCase, Client
-from django.core.files.base import File
 from workforce.models import User
 
 from .utils import (

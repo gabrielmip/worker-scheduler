@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 from django.conf import settings
 from babel.dates import format_datetime
 
-from workforce.services.calendar import get_one_free_timeslot_by_hour
+from workforce.services.free_timeslots import get_one_free_timeslot_by_hour
 from workforce.models import User
 
 

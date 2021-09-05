@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from workforce.repositories.user_repository import get_user_object_from_email, has_missing_fields
+from workforce.services.users import get_user_object_from_email, has_missing_fields
 
 
 def get_welcome_page(request):

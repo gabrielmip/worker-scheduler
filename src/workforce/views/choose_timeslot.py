@@ -4,10 +4,9 @@ from django.shortcuts import render, reverse
 from django.views.decorators.cache import never_cache
 
 from workforce.forms import ScheduleAnAppointment
-from workforce.services.emails_service import setup_email_sending
-from workforce.services.events_service import get_user_next_event
-from workforce.repositories.event_repository import create_event
-from workforce.repositories.user_repository import get_user_object_from_email, has_missing_fields
+from workforce.services.emails import setup_email_sending
+from workforce.services.events import get_user_next_event, create_event
+from workforce.services.users import get_user_object_from_email, has_missing_fields
 
 
 @never_cache

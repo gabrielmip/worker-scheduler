@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, reverse
-from workforce.services.events_service import get_user_next_event
+from workforce.services.events import get_user_next_event
 
 
 def reservation_success(request):

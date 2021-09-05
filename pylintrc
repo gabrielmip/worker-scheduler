@@ -1,4 +1,6 @@
 [MASTER]
+load-plugins=pylint_django
+django-settings-module=workforce.settings
 
 disable =
     C0114,

@@ -1,7 +1,7 @@
 import arrow
 from django.conf import settings
 
-from workforce.repositories.event_repository import get_all_events_by_calendar
+from workforce.services.events import get_all_events_by_calendar
 from workforce.models import Worker
 
 
