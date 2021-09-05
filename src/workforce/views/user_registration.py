@@ -1,17 +1,16 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
+from django.views import View
 
 from workforce.forms import Registration
 from workforce.services.users import get_user_object_from_email, has_missing_fields
-from workforce.models import User
 
 
-def register_user(request):
-    user, is_new = ((User(), True)
-                    if not request.session.get('email_address', False)
-                    else get_user_object_from_email(request.session['email_address']))
+class RegisterUser(View):
 
-    if request.method == 'GET':
+    def get(self, request):
+        user, is_new = get_user_object_from_email(
+            request.session.get('email_address'))
         missing_fields = has_missing_fields(user)
 
         if not is_new and not missing_fields:
@@ -24,7 +23,9 @@ def register_user(request):
             'missing_fields': missing_fields
         })
 
-    if request.method == 'POST':
+    def post(self, request):
+        user, is_new = get_user_object_from_email(
+            request.session.get('email_address'))
         user_registration = Registration(
             request.POST, request.FILES, instance=user)
 

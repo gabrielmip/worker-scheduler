@@ -5,6 +5,9 @@ def get_user_object_from_email(email_address):
     ''' Returns the object and a boolean stating if
         the user is new.
     '''
+    if not email_address:
+        return User(), True
+
     try:
         return User.objects.get(email_address=email_address), False
     except User.DoesNotExist:
