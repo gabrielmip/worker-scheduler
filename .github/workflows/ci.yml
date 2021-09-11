@@ -1,0 +1,40 @@
+name: build
+on:
+    push:
+        branches:
+            - main
+        tags:
+            - "!*" # Do not execute on tags
+    pull_request:
+        branches:
+            - "**"
+
+jobs:
+    tests:
+        defaults:
+            run:
+                shell: bash
+                working-directory: src
+
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+
+            - uses: actions/setup-python@v2
+              with:
+                  python-version: 3.9.6
+
+            - name: Install poetry
+              run: pip install poetry==1.1.8
+
+            - name: Install dependencies
+              run: poetry install
+
+            - name: Code climate
+              uses: paambaati/codeclimate-action@v2.7.5
+              env:
+                  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+                  INCLUDE_E2E: true
+              with:
+                  workingDirectory: src
+                  coverageCommand: poetry run coverage run --source='.' manage.py test workforce
