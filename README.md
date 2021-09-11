@@ -1,6 +1,7 @@
 # worker-scheduler
 
-![Coverage badge](src/coverage-badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/2001d100672d345cc8dc/maintainability)](https://codeclimate.com/github/gabrielmip/worker-scheduler/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/2001d100672d345cc8dc/test_coverage)](https://codeclimate.com/github/gabrielmip/worker-scheduler/test_coverage)
 
 Yet another application that came up because of the COVID-19 pandemic.
 
