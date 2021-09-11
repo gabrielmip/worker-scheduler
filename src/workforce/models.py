@@ -107,9 +107,16 @@ class WorkEvent(models.Model):
     comment = models.CharField(max_length=500, default='')
     start = models.DateTimeField()
     end = models.DateTimeField()
+    is_live = models.BooleanField(_('Presencial'), default=False)
     cancelling_token = models.CharField(
         max_length=256, default=None, null=True)
 
     class Meta:
         verbose_name = _('Evento de trabalho')
         verbose_name_plural = _('Eventos de trabalho')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['start', 'calendar_id', 'user_id'],
+                name='idx_event_start_calendar_user'
+            )
+        ]
