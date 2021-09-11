@@ -4,6 +4,7 @@ import unittest
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
 from workforce.models import User, Worker, AuthUser, Availability, WorkEvent
@@ -19,7 +20,11 @@ class GenericDriverSetup(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.selenium = Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument("--disable-extensions")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--headless")
+        cls.selenium = Chrome(options=chrome_options)
 
     @classmethod
     def tearDownClass(cls):
