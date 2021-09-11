@@ -1,5 +1,5 @@
 import arrow
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.views.decorators.cache import never_cache
 from django.views import View
