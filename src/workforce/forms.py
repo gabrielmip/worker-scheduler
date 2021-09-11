@@ -1,19 +1,19 @@
 from django import forms
 from django.utils.translation import gettext as _
 from django.conf import settings
-from babel.dates import format_datetime
+from babel.dates import DateTimeFormat, format_datetime
 
-from workforce.services.free_timeslots import get_one_free_timeslot_by_hour
+from workforce.services.free_timeslots import get_free_timeslots
 from workforce.models import User
 
 
 def free_timeslots_to_choices(timeslots, user_timezone):
-    def timeslot_to_identifier(calendar_id, timeslot):
-        return f"{calendar_id}|{timeslot[0].isoformat()}|{timeslot[1].isoformat()}"
+    def timeslot_to_identifier(timeslot):
+        return timeslot[0].isoformat()
 
     return [
         (
-            timeslot_to_identifier(**timeslot),
+            timeslot_to_identifier(timeslot['timeslot']),
             format_datetime(
                 timeslot['timeslot'][0].to(user_timezone).datetime,
                 "EEEE, H'h'mm",
@@ -33,7 +33,7 @@ class Registration(forms.ModelForm):
 class ScheduleAnAppointment(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        free_timeslots = get_one_free_timeslot_by_hour()
+        free_timeslots = get_free_timeslots()
         dropdown_choices = free_timeslots_to_choices(
             free_timeslots, user.timezone)
 

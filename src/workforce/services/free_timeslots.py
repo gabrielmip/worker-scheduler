@@ -6,25 +6,21 @@ from .active_calendars import (
 )
 
 
-def get_one_free_timeslot_by_hour():
+def get_free_timeslots():
     worker_calendars = get_active_worker_calendars()
-    def hash_slot(x): return f'{x[0].day} - {x[0].hour} - {x[0].minute}'
-    timeslot_by_hour_in_day = {}
+    free_timeslots = {}
 
     for timeslot in _get_timeslots_to_analyse():
-        if hash_slot(timeslot) in timeslot_by_hour_in_day:
-            continue
-
         available, calendar_id = is_timeslot_available(
             timeslot, worker_calendars)
 
         if available:
-            timeslot_by_hour_in_day[hash_slot(timeslot)] = {
+            free_timeslots[timeslot] = {
                 'timeslot': timeslot,
                 'calendar_id': calendar_id
             }
 
-    return [*timeslot_by_hour_in_day.values()]
+    return [*free_timeslots.values()]
 
 
 def is_timeslot_available(timeslot, calendars):

@@ -2,16 +2,18 @@ import arrow
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.views.decorators.cache import never_cache
+from django.views import View
 
 from workforce.forms import ScheduleAnAppointment
 from workforce.services.emails import setup_email_sending
 from workforce.services.events import get_user_next_event, create_event
+from workforce.services.free_timeslots import get_free_timeslots
 from workforce.services.users import get_user_object_from_email, has_missing_fields
 
 
-@never_cache
-def choose_timeslot_page(request):
-    if request.method == 'GET':
+class ChooseTimeslotView(View):
+    @never_cache
+    def get(self, request):
         if not request.session.get('email_address', False):
             return HttpResponseRedirect(reverse('welcome'))
 
@@ -32,7 +34,7 @@ def choose_timeslot_page(request):
                 len(appointment_form.fields['timeslots_available'].choices) > 0)
         })
 
-    if request.method == 'POST':
+    def post(self, request):
         if not request.session.get('email_address', False):
             return HttpResponseRedirect(reverse('welcome'))
 
@@ -41,36 +43,39 @@ def choose_timeslot_page(request):
         if get_user_next_event(email_address):
             return HttpResponseRedirect(reverse('schedule'))
 
-        return _make_reservation(request, email_address)
+        user, _ = get_user_object_from_email(email_address)
+        comment = request.POST.get('comment')
+        timeslot_start = arrow.get(request.POST.get('timeslots_available'))
 
-    return HttpResponseBadRequest('Method not supported')
+        new_event = _make_reservation(user, timeslot_start, comment)
+
+        if not new_event:
+            form = ScheduleAnAppointment(user, request.POST)
+            return render(request, 'choose_timeslot.html', {
+                'form': form,
+                'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0)
+            })
+
+        return HttpResponseRedirect(reverse('reservation_success'))
 
 
-def _make_reservation(request, email_address):
-    user, _ = get_user_object_from_email(email_address)
-    form = ScheduleAnAppointment(user, request.POST)
+def _make_reservation(user, timeslot_start, comment):
+    free_timeslots = [
+        timeslot
+        for timeslot in get_free_timeslots()
+        if timeslot['timeslot'][0] == timeslot_start
+    ]
 
-    if not form.is_valid():
-        return render(request, 'choose_timeslot.html', {
-            'form': form,
-            'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0)
-        })
+    if not free_timeslots:
+        return None
 
-    new_work_event = _create_event_from_form_data(form.cleaned_data, user)
+    new_work_event = create_event(
+        user,
+        free_timeslots[0]['calendar_id'],
+        free_timeslots[0]['timeslot'][0],
+        free_timeslots[0]['timeslot'][1],
+        comment
+    )
     setup_email_sending(new_work_event)
 
-    return HttpResponseRedirect(reverse('reservation_success'))
-
-
-def _create_event_from_form_data(form_data, user):
-    calendar_id, start_time_string, end_time_string = form_data['timeslots_available'].split(
-        '|')
-    start_time = arrow.get(start_time_string)
-    end_time = arrow.get(end_time_string)
-
-    return create_event(
-        user,
-        calendar_id,
-        start_time,
-        end_time,
-        form_data['comment'])
+    return new_work_event

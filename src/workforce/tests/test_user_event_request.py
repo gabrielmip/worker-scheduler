@@ -1,6 +1,7 @@
 import os
 import datetime
 import unittest
+import arrow
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver import Chrome
@@ -138,12 +139,11 @@ class TestSuccessfulEventRequestsSimultaneously(GenericDriverSetup):
         timeslot_dropdown = Select(timeslot_dropdown_element)
 
         option_to_be_selected_by_other = timeslot_dropdown.options[1]
-        _, start, end = (option_to_be_selected_by_other
-                         .get_attribute('value')
-                         .split('|'))
+        start = option_to_be_selected_by_other.get_attribute('value')
+
         WorkEvent.objects.create(
             start=start,
-            end=end,
+            end=arrow.get(start).shift(minutes=20).isoformat(),
             calendar=self.worker.calendar,
             user=self.other_user
         )

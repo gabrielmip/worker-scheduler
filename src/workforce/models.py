@@ -49,8 +49,8 @@ class Worker(models.Model):
         Calendar, null=True, on_delete=models.SET_NULL)
 
     class Meta:
-        verbose_name = _('Pessoa trabalhadora')
-        verbose_name_plural = _('Pessoas trabalhadoras')
+        verbose_name = _('Trabalhadora')
+        verbose_name_plural = _('Trabalhadoras')
 
     objects = WorkerQuerySet.as_manager()
 
