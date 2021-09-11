@@ -30,6 +30,8 @@ jobs:
             - name: Install dependencies
               run: poetry install
 
+            - run: cp project/emails.py.dist project/emails.py
+
             - name: Code climate
               uses: paambaati/codeclimate-action@v2.7.5
               env:
