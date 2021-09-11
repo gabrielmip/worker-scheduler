@@ -65,6 +65,7 @@ class Availability(models.Model):
         choices=enumerate(arrow.locales.BrazilianPortugueseLocale.day_names))
     start_time = models.TimeField(_('Hora de início'))
     end_time = models.TimeField(_('Hora de término'))
+    is_live = models.BooleanField(_('Presencial'), default=False)
 
     class Meta:
         verbose_name = _('Disponibilidade')
