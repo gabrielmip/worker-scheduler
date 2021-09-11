@@ -22,6 +22,11 @@ class Calendar(models.Model):
         verbose_name_plural = _('Calendários')
 
 
+class WorkerQuerySet(models.QuerySet):
+    def active_workers(self):
+        return self.filter(on_vacations=False)
+
+
 class Worker(models.Model):
     def __str__(self):
         return str(self.auth_user)
@@ -46,6 +51,8 @@ class Worker(models.Model):
     class Meta:
         verbose_name = _('Pessoa trabalhadora')
         verbose_name_plural = _('Pessoas trabalhadoras')
+
+    objects = WorkerQuerySet.as_manager()
 
 
 class Availability(models.Model):

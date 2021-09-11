@@ -13,7 +13,7 @@ def get_active_worker_calendars():
         'busy_timeslots': busy timelots currently being observed in the
                           worker's agenda.
     '''
-    workers = Worker.objects.filter(on_vacations=False).all()
+    workers = Worker.objects.active_workers().all()
     busy_timeslots_by_calendar = _get_week_busy_timeslots_by_calendar(workers)
 
     return [
