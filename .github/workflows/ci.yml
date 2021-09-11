@@ -40,3 +40,4 @@ jobs:
               with:
                   workingDirectory: src
                   coverageCommand: poetry run coverage run --source='.' manage.py test workforce
+                  coverageLocations: ${{ github.workspace }}/src/.coverage:coverage.py
