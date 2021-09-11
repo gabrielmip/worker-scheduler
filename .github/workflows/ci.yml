@@ -32,12 +32,14 @@ jobs:
 
             - run: cp project/emails.py.dist project/emails.py
 
+            - name: Run tests
+              run: INCLUDE_E2E=true poetry run coverage run --source='.' manage.py test workforce
+
             - name: Code climate
               uses: paambaati/codeclimate-action@v2.7.5
               env:
                   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-                  INCLUDE_E2E: true
               with:
                   workingDirectory: src
-                  coverageCommand: poetry run coverage run --source='.' manage.py test workforce
-                  coverageLocations: ${{ github.workspace }}/src/.coverage:coverage.py
+                  coverageCommand: poetry run coverage xml
+                  coverageLocations: ${{ github.workspace }}/src/coverage.xml:coverage.py
