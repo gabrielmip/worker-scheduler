@@ -2,6 +2,7 @@ import arrow
 import uuid
 
 from workforce.models import User, WorkEvent
+from workforce.utils import group_by
 
 
 def can_user_schedule_event(email_address):
@@ -86,13 +87,7 @@ def get_all_events_by_calendar(calendar_ids, start, end):
                    .filter(end__lt=arrow.get(end).datetime)
                    .all())
 
-    by_calendar = {calendar_id: [] for calendar_id in calendar_ids}
-
-    for work_event in work_events:
-        by_calendar[work_event.calendar_id].append(
-            _work_event_to_timeslot(work_event))
-
-    return by_calendar
+    return group_by(work_events, 'calendar_id', _work_event_to_timeslot)
 
 
 def _work_event_to_timeslot(work_event):
