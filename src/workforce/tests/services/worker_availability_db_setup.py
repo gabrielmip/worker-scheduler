@@ -2,10 +2,8 @@ import datetime
 from unittest import TestCase
 
 import arrow
-from django.conf import settings
 from django.test import TestCase
 
-from workforce.services.active_calendars import get_active_worker_calendars
 from workforce.models import Calendar, User, Worker, AuthUser, Availability, WorkEvent
 from workforce.utils import get_today_date_for_timezone
 
@@ -32,20 +30,20 @@ class WorkerAvailabilityDbSetup(TestCase):
         )
 
         Availability.objects.create(
-            worker=sampa_worker,
-            day_of_the_week=get_tomorrow(
-                sampa_worker.timezone).date().weekday() + 1,
-            start_time=datetime.time(0, 0),
-            end_time=datetime.time(1, 0)
-        )  # 3 timeslots
-
-        Availability.objects.create(
             worker=nihon_worker,
             day_of_the_week=get_tomorrow(
                 nihon_worker.timezone).date().weekday() + 1,
             start_time=datetime.time(1, 0),
             end_time=datetime.time(1, 20)
         )  # 1 timeslot
+
+        Availability.objects.create(
+            worker=sampa_worker,
+            day_of_the_week=get_tomorrow(
+                sampa_worker.timezone).date().weekday() + 1,
+            start_time=datetime.time(0, 0),
+            end_time=datetime.time(1, 0)
+        )  # 3 timeslots
 
         # creating user + one event
         User.objects.create(

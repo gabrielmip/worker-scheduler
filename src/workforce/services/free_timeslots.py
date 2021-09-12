@@ -1,5 +1,3 @@
-import random
-
 from babel.dates import format_datetime
 
 from .active_calendars import (
@@ -8,12 +6,17 @@ from .active_calendars import (
 )
 
 
+def get_free_timeslot_choices(user_timezone, locale):
+    free_timeslots = get_free_timeslots()
+    return _free_timeslots_to_choices(free_timeslots, user_timezone, locale)
+
+
 def get_free_timeslots():
     worker_calendars = get_active_worker_calendars()
     free_timeslots = {}
 
     for timeslot in _get_timeslots_to_analyse():
-        available, calendar_id = is_timeslot_available(
+        available, calendar_id = _is_timeslot_available(
             timeslot, worker_calendars)
 
         if available:
@@ -25,20 +28,13 @@ def get_free_timeslots():
     return [*free_timeslots.values()]
 
 
-def is_timeslot_available(timeslot, calendars):
-    random.shuffle(calendars)
-
+def _is_timeslot_available(timeslot, calendars):
     for calendar in calendars:
         if (_is_calendar_available_for_timeslot(calendar['busy_timeslots'], timeslot)
                 and not _is_calendar_available_for_timeslot(calendar['availabilities'], timeslot)):
             return True, calendar['id']
 
     return False, None
-
-
-def get_free_timeslot_choices(user_timezone, locale):
-    free_timeslots = get_free_timeslots()
-    return _free_timeslots_to_choices(free_timeslots, user_timezone, locale)
 
 
 def _free_timeslots_to_choices(timeslots, user_timezone, locale):
