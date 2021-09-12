@@ -11,7 +11,7 @@ from selenium.webdriver.support.select import Select
 from workforce.models import User, Worker, AuthUser, Availability, WorkEvent
 from workforce.utils import get_today_date_for_timezone
 
-from .utils import create_some_image, delete_created_user_photos
+from ..helpers import create_some_image, delete_created_user_photos
 
 
 @unittest.skipUnless(

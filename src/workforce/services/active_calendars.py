@@ -65,14 +65,14 @@ def _availability_as_datetime(availability, reference_datetime, worker_timezone)
                       reference_datetime else 0)
 
     return (
-        _availability_to_utc(availability_start_as_datetime,
-                             weeks_to_shift, worker_timezone),
-        _availability_to_utc(availability_end_as_datetime,
-                             weeks_to_shift, worker_timezone),
+        _availability_to_system_zone(availability_start_as_datetime,
+                                     weeks_to_shift, worker_timezone),
+        _availability_to_system_zone(availability_end_as_datetime,
+                                     weeks_to_shift, worker_timezone),
     )
 
 
-def _availability_to_utc(datetime, weeks_to_shift, worker_timezone):
+def _availability_to_system_zone(datetime, weeks_to_shift, worker_timezone):
     return (datetime.shift(weeks=weeks_to_shift)
             .replace(tzinfo=worker_timezone)
             .to(settings.TIME_ZONE))

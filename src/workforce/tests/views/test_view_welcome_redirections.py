@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from workforce.models import User
 
-from .utils import (
+from workforce.tests.helpers import (
     get_client_with_user_in_session,
     create_some_image,
     delete_created_user_photos

@@ -2,7 +2,7 @@ import unittest
 from django.http.response import HttpResponseRedirect
 from django.test import TestCase, RequestFactory
 from workforce.models import User
-from workforce.tests.utils import create_some_image, delete_created_user_photos
+from workforce.tests.helpers import create_some_image, delete_created_user_photos
 from workforce.views.rules import finished_registration_required
 
 
