@@ -44,11 +44,12 @@ def create_event(user, calendar_id, start_time, end_time, comment):
     return WorkEvent.objects.latest('event_id')
 
 
-def get_all_events_by_calendar(calendar_ids, start, end):
+def get_all_events_by_calendar(calendar_ids, start, end, is_live):
     work_events = (WorkEvent.objects
                    .filter(calendar_id__in=calendar_ids)
                    .filter(start__gte=arrow.get(start).datetime)
                    .filter(end__lt=arrow.get(end).datetime)
+                   .filter(is_live=is_live)
                    .all())
 
     return group_by(work_events, 'calendar_id', _work_event_to_timeslot)

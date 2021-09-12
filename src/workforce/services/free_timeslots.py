@@ -11,8 +11,8 @@ def get_free_timeslot_choices(user_timezone, locale):
     return _free_timeslots_to_choices(free_timeslots, user_timezone, locale)
 
 
-def get_free_timeslots():
-    worker_calendars = get_active_worker_calendars()
+def get_free_timeslots(is_live=False):
+    worker_calendars = get_active_worker_calendars(is_live)
     free_timeslots = {}
 
     for timeslot in _get_timeslots_to_analyse():

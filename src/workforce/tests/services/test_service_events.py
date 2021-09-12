@@ -1,5 +1,5 @@
 import arrow
-from workforce.models import WorkEvent
+from workforce.models import Calendar, WorkEvent
 
 from workforce.services.events import create_cancelling_token, delete_event, get_all_events_by_calendar, get_event_to_delete, get_user_next_event, is_cancelling_token
 from workforce.tests.services.user_events_db_setup import UserEventsDbSetup
@@ -80,3 +80,60 @@ class TestDeleteEvent(UserEventsDbSetup):
         post_event_ids = {w.event_id for w in WorkEvent.objects.all()}
 
         self.assertSetEqual(post_event_ids, prior_event_ids)
+
+
+class TestGetAllEventsByCalendar(UserEventsDbSetup):
+    def setUp(self) -> None:
+        super().setUp()
+
+        # adds extra live event
+        start = arrow.now().shift(days=1)
+        WorkEvent.objects.create(
+            user=self.user_with_event,
+            calendar=self.worker.calendar,
+            comment='',
+            start=start.datetime,
+            end=start.shift(minutes=20).datetime,
+            is_live=True,
+            cancelling_token=create_cancelling_token()
+        )
+        self.live_work_event = WorkEvent.objects.latest('event_id')
+
+    def test_work_events_at_distance(self):
+        calendar_ids = [c.calendar_id for c in Calendar.objects.all()]
+        start = arrow.get()
+        # arbitrary shift, just to comtemplate every created event
+        end = arrow.get().shift(days=30)
+
+        self.assertEqual(
+            get_all_events_by_calendar(
+                calendar_ids, start, end, is_live=False
+            ),
+            {
+                self.worker.calendar_id: [
+                    (
+                        arrow.get(self.user_event.start),
+                        arrow.get(self.user_event.end)
+                    )
+                ]
+            }
+        )
+
+    def test_live_work_events(self):
+        calendar_ids = [c.calendar_id for c in Calendar.objects.all()]
+        start = arrow.get()
+        # arbitrary shift, just to comtemplate every created event
+        end = arrow.get().shift(days=30)
+
+        self.assertEqual(
+            get_all_events_by_calendar(
+                calendar_ids, start, end, is_live=True),
+            {
+                self.worker.calendar_id: [
+                    (
+                        arrow.get(self.live_work_event.start),
+                        arrow.get(self.live_work_event.end)
+                    )
+                ]
+            }
+        )

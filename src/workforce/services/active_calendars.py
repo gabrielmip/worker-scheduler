@@ -5,7 +5,7 @@ from workforce.services.events import get_all_events_by_calendar
 from workforce.models import Worker
 
 
-def get_active_worker_calendars():
+def get_active_worker_calendars(is_live=False):
     ''' Returns an dictionary for each active worker's calendar.
         An active worker is someone that is not on vacations at the moment.
         Explanations:
@@ -14,14 +14,18 @@ def get_active_worker_calendars():
                           worker's agenda.
     '''
     workers = Worker.objects.active_workers().all()
-    busy_timeslots_by_calendar = _get_week_busy_timeslots_by_calendar(workers)
+    busy_timeslots_by_calendar = _get_week_busy_timeslots_by_calendar(
+        workers,
+        is_live=is_live
+    )
 
     return [
         {
             'id': worker.calendar_id,
             'availabilities': _map_availabilities_to_date(
-                worker.availability_set.all(),
-                worker.timezone),
+                worker.availability_set.filter(is_live=is_live).all(),
+                worker.timezone
+            ),
             'busy_timeslots': busy_timeslots_by_calendar[worker.calendar_id]
         }
         for worker in workers
@@ -34,11 +38,11 @@ def get_range_to_analyse_availability():
     return (reference_time, reference_time.shift(weeks=+1))
 
 
-def _get_week_busy_timeslots_by_calendar(workers):
+def _get_week_busy_timeslots_by_calendar(workers, is_live):
     calendar_ids = [w.calendar_id for w in workers]
     start, end = get_range_to_analyse_availability()
 
-    return get_all_events_by_calendar(calendar_ids, start, end)
+    return get_all_events_by_calendar(calendar_ids, start, end, is_live)
 
 
 def _availability_as_datetime(availability, reference_datetime, worker_timezone):
