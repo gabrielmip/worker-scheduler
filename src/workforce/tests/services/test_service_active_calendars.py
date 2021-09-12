@@ -2,12 +2,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from workforce.services.active_calendars import get_active_worker_calendars
-from workforce.tests.services.worker_availability_db_setup import WorkerAvailabilityDbSetup
-from workforce.utils import get_today_date_for_timezone
-
-
-def get_tomorrow(timezone, **kwargs):
-    return get_today_date_for_timezone(timezone).shift(days=1).replace(second=0, microsecond=0, **kwargs)
+from workforce.tests.services.worker_availability_db_setup import WorkerAvailabilityDbSetup, get_tomorrow
 
 
 def find_calendar(calendars, calendar_id):
