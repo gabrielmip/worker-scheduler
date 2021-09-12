@@ -1,9 +1,8 @@
 from django import forms
 from django.utils.translation import gettext as _
 from django.conf import settings
-from babel.dates import DateTimeFormat, format_datetime
+from babel.dates import format_datetime
 
-from workforce.services.free_timeslots import get_free_timeslots
 from workforce.models import User
 
 
