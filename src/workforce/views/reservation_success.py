@@ -1,15 +1,11 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from workforce.services.events import get_user_next_event
+from workforce.views.rules import finished_registration_required
 
 
+@finished_registration_required
 def reservation_success(request):
-    if request.method != 'GET':
-        return HttpResponseBadRequest('Method not supported')
-
-    if not request.session.get('email_address', False):
-        return HttpResponseRedirect(reverse('welcome'))
-
     next_event = get_user_next_event(request.session['email_address'])
 
     if not next_event:
