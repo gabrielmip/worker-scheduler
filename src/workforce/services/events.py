@@ -63,6 +63,8 @@ def create_event(user, calendar_id, start_time, end_time, comment):
         comment=comment,
         cancelling_token=cancelling_token)
 
+    # FIXME: concurrency prone issue here, as the retrieval
+    # cab get other work event
     return WorkEvent.objects.latest('event_id')
 
 

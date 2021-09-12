@@ -1,6 +1,6 @@
 import unittest
 
-from workforce.utils import group_by
+from workforce.utils import get_locale_from_settings, group_by
 
 
 class TestGroupBy(unittest.TestCase):
@@ -56,3 +56,8 @@ class TestGroupBy(unittest.TestCase):
         self.assertDictEqual(group_by(case, key), {
             10: [instance],
         })
+
+
+class TestGetLocaleFromSettings(unittest.TestCase):
+    def test_splits(self):
+        self.assertEqual(get_locale_from_settings('pt-BR'), 'pt')

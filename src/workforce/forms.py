@@ -31,11 +31,8 @@ class Registration(forms.ModelForm):
 
 
 class ScheduleAnAppointment(forms.Form):
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, choices, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        free_timeslots = get_free_timeslots()
-        dropdown_choices = free_timeslots_to_choices(
-            free_timeslots, user.timezone)
 
         self.fields['timeslots_available'] = forms.ChoiceField(
             label=_('Próximos horários disponíveis'),
@@ -45,7 +42,7 @@ class ScheduleAnAppointment(forms.Form):
                     'Por favor, escolha novamente.'
                 )
             },
-            choices=dropdown_choices
+            choices=choices
         )
 
     comment = forms.CharField(

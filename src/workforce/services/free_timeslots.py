@@ -1,5 +1,7 @@
 import random
 
+from babel.dates import format_datetime
+
 from .active_calendars import (
     get_active_worker_calendars,
     get_range_to_analyse_availability
@@ -32,6 +34,28 @@ def is_timeslot_available(timeslot, calendars):
             return True, calendar['id']
 
     return False, None
+
+
+def get_free_timeslot_choices(user_timezone, locale):
+    free_timeslots = get_free_timeslots()
+    return _free_timeslots_to_choices(free_timeslots, user_timezone, locale)
+
+
+def _free_timeslots_to_choices(timeslots, user_timezone, locale):
+    def timeslot_to_identifier(timeslot):
+        return timeslot[0].isoformat()
+
+    return [
+        (
+            timeslot_to_identifier(timeslot['timeslot']),
+            format_datetime(
+                timeslot['timeslot'][0].to(user_timezone).datetime,
+                "EEEE, H'h'mm",
+                locale=locale
+            ).capitalize()
+        )
+        for timeslot in timeslots
+    ]
 
 
 def _get_timeslots_to_analyse():

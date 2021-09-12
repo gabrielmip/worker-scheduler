@@ -25,3 +25,7 @@ def group_by(items, key, fn=lambda x: x):
         grouped[key_value].append(fn(item))
 
     return grouped
+
+
+def get_locale_from_settings(language_code):
+    return language_code.split('-')[0]
