@@ -11,11 +11,12 @@ def get_free_timeslot_choices(user_timezone, locale, is_live):
     return _free_timeslots_to_choices(free_timeslots, user_timezone, locale)
 
 
-def get_free_timeslots(is_live=False):
+def get_free_timeslots(is_live: bool = False):
     worker_calendars = get_active_worker_calendars(is_live)
+    duration = 45 if is_live else 20
     free_timeslots = {}
 
-    for timeslot in _get_timeslots_to_analyse():
+    for timeslot in _get_timeslots_to_analyse(worker_calendars, duration):
         available, calendar_id = _is_timeslot_available(
             timeslot, worker_calendars)
 
@@ -54,13 +55,19 @@ def _free_timeslots_to_choices(timeslots, user_timezone, locale):
     ]
 
 
-def _get_timeslots_to_analyse():
+def _get_timeslots_to_analyse(worker_calendars, duration: int = 20):
     start_time, end_time = get_range_to_analyse_availability()
 
-    time_being_analysed = start_time
-    while time_being_analysed < end_time:
-        yield (time_being_analysed, time_being_analysed.shift(minutes=20))
-        time_being_analysed = time_being_analysed.shift(minutes=20)
+    for calendar in worker_calendars:
+        for availability in calendar['availabilities']:
+
+            time_being_analysed = availability[0]
+            while (time_being_analysed >= start_time
+                    and time_being_analysed.shift(minutes=duration) <= end_time
+                    and time_being_analysed.shift(minutes=duration) <= availability[1]):
+                yield (time_being_analysed, time_being_analysed.shift(minutes=duration))
+                time_being_analysed = time_being_analysed.shift(
+                    minutes=duration)
 
 
 def _is_timeslot_outside_range(timeslot, date_range):

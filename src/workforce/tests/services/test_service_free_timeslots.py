@@ -22,15 +22,25 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
             day_of_the_week=get_tomorrow(
                 self.sampa_worker.timezone).date().weekday() + 1,
             start_time=datetime.time(10, 0),
-            end_time=datetime.time(10, 20),
+            end_time=datetime.time(11, 0),
             is_live=True
         )
 
     def test_not_live_timeslots(self):
         response = get_free_timeslots()
+        self.maxDiff = None
         self.assertEqual(
             response,
             [
+                {
+                    'timeslot': (
+                        get_tomorrow(self.nihon_worker.timezone,
+                                     minute=0, hour=1),
+                        get_tomorrow(self.nihon_worker.timezone,
+                                     minute=20, hour=1),
+                    ),
+                    'calendar_id': self.nihon_worker.calendar_id
+                },
                 {
                     'timeslot': (
                         get_tomorrow(self.sampa_worker.timezone,
@@ -58,15 +68,7 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
                     ),
                     'calendar_id': self.sampa_worker.calendar_id
                 },
-                {
-                    'timeslot': (
-                        get_tomorrow(self.nihon_worker.timezone,
-                                     minute=0, hour=1),
-                        get_tomorrow(self.nihon_worker.timezone,
-                                     minute=20, hour=1),
-                    ),
-                    'calendar_id': self.nihon_worker.calendar_id
-                }
+
             ]
         )
 
@@ -80,7 +82,7 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
                         get_tomorrow(self.sampa_worker.timezone,
                                      minute=0, hour=10),
                         get_tomorrow(self.sampa_worker.timezone,
-                                     minute=20, hour=10),
+                                     minute=45, hour=10),
                     ),
                     'calendar_id': self.sampa_worker.calendar_id
                 },
