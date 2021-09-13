@@ -14,7 +14,7 @@ class RegisterUser(View):
         missing_fields = has_missing_fields(user)
 
         if not is_new and not missing_fields:
-            return HttpResponseRedirect(reverse('schedule'))
+            return HttpResponseRedirect(reverse('choose_event_type'))
 
         registration_form = Registration(instance=user)
         return render(request, 'registration.html', {
@@ -43,4 +43,4 @@ class RegisterUser(View):
         saved_user = user_registration.save()
         request.session['email_address'] = saved_user.email_address
 
-        return HttpResponseRedirect(reverse('schedule'))
+        return HttpResponseRedirect(reverse('choose_event_type'))

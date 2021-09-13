@@ -2,15 +2,13 @@
 
 {% load tz %}
 {% load i18n %}
-{% load crispy_forms_tags %}
-
 
 {% block content %}
-    <h2 class="title">{% trans "Marcar sessão" %}</h2>
 
     <p class="form-instruction">
         Olá, {{ user.full_name }}!
     </p>
+
 
     {% if next_event %}
     {% timezone user.timezone %}
@@ -33,20 +31,19 @@
 
 
     {% if not next_event %}
-    {% if has_timeslots_available %}
-        <form action="{% url form_action %}" method="post">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <input class="btn btn-primary cta-button" type="submit" value="{% trans 'Marcar' %}">
-        </form>
-    {% else %}
-        <p class="form-instruction">
-            {% trans "Desculpe, não há horários disponíveis nos próximos 7 dias." %}
-        </p>
-        <a href="{% url 'choose_event_type' %}">
-            <button class="btn btn-light">{% trans 'Voltar' %}</button>
-        </a>
-    {% endif %}
+    <h2 class="title">{% trans "Escolher sessão" %}</h2>
+
+    <a href="{% url 'schedule' %}">
+        <button class="btn btn-light">{% trans 'Remoto' %}</button>
+    </a>
+
+    <a href="{% url 'schedule_live' %}">
+        <button class="btn btn-light">{% trans 'Presencial' %}</button>
+    </a>
     {% endif %}
 
+    <a href="{% url 'welcome' %}">
+        <button class="btn btn-primary cta-button">{% trans 'Voltar' %}</button>
+    </a>
 {% endblock %}
+

@@ -5,7 +5,7 @@ from workforce.views.rules import finished_registration_required
 
 
 @finished_registration_required
-def reservation_success(request):
+def reservation_success(request, user):
     next_event = get_user_next_event(request.session['email_address'])
 
     if not next_event:

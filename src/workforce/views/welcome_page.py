@@ -28,4 +28,4 @@ class WelcomePage(View):
         if missing_fields:
             return HttpResponseRedirect(reverse('registration'))
 
-        return HttpResponseRedirect(reverse('schedule'))
+        return HttpResponseRedirect(reverse('choose_event_type'))

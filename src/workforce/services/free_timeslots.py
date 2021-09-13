@@ -6,8 +6,8 @@ from .active_calendars import (
 )
 
 
-def get_free_timeslot_choices(user_timezone, locale):
-    free_timeslots = get_free_timeslots()
+def get_free_timeslot_choices(user_timezone, locale, is_live):
+    free_timeslots = get_free_timeslots(is_live)
     return _free_timeslots_to_choices(free_timeslots, user_timezone, locale)
 
 

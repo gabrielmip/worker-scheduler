@@ -14,13 +14,18 @@ from workforce.utils import get_locale_from_settings
 from workforce.views.rules import finished_registration_required
 
 
+def get_redirect_view_name(is_live):
+    return 'schedule_live' if is_live else 'schedule'
+
+
 class ChooseTimeslotView(View):
     @method_decorator(never_cache)
     @method_decorator(finished_registration_required)
-    def get(self, request, user):
+    def get(self, request, user, is_live):
         choices = get_free_timeslot_choices(
             user_timezone=user.timezone,
-            locale=get_locale_from_settings(settings.LANGUAGE_CODE)
+            locale=get_locale_from_settings(settings.LANGUAGE_CODE),
+            is_live=is_live
         )
         appointment_form = ScheduleAnAppointment(choices)
 
@@ -28,14 +33,15 @@ class ChooseTimeslotView(View):
             'form': appointment_form,
             'user': user,
             'next_event': get_user_next_event(user.email_address),
+            'form_action': get_redirect_view_name(is_live),
             'has_timeslots_available': (
                 len(appointment_form.fields['timeslots_available'].choices) > 0)
         })
 
     @method_decorator(finished_registration_required)
-    def post(self, request, user):
+    def post(self, request, user, is_live):
         if get_user_next_event(user.email_address):
-            return HttpResponseRedirect(reverse('schedule'))
+            return HttpResponseRedirect(reverse(get_redirect_view_name(is_live)))
 
         comment = request.POST.get('comment')
         timeslot_start = arrow.get(request.POST.get('timeslots_available'))
@@ -44,12 +50,14 @@ class ChooseTimeslotView(View):
         if not new_event:
             choices = get_free_timeslot_choices(
                 user_timezone=user.timezone,
-                locale=get_locale_from_settings(settings.LANGUAGE_CODE)
+                locale=get_locale_from_settings(settings.LANGUAGE_CODE),
+                is_live=is_live
             )
             form = ScheduleAnAppointment(choices, request.POST)
             return render(request, 'choose_timeslot.html', {
                 'form': form,
-                'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0)
+                'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0),
+                'form_action': get_redirect_view_name(is_live)
             })
 
         return HttpResponseRedirect(reverse('reservation_success'))

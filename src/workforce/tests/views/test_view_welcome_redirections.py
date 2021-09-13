@@ -45,7 +45,7 @@ class TestUserSessionRouting(TestCase):
     def test_redirect_to_schedule_if_exists_and_is_complete(self):
         response = self.client.post(
             '/', {'registered_email': self.user_with_photo.email_address})
-        self.assertEqual(response.url, '/schedule')
+        self.assertEqual(response.url, '/choose_event_type')
 
     def test_remove_cookies_from_welcome_request(self):
         client = get_client_with_user_in_session(self.user_without_photo)

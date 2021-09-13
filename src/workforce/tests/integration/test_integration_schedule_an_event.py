@@ -58,6 +58,8 @@ class GenericDriverSetup(StaticLiveServerTestCase):
         email_input = self.selenium.find_element_by_id('registered-email')
         email_input.send_keys(self.user_with_photo.email_address)
         email_input.submit()
+        self.selenium.find_element_by_xpath(
+            "//button[contains( text( ), 'Remoto')]").click()
 
 
 class TestNoTimeslotAvailable(GenericDriverSetup):
