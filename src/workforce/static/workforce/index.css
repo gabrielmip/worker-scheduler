@@ -1,14 +1,95 @@
 body {
-    background: #E5FCC2;
-    font-family: 'Sen', sans-serif;
+    background: #e5fcc2;
+    font-family: "Sen", sans-serif;
     scroll-behavior: smooth;
+}
+
+.horizontal {
+    display: flex;
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: gray;
+    box-shadow: unset;
+    border: unset;
+}
+
+.flex {
+    flex-grow: 1;
+    flex-basis: 100%;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.list {
+    list-style: none;
+    padding: 0px;
+}
+
+.g16 {
+    gap: 16px;
+}
+
+.mtb-32 {
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.block {
+    display: block;
+}
+
+.p8 {
+    padding: 8px;
+}
+
+.r8 {
+    border-radius: 8px;
+}
+
+.card {
+    box-shadow: 0px 2px 2px 0px rgba(1, 1, 1, 0.19);
+}
+
+.card:active {
+    box-shadow: unset;
+}
+
+.card:hover {
+    box-shadow: 0px 4px 8px 0px rgba(1, 1, 1, 0.34);
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.h192 {
+    height: 192px;
 }
 
 .title {
     margin: 40px 0;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-weight: bold;
 }
 
@@ -46,7 +127,7 @@ h2.title {
 }
 
 .navbar {
-    background: #0B486B;
+    background: #0b486b;
 }
 
 .login-form {
