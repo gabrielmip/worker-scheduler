@@ -12,14 +12,24 @@
         {{ event.start | date }},
         {% trans "às" %}
         {{ event.start | time }}.
-        {% trans "Nós enviaremos um lembrete no email" %}
-        {{ event.user.email_address }}
-        {% trans "perto do horário de início da sessão." %}
+
+        {% if is_live %}
+            <!-- Segue algumas instruções: -->
+            Lembre-se de chegar com X minutos de antecedência.
+        {% else %}
+            {% trans "Nós enviaremos um lembrete no email" %}
+            {{ event.user.email_address }}
+            {% trans "perto do horário de início da sessão." %}
+        {% endif %}
     </p>
     {% endtimezone %}
 
     <p class="form-instruction form-instruction-box">
-        {% trans "A sessão dura 15 minutos e recomenda-se que seja feita em um lugar mais tranquilo." %}
+        {% if is_live %}
+            <!-- Segue algumas instruções: -->
+        {% else %}
+            {% trans "A sessão dura 15 minutos e recomenda-se que seja feita em um lugar mais tranquilo." %}
+        {% endif %}
     </p>
 
     <a href="{% url 'welcome' %}">

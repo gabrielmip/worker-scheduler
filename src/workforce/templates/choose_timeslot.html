@@ -8,12 +8,11 @@
 {% block content %}
     <h2 class="title">{% trans "Marcar sessão" %}</h2>
 
+    {% if next_event %}
+    {% timezone user.timezone %}
     <p class="form-instruction">
         Olá, {{ user.full_name }}!
     </p>
-
-    {% if next_event %}
-    {% timezone user.timezone %}
     <p class="form-instruction">
         Parece que você já tem uma sessão marcada com a gente no dia
         {{ next_event.start | date }},
@@ -31,8 +30,17 @@
     {% endif %}
 
 
-
     {% if not next_event %}
+
+    <p class="form-instruction">
+    {% if is_live %}
+        Olá, {{ user.full_name }}! Você escolheu o reiki presencial.
+        <!-- Segue algumas instruções: -->
+    {% else %}
+        Olá, {{ user.full_name }}! Você escolheu o reiki a distância.
+    {% endif %}
+    </p>
+
     {% if has_timeslots_available %}
         <form action="{% url form_action %}" method="post">
             {% csrf_token %}

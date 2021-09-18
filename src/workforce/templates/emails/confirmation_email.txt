@@ -3,9 +3,17 @@
 {% timezone event.user.timezone %}
 {% trans "Oi" %} {{ event.user.full_name }}, {% trans "tudo bem" %}?
 
+{% if is_live %}
+{% trans "Estamos enviando este email para confirmar sua sessão de Reiki presencial." %}
+{% else %}
 {% trans "Estamos enviando este email para confirmar sua sessão de Reiki a distância." %}
+{% endif %}
 {% trans "A sessão foi marcada para o dia" %} {{ event.start | date }}, {% trans "às" %} {{ event.start | time }}.
+{% if is_live %}
+{% trans "Lembre-se de chegar com pelo menos X minutos de antecedência." %}
+{% else %}
 {% trans "Lembre-se de reservar um local tranquilo para a sessão." %}
+{% endif %}
 
 {% trans "Abraços!" %}
 

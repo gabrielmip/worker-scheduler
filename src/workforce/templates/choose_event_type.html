@@ -4,11 +4,7 @@
 {% load i18n %}
 
 {% block content %}
-
-    <p class="form-instruction">
-        Olá, {{ user.full_name }}!
-    </p>
-
+    <h2 class="title">{% trans "Escolha o tipo de sessão" %}</h2>
 
     {% if next_event %}
     {% timezone user.timezone %}
@@ -31,29 +27,37 @@
 
 
     {% if not next_event %}
-    <h2 class="title">{% trans "Escolha o tipo de sessão" %}</h2>
+    <div class="mb-4">
+        *Vagas para os próximos 7 dias.
+    </div>
 
     <ul class="horizontal text-center align-center g16 list">
-        <a class="flex h192 vertical justify-center card bg-white p8 r8{% if not count_remote_available %} disabled{% endif %}" href="{% url 'schedule' %}">
-            <li class="h5">{% trans 'À distância' %}</li>
-            <small>
-                {{ count_remote_available }}
-                {{ count_remote_available|pluralize:"disponível,disponíveis" }}.
-            </small>
-        </a>
+        <li title="À distância">
+            <a class="flex h192 vertical justify-center card bg-white p8 r8{% if not count_remote_available %} disabled{% endif %}" href="{% url 'schedule' %}">
+                <div class="h5">{% trans 'À distância' %}</div>
+                <small>
+                    {{ count_remote_available }}
+                    {{ count_remote_available|pluralize:"disponível,disponíveis" }}.
+                </small>
+            </a>
+        </li>
 
-        <a class="flex h192 vertical justify-center card bg-white p8 r8{% if not count_live_available %} disabled{% endif %}" href="{% url 'schedule_live' %}">
-            <li class="h5">{% trans 'Presencial' %}</li>
-            <small>
-                {{ count_live_available }}
-                {{ count_live_available|pluralize:"disponível,disponíveis" }}.
-            </small>
-        </a>
+        <li title="Presencial">
+            <a class="flex h192 vertical justify-center card bg-white p8 r8{% if not count_live_available %} disabled{% endif %}" href="{% url 'schedule_live' %}">
+                <div class="h5">{% trans 'Presencial' %}</div>
+                <small>
+                    {{ count_live_available }}
+                    {{ count_live_available|pluralize:"disponível,disponíveis" }}.
+                </small>
+            </a>
+        </li>
     </ul>
     {% endif %}
 
-    <a href="{% url 'welcome' %}" class="mtb-32 block">
-        <button class="btn btn-default">{% trans 'Voltar' %}</button>
-    </a>
+    <div class="mtb-32">
+        <a href="{% url 'welcome' %}">
+            <button class="btn btn-default">{% trans 'Voltar' %}</button>
+        </a>
+    </div>
 {% endblock %}
 

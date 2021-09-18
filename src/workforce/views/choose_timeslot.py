@@ -30,12 +30,12 @@ class ChooseTimeslotView(View):
         appointment_form = ScheduleAnAppointment(choices)
 
         return render(request, 'choose_timeslot.html', {
-            'form': appointment_form,
-            'user': user,
-            'next_event': get_user_next_event(user.email_address),
             'form_action': get_redirect_view_name(is_live),
-            'has_timeslots_available': (
-                len(appointment_form.fields['timeslots_available'].choices) > 0)
+            'form': appointment_form,
+            'has_timeslots_available': (len(appointment_form.fields['timeslots_available'].choices) > 0),
+            'is_live': is_live,
+            'next_event': get_user_next_event(user.email_address),
+            'user': user,
         })
 
     @method_decorator(finished_registration_required)
@@ -55,9 +55,10 @@ class ChooseTimeslotView(View):
             )
             form = ScheduleAnAppointment(choices, request.POST)
             return render(request, 'choose_timeslot.html', {
+                'form_action': get_redirect_view_name(is_live),
                 'form': form,
                 'has_timeslots_available': (len(form.fields['timeslots_available'].choices) > 0),
-                'form_action': get_redirect_view_name(is_live)
+                'is_live': is_live,
             })
 
         return HttpResponseRedirect(reverse('reservation_success'))

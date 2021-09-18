@@ -4,10 +4,12 @@ import unittest
 import arrow
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
+
 from workforce.models import User, Worker, AuthUser, Availability, WorkEvent
 from workforce.utils import get_today_date_for_timezone
 
@@ -58,8 +60,8 @@ class GenericDriverSetup(StaticLiveServerTestCase):
         email_input = self.selenium.find_element_by_id('registered-email')
         email_input.send_keys(self.user_with_photo.email_address)
         email_input.submit()
-        self.selenium.find_element_by_xpath(
-            "//button[contains( text( ), 'Remoto')]").click()
+        self.selenium.find_element_by_css_selector(
+            'li[title="À distância"]').click()
 
 
 class TestNoTimeslotAvailable(GenericDriverSetup):
