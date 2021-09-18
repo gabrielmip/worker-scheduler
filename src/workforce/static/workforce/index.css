@@ -38,6 +38,10 @@ a.disabled {
     text-align: center;
 }
 
+.contained-list {
+    padding-left: 16px;
+}
+
 .list {
     list-style: none;
     padding: 0px;
@@ -64,16 +68,20 @@ a.disabled {
     border-radius: 8px;
 }
 
-.card {
+.asteriskField {
+    display: none;
+}
+
+.elevated-card {
     box-shadow: 0px 2px 2px 0px rgba(1, 1, 1, 0.19);
     transition: 0.13s ease-in-out all;
 }
 
-.card:active {
+.elevated-card:active {
     box-shadow: unset;
 }
 
-.card:hover {
+.elevated-card:hover {
     box-shadow: 0px 4px 8px 0px rgba(1, 1, 1, 0.34);
 }
 

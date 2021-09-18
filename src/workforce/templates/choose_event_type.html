@@ -9,21 +9,24 @@
     {% if next_event %}
     {% timezone user.timezone %}
     <p class="form-instruction">
-        Parece que você já tem uma sessão marcada com a gente no dia
-        {{ next_event.start | date }},
-        {% trans "às" %}
-        {{ next_event.start | time }}.
+        Olá, {{ user.full_name }}!
+    </p>
+
+    <p class="form-instruction">
+        Parece que você já tem um reiki
+        {% if next_event.is_live %}
+            {% trans "presencial" %}
+        {% else %}
+            {% trans "à distância" %}
+        {% endif %}
+        marcado com a gente.
         Por ora, só permitimos uma sessão marcada por pessoa.
     </p>
-    <p class="form-instruction">
-        Se deseja cancelar, clique no link de cancelamento no email que enviamos para {{ next_event.user.email_address }}.
-        {% if not has_timeslots_available %}
-        <strong>Obs.: Se estiver cancelando para poder remarcar em outro horário, saiba que não há horários disponíveis nos próximos 7 dias.</strong>
-        {% endif %}
-    </p>
+
+    {% include "event_instructions.html" with event=next_event has_timeslots_available=has_timeslots_available %}
+
     {% endtimezone %}
     {% endif %}
-
 
 
     {% if not next_event %}
@@ -32,8 +35,8 @@
     </div>
 
     <ul class="horizontal text-center align-center g16 list">
-        <li title="À distância">
-            <a class="flex h192 vertical justify-center card bg-white p8 r8{% if not count_remote_available %} disabled{% endif %}" href="{% url 'schedule' %}">
+        <li title="À distância" class="flex">
+            <a class="h192 vertical justify-center elevated-card bg-white p8 r8{% if not count_remote_available %} disabled{% endif %}" href="{% url 'schedule' %}">
                 <div class="h5">{% trans 'À distância' %}</div>
                 <small>
                     {{ count_remote_available }}
@@ -42,8 +45,8 @@
             </a>
         </li>
 
-        <li title="Presencial">
-            <a class="flex h192 vertical justify-center card bg-white p8 r8{% if not count_live_available %} disabled{% endif %}" href="{% url 'schedule_live' %}">
+        <li title="Presencial" class="flex">
+            <a class="flex h192 vertical justify-center elevated-card bg-white p8 r8{% if not count_live_available %} disabled{% endif %}" href="{% url 'schedule_live' %}">
                 <div class="h5">{% trans 'Presencial' %}</div>
                 <small>
                     {{ count_live_available }}

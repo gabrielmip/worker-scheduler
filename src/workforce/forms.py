@@ -45,6 +45,7 @@ class ScheduleAnAppointment(forms.Form):
         )
 
     comment = forms.CharField(
-        label=_('Caso deseje tratar algo em especial, escreva abaixo'),
-        required=False
+        label=_('O que deseja tratar?'),
+        help_text=_('Ex.: emocional, alguma dor física, ansiedade'),
+        required=True
     )

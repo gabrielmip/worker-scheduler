@@ -8,29 +8,12 @@
 
     {% timezone event.user.timezone %}
     <p class="form-instruction">
-        {% trans "Pronto! Sua reserva está feita para" %}
-        {{ event.start | date }},
-        {% trans "às" %}
-        {{ event.start | time }}.
-
-        {% if is_live %}
-            <!-- Segue algumas instruções: -->
-            Lembre-se de chegar com X minutos de antecedência.
-        {% else %}
-            {% trans "Nós enviaremos um lembrete no email" %}
-            {{ event.user.email_address }}
-            {% trans "perto do horário de início da sessão." %}
-        {% endif %}
+        {% trans "Pronto! Sua reserva está feita." %}
     </p>
+
+    {% include "event_instructions.html" with event=event has_timeslots_available=True %}
+
     {% endtimezone %}
-
-    <p class="form-instruction form-instruction-box">
-        {% if is_live %}
-            <!-- Segue algumas instruções: -->
-        {% else %}
-            {% trans "A sessão dura 15 minutos e recomenda-se que seja feita em um lugar mais tranquilo." %}
-        {% endif %}
-    </p>
 
     <a href="{% url 'welcome' %}">
         <button class="btn btn-primary cta-button">{% trans 'Voltar' %}</button>

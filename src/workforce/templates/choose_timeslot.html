@@ -6,46 +6,72 @@
 
 
 {% block content %}
-    <h2 class="title">{% trans "Marcar sessão" %}</h2>
-
-    {% if next_event %}
-    {% timezone user.timezone %}
-    <p class="form-instruction">
-        Olá, {{ user.full_name }}!
-    </p>
-    <p class="form-instruction">
-        Parece que você já tem uma sessão marcada com a gente no dia
-        {{ next_event.start | date }},
-        {% trans "às" %}
-        {{ next_event.start | time }}.
-        Por ora, só permitimos uma sessão marcada por pessoa.
-    </p>
-    <p class="form-instruction">
-        Se deseja cancelar, clique no link de cancelamento no email que enviamos para {{ next_event.user.email_address }}.
-        {% if not has_timeslots_available %}
-        <strong>Obs.: Se estiver cancelando para poder remarcar em outro horário, saiba que não há horários disponíveis nos próximos 7 dias.</strong>
+    <h2 class="title">
+        {% trans "Agendar reiki" %}
+        {% if is_live %}
+            {% trans "presencial" %}
+        {% else %}
+            {% trans "à distância" %}
         {% endif %}
-    </p>
-    {% endtimezone %}
-    {% endif %}
+    </h2>
 
+    {% if not is_live %}
+    <div class="form-instruction">
+        Olá, {{ user.full_name }}!
+        <a href="#como-funciona" data-toggle="collapse" data-target="#como-funciona" aria-controls="como-funciona">
+            Clique aqui
+        </a> para saber como funciona.
 
-    {% if not next_event %}
+        <div class="mt-2 collapse" id="como-funciona" aria-labelledby="Como o reiki funciona">
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        O Reiki a distância é feito com o reikiano criando sintonia contigo através de
+                        sua foto e nome. A partir daí, a energia é canalizada para você.
+                    </p>
 
-    <p class="form-instruction">
-    {% if is_live %}
-        Olá, {{ user.full_name }}! Você escolheu o reiki presencial.
-        <!-- Segue algumas instruções: -->
+                    <p>
+                        Durante o período da sessão, sugerimos que você esteja em um ambiente tranquilo e que imagine
+                        toda a energia sendo absorvida pelo seu corpo.
+                    </p>
+
+                    <p>As sessões duram 15 minutos, começando a partir do horário que você agendou.</p>
+                </div>
+            </div>
+            <h4 class="mt-4">Vamos lá</h5>
+        </div>
+    </div>
     {% else %}
-        Olá, {{ user.full_name }}! Você escolheu o reiki a distância.
-    {% endif %}
+    <p>
+        Olá, {{ user.full_name }}! Para agendar um reiki presencial, é <strong>obrigatório</strong> que você:
     </p>
+    <div class="card" role="alert">
+    <!-- <div class="alert alert-warning" role="alert"> -->
+        <!-- <p>
+           <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+           É <strong>obrigatório</strong> que você:
+        </p> -->
+        <!-- <h4 class="alert-heading"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Requisitos</h4> -->
+        <div class="card-body">
+            <ol class="contained-list">
+                <li>Tenha tomado no mínimo a primeira dose da vacina contra COVID.</li>
+                <li><strong>Não</strong> tenha apresentado sintomas de gripe ou COVID nos últimos 15 dias.</li>
+                <li>Use máscara cobrindo nariz e boca enquanto estiver no local.</li>
+                <li>Higienize as mãos ao chegar no local.</li>
+            </ol>
+        </div>
+    </div>
+    <h4 class="mt-4">Local</h4>
+    <p>R. Conceição do Pará, 946 (porta do meio) - Santa Inês, Belo Horizonte - MG, 31080-020</p>
+    <a href="https://goo.gl/maps/GPBGCqVY67VSikbX6" target="_blank" rel="noreferrer noopener">Ver no Maps</a>
+    <h4 class="mt-4">Vamos lá</h4>
+    {% endif %}
 
     {% if has_timeslots_available %}
         <form action="{% url form_action %}" method="post">
             {% csrf_token %}
             {{ form|crispy }}
-            <input class="btn btn-primary cta-button" type="submit" value="{% trans 'Marcar' %}">
+            <input class="btn btn-primary cta-button" type="submit" value="{% trans 'Agendar' %}">
         </form>
     {% else %}
         <p class="form-instruction">
@@ -54,7 +80,6 @@
         <a href="{% url 'choose_event_type' %}">
             <button class="btn btn-light">{% trans 'Voltar' %}</button>
         </a>
-    {% endif %}
     {% endif %}
 
 {% endblock %}

@@ -18,6 +18,7 @@ def choose_event_type(request, user):
     return render(request, 'choose_event_type.html', {
         'user': user,
         'next_event': get_user_next_event(user.email_address),
+        'has_timeslots_available': remote_choices or live_choices,
         'count_remote_available': len(remote_choices),
         'count_live_available': len(live_choices),
     })

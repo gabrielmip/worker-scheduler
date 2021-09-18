@@ -1,0 +1,69 @@
+{% load tz %}
+{% load i18n %}
+{% timezone event.user.timezone %}
+
+<p class="form-instruction">
+    {% if event.is_live %}
+        Lembre-se de chegar com 5 minutos de antecedência.
+    {% else %}
+        {% trans "Nós enviaremos um lembrete no email" %}
+        {{ event.user.email_address }}
+        {% trans "perto do horário de início da sessão." %}
+    {% endif %}
+</p>
+
+<h4>{% trans "Data" %}</h4>
+<p>
+    {{ event.start | date }},
+    {% trans "às" %}
+    {{ event.start | time }}.
+</p>
+
+{% if event.is_live %}
+<h4>{% trans "Local" %}</h4>
+<p>R. Conceição do Pará, 946 (porta do meio) - Santa Inês, Belo Horizonte - MG, 31080-020</p>
+<a href="https://goo.gl/maps/GPBGCqVY67VSikbX6" target="_blank" rel="noreferrer noopener">Ver no Maps</a>
+{% endif %}
+
+<h4>{% trans "Duração" %}</h4>
+<p>
+    {% if event.is_live %}
+        30 minutos
+    {% else %}
+        15 minutos
+    {% endif %}
+</p>
+
+{% if not event.is_live %}
+<h4>{% trans "Como funciona" %}</h4>
+<p>
+    O Reiki a distância é feito com o reikiano criando sintonia contigo através de
+    sua foto e nome. A partir daí, a energia é canalizada para você.
+</p>
+
+<p>
+    Durante o período da sessão, sugerimos que você esteja em um ambiente tranquilo e que imagine
+    toda a energia sendo absorvida pelo seu corpo.
+</p>
+{% endif %}
+
+{% if event.is_live %}
+<h4>Obrigatório</h4>
+<ol class="contained-list">
+    <li>Ter tomado no mínimo a primeira dose da vacina contra COVID.</li>
+    <li><strong>Não</strong> ter apresentado sintomas de gripe ou COVID nos últimos 15 dias.</li>
+    <li>Usar máscara cobrindo nariz e boca enquanto estiver no local.</li>
+    <li>Higienizar as mãos ao chegar no local.</li>
+</ol>
+{% endif %}
+
+
+<h4>Cancelar</h4>
+<p class="form-instruction">
+    Clique no link de cancelamento no email que enviamos para {{ event.user.email_address }}.
+    {% if not has_timeslots_available %}
+    <strong>Obs.: não há horários disponíveis nos próximos 7 dias.</strong>
+    {% endif %}
+</p>
+
+{% endtimezone %}
