@@ -28,7 +28,7 @@ def delete_event(token_or_id):
         event.delete()
 
 
-def create_event(user, calendar_id, start_time, end_time, comment):
+def create_event(user, calendar_id, start_time, end_time, comment, is_live):
     cancelling_token = str(uuid.uuid4())
 
     WorkEvent.objects.create(
@@ -37,6 +37,7 @@ def create_event(user, calendar_id, start_time, end_time, comment):
         start=start_time.datetime,
         end=end_time.datetime,
         comment=comment,
+        is_live=is_live,
         cancelling_token=cancelling_token)
 
     # FIXME: concurrency prone issue here, as the retrieval
