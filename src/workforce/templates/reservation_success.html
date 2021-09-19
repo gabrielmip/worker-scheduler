@@ -15,7 +15,9 @@
 
     {% endtimezone %}
 
-    <a href="{% url 'welcome' %}">
-        <button class="btn btn-primary cta-button">{% trans 'Voltar' %}</button>
-    </a>
+    <div class="mtb-32">
+        <a href="{% url 'welcome' %}">
+            <button class="btn btn-default">{% trans 'Ir para o início' %}</button>
+        </a>
+    </div>
 {% endblock %}

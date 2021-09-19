@@ -8,20 +8,9 @@
 
     {% if next_event %}
     {% timezone user.timezone %}
-    <p class="form-instruction">
-        Olá, {{ user.full_name }}!
-    </p>
+    <p>Olá, {{ user.full_name }}!</p>
 
-    <p class="form-instruction">
-        Parece que você já tem um reiki
-        {% if next_event.is_live %}
-            {% trans "presencial" %}
-        {% else %}
-            {% trans "à distância" %}
-        {% endif %}
-        marcado com a gente.
-        Por ora, só permitimos uma sessão marcada por pessoa.
-    </p>
+    <p>Parece que você já tem um reiki marcado com a gente.</p>
 
     {% include "event_instructions.html" with event=next_event has_timeslots_available=has_timeslots_available %}
 
@@ -59,7 +48,7 @@
 
     <div class="mtb-32">
         <a href="{% url 'welcome' %}">
-            <button class="btn btn-default">{% trans 'Voltar' %}</button>
+            <button class="btn btn-default">{% trans 'Ir para o início' %}</button>
         </a>
     </div>
 {% endblock %}

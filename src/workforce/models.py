@@ -82,7 +82,7 @@ class User(models.Model):
         verbose_name=_('Endereço de email'),
         unique=True,
         help_text=_(
-            'Nós vamos te enviar um email com um lembrete 15 minutos antes do início da sessão.'))
+            'Nós vamos te enviar um email com um lembrete antes do início da sessão.'))
     timezone = models.CharField(
         verbose_name=_('Fuso horário'),
         max_length=200,

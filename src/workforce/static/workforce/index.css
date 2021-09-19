@@ -39,7 +39,7 @@ a.disabled {
 }
 
 .contained-list {
-    padding-left: 16px;
+    padding-left: 20px;
 }
 
 .list {
@@ -49,6 +49,10 @@ a.disabled {
 
 .g16 {
     gap: 16px;
+}
+
+.mt-32 {
+    margin-top: 32px;
 }
 
 .mtb-32 {
@@ -98,7 +102,9 @@ a.disabled {
 }
 
 h1,
-h2 {
+h2,
+h3,
+h4 {
     font-weight: bold;
 }
 

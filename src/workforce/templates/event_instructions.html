@@ -2,7 +2,7 @@
 {% load i18n %}
 {% timezone event.user.timezone %}
 
-<p class="form-instruction">
+<p>
     {% if event.is_live %}
         Lembre-se de chegar com 5 minutos de antecedência.
     {% else %}
@@ -12,30 +12,62 @@
     {% endif %}
 </p>
 
-<h4>{% trans "Data" %}</h4>
-<p>
-    {{ event.start | date }},
-    {% trans "às" %}
-    {{ event.start | time }}.
-</p>
+<div>
+<table class="table table-light">
+    <tbody>
+        <tr>
+            <th scope="row">{% trans "Sessão" %}</th>
+            <td>
+                {% if event.is_live %}
+                    {% trans "Presencial" %}
+                {% else %}
+                    {% trans "À distância" %}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">{% trans "Data" %}</th>
+            <td>
+                {{ event.start | date }},
+                {% trans "às" %}
+                {{ event.start | time }}.
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">{% trans "Duração" %}</th>
+            <td>
+                {% if event.is_live %}
+                    30 minutos
+                {% else %}
+                    15 minutos
+                {% endif %}
+            </td>
+        </tr>
+        {% if event.is_live %}
+        <tr>
+            <th scope="row">{% trans "Local" %}</th>
+            <td>
+                R. Conceição do Pará, 946<br />(Porta do meio)<br />Santa Inês, Belo Horizonte - MG<br />
+                <a href="https://goo.gl/maps/GPBGCqVY67VSikbX6" target="_blank" rel="noreferrer noopener">Ver no Maps</a>
+            </td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+</div>
 
 {% if event.is_live %}
-<h4>{% trans "Local" %}</h4>
-<p>R. Conceição do Pará, 946 (porta do meio) - Santa Inês, Belo Horizonte - MG, 31080-020</p>
-<a href="https://goo.gl/maps/GPBGCqVY67VSikbX6" target="_blank" rel="noreferrer noopener">Ver no Maps</a>
-{% endif %}
+<h4 class="mt-32">Obrigatório</h4>
+<ol class="contained-list">
+    <li>Ter tomado no mínimo a primeira dose da vacina contra COVID.</li>
+    <li><strong>Não</strong> ter apresentado sintomas de gripe ou COVID nos últimos 15 dias.</li>
+    <li>Usar máscara cobrindo nariz e boca enquanto estiver no local.</li>
+    <li>Higienizar as mãos ao chegar no local.</li>
+</ol>
 
-<h4>{% trans "Duração" %}</h4>
-<p>
-    {% if event.is_live %}
-        30 minutos
-    {% else %}
-        15 minutos
-    {% endif %}
-</p>
+{% else %}
 
-{% if not event.is_live %}
-<h4>{% trans "Como funciona" %}</h4>
+<h4 class="mt-32">{% trans "Como funciona" %}</h4>
 <p>
     O Reiki a distância é feito com o reikiano criando sintonia contigo através de
     sua foto e nome. A partir daí, a energia é canalizada para você.
@@ -47,20 +79,9 @@
 </p>
 {% endif %}
 
-{% if event.is_live %}
-<h4>Obrigatório</h4>
-<ol class="contained-list">
-    <li>Ter tomado no mínimo a primeira dose da vacina contra COVID.</li>
-    <li><strong>Não</strong> ter apresentado sintomas de gripe ou COVID nos últimos 15 dias.</li>
-    <li>Usar máscara cobrindo nariz e boca enquanto estiver no local.</li>
-    <li>Higienizar as mãos ao chegar no local.</li>
-</ol>
-{% endif %}
-
-
-<h4>Cancelar</h4>
-<p class="form-instruction">
-    Clique no link de cancelamento no email que enviamos para {{ event.user.email_address }}.
+<h4 class="mt-32">Cancelar</h4>
+<p>
+    Caso queira cancelar, clique no link de cancelamento no email que enviamos para {{ event.user.email_address }}.
     {% if not has_timeslots_available %}
     <strong>Obs.: não há horários disponíveis nos próximos 7 dias.</strong>
     {% endif %}
