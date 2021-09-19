@@ -6,71 +6,49 @@
 
 
 {% block content %}
-    <script src="{% static 'workforce/welcome_page_visibility_controller.js' %}"></script>
-
     <blockquote class="blockquote text-right quote">
-        <p class="mb-0">{% trans "Só por hoje" %}</p>
-        <p class="mb-0">{% trans "Não te zangues" %}</p>
-        <p class="mb-0">{% trans "Não te preocupes" %}</p>
-        <p class="mb-0">{% trans "Seja grato" %}</p>
-        <p class="mb-0">{% trans "Seja diligente" %}</p>
-        <p class="mb-0">{% trans "Seja bondoso com os outros" %}</p>
+        <p>{% trans "Só por hoje" %}</p>
+        <p>{% trans "Serei grato" %}</p>
+        <p>{% trans "Não alimentarei ódio, raiva ou rancor" %}</p>
+        <p>{% trans "Não me preocuparei" %}</p>
+        <p>{% trans "Amarei e respeitarei tudo que vive" %}</p>
+        <p>{% trans "Serei honesto" %}</p>
         <footer class="blockquote-footer">{% trans "Os cinco princípios do Reiki" %}</footer>
     </blockquote>
 
-    <p><strong>{% trans "Oi, gente!" %}</strong></p>
-    <p>
-        Neste período de quarentena, nós, do Reiki do bairro Santa Inês,
-        continuamos nos oferecendo para prestar nossos serviços. Porém,
-        por causa do momento atual, realizaremos somente Reikis a
-        distância. Se você se interessa em marcar uma sessão com a gente,
-        então, vamos lá:
+    <p>O Reiki é uma prática secular de origem tibetana para equilíbrio do corpo
+       físico, emocional e espiritual, através da canalização da energia
+       universal que o reikiano absorve e transmite para o paciente.
     </p>
 
-    <div class="welcome-actions-container">
-        <div class="welcome-actions-header">
-            <button
-                id="return-button"
-                class="btn btn-default"
-                style="display: none"
-                onclick="hideEmailField()">
-                <i class="fas fa-chevron-left" style="font-size: x-small"></i>
-                {% trans "Voltar" %}
-            </button>
-            <button
-                id="user-is-registered-btn"
-                class="btn btn-primary cta-button welcome-button"
-                style="margin-right: 20px;"
-                onclick="showEmailField()">
-                {% trans "Já tenho cadastro" %}
-            </button>
-            <a href="{% url 'registration' %}">
-                <button
-                    class="btn btn-default welcome-button"
-                    type="submit">
-                    {% trans 'Sou novo aqui' %}
-                </button>
-            </a>
-        </div>
-        <form action="{% url 'welcome' %}" method="post" id="registered-email-form">
-            {% csrf_token %}
-            <label for="registered_email">{% trans 'Insira seu email cadastrado:' %}</label>
-            <input type="email" name="registered_email" id="registered-email" required />
-            {% if error_message %}
-            <small class="text-danger">{{ error_message }}</small>
-            {% endif %}
+    <p>Nós, do Reiki do Santa Inês, ofertamos Reiki à distância <span class="highlight">e retornamos com o reiki presencial com agendamento</span>.
+        Os reikis são gratuitos e você deve agendar aqui nesse site. Confira abaixo.
+    </p>
 
+    <h2 class="mt-5">Agendar</h2>
+    <form action="{% url 'welcome' %}" method="post">
+        {% csrf_token %}
+        <label for="registered_email" class="d-block mt-3">{% trans 'Endereço de email cadastrado:' %}</label>
+        <div class="d-flex">
+            <input type="email" name="registered_email" id="registered-email" required />
             <input
-                class="btn btn-primary cta-button"
+                class="btn btn-primary cta-button ml-2"
                 type="submit"
                 value="{% trans 'Entrar' %}" />
-        </form>
+        </div>
+        {% if error_message %}
+        <small class="text-danger">{{ error_message }}</small>
+        {% endif %}
+    </form>
+
+    <div class="mt-3 mb-5">
+        Não tem cadastro? <a href="{% url 'registration' %}">Clique aqui.</a>
     </div>
 
     <script>
         const message = "{{ error_message }}";
         if (message) {
-            showEmailField();
+            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
 

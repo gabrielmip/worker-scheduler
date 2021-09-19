@@ -114,6 +114,22 @@ h2.title {
 
 .quote {
     margin: 40px 0 80px;
+    font-style: italic;
+}
+
+.quote > p {
+    margin-bottom: 4px;
+    font-size: initial;
+}
+
+.quote > p:first-child {
+    font-size: 24px;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.highlight {
+    background-color: #fbff4f;
 }
 
 .cta-button {
@@ -160,7 +176,6 @@ h2.title {
 
 #registered-email-form {
     margin-top: 40px;
-    opacity: 0;
     transition: opacity 0.2s;
 }
 
@@ -176,7 +191,8 @@ h2.title {
 #registered-email {
     padding: 6px 10px;
     border: 1px solid #ccc;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     border-radius: 4px;
     color: #333;
 }
