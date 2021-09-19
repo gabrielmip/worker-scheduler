@@ -27,5 +27,15 @@ def group_by(items, key, fn=lambda x: x):
     return grouped
 
 
+def index_by(items, key):
+    grouped = {}
+
+    for item in items:
+        key_value = item.get(key) if type(item) is dict else getattr(item, key)
+        grouped[key_value] = item
+
+    return grouped
+
+
 def get_locale_from_settings(language_code):
     return language_code.split('-')[0]

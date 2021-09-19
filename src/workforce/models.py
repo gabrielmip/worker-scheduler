@@ -1,4 +1,5 @@
 import arrow
+from django.db.models.query_utils import Q
 import pytz
 from django.db import models
 from django.contrib.auth.models import User as AuthUser
@@ -97,6 +98,11 @@ class User(models.Model):
         verbose_name_plural = _('Pacientes')
 
 
+class WorkEventQuerySet(models.QuerySet):
+    def active_work_events(self):
+        return self.filter(canceled_at=None)
+
+
 class WorkEvent(models.Model):
     def __str__(self):
         return f"{str(self.user)}: {self.start} - {self.end}"
@@ -110,6 +116,9 @@ class WorkEvent(models.Model):
     is_live = models.BooleanField(_('Presencial'), default=False)
     cancelling_token = models.CharField(
         max_length=256, default=None, null=True)
+    created_at = models.DateTimeField(auto_now=True, blank=True)
+    canceled_at = models.DateTimeField(
+        _('Data cancelamento'), null=True, default=None)
 
     class Meta:
         verbose_name = _('Evento de trabalho')
@@ -117,6 +126,7 @@ class WorkEvent(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['start', 'calendar_id', 'user_id'],
-                name='idx_event_start_calendar_user'
+                condition=Q(canceled_at=None),
+                name='idx_active_event_start_calendar_user'
             )
         ]

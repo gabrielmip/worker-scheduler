@@ -9,6 +9,7 @@ def get_user_next_event(email_address):
     return (WorkEvent.objects
             .filter(user__email_address=email_address)
             .filter(start__gte=arrow.get().datetime)
+            .filter(canceled_at=None)
             .order_by('start')
             .first())
 
@@ -19,13 +20,15 @@ def get_event_to_delete(token_or_id):
     return (WorkEvent.objects
             .filter(start__gte=right_now)
             .filter(cancelling_token=token_or_id)
+            .filter(canceled_at=None)
             .first())
 
 
 def delete_event(token_or_id):
     event = get_event_to_delete(token_or_id)
     if event is not None:
-        event.delete()
+        event.canceled_at = arrow.get().datetime
+        event.save()
 
 
 def create_event(user, calendar_id, start_time, end_time, comment, is_live):
@@ -50,6 +53,7 @@ def get_all_events_by_calendar(calendar_ids, start, end, is_live):
                    .filter(calendar_id__in=calendar_ids)
                    .filter(start__gte=arrow.get(start).datetime)
                    .filter(end__lt=arrow.get(end).datetime)
+                   .filter(canceled_at=None)
                    .filter(is_live=is_live)
                    .all())
 

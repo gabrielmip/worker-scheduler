@@ -42,10 +42,11 @@
 </div>
 
 {% for event in today_events %}
-<div class="event">
+<div class="event{% if event.canceled_at %} canceled-event{% endif %}">
     <div class="event-start-time">
         <i class="fas fa-clock"></i>
         {{event.start | time}}
+        {% if event.canceled_at %}- CANCELADO{% endif %}
     </div>
     <div class="user-photo-container">
         {% if event.user.photo %}

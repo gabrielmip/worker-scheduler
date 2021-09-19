@@ -208,6 +208,14 @@ h2.title {
     position: relative;
 }
 
+/* .canceled-event .user-photo-container {
+    filter: grayscale(1);
+} */
+
+.canceled-event .event-start-time {
+    background-color: var(--orange);
+}
+
 .event-start-time {
     color: #eee;
     font-size: 17px;
@@ -266,6 +274,7 @@ h2.title {
     }
     .user-photo {
         width: unset;
+        max-width: 100%;
         height: 100%;
     }
     .event-description {

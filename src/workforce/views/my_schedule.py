@@ -3,10 +3,11 @@ from datetime import time, datetime
 
 import arrow
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import F
 from django.shortcuts import render
 from django.urls import reverse
 
-from workforce.utils import get_today_date_for_timezone
+from workforce.utils import get_today_date_for_timezone, group_by, index_by
 
 
 def get_my_schedule(request):
@@ -55,14 +56,20 @@ def _get_events_from_date(worker, requested_date):
     today_min = get_today_time(time.min)
     today_max = get_today_time(time.max)
 
-    return (worker.calendar.workevent_set
-            .filter(start__range=(today_min, today_max))
-            .order_by('start'))
+    events = (worker.calendar.workevent_set
+              .filter(start__range=(today_min, today_max))
+              .order_by('start')
+              # first the canceled, then the actives.
+              # this way the indexing will override canceled
+              # with active events with the same start
+              .order_by(F('canceled_at').asc(nulls_last=True)))
+
+    return [*index_by(events, 'start').values()]
 
 
 def _calculate_event_hash(work_events):
     joined_work_events = '|'.join([
-        f"{event.user.email_address}|{event.start}"
+        f"{event.user.email_address}|{event.start}|{event.canceled_at}"
         for event in work_events
     ])
 
