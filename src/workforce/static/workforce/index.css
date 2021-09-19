@@ -123,7 +123,7 @@ h2.title {
 }
 
 .quote > p:first-child {
-    font-size: 24px;
+    font-size: 21px;
     font-weight: 900;
     font-style: normal;
 }
@@ -197,42 +197,25 @@ h2.title {
     color: #333;
 }
 
-@media (max-width: 600px) {
-    .event {
-        flex-direction: column;
-        padding: 12px 12px 2px 12px !important;
-    }
-    .user-photo-container {
-        max-width: unset !important;
-    }
-    .event-description {
-        margin-left: 0px !important;
-        margin-top: 10px;
-    }
-    .event-description-value {
-        margin-bottom: 5px !important;
-    }
-}
-
 .event {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    margin-bottom: 30px;
+    margin-top: 64px;
     box-sizing: border-box;
     display: flex;
     box-shadow: 1px 2px 4px 1px #9ab96b;
+    position: relative;
 }
 
 .event-start-time {
     color: #eee;
     font-size: 17px;
-    margin-bottom: 0px;
     background: #1a8a4c;
     padding: 5px 12px;
-    display: inline;
-    margin-left: 19px;
+    position: absolute;
     border-radius: 5px 5px 0 0;
+    top: -36px;
 }
 
 .event-start-time i {
@@ -242,7 +225,6 @@ h2.title {
 .user-photo {
     width: 100%;
     height: auto;
-    border-radius: 5px;
 }
 
 .user-photo-container {
@@ -256,11 +238,43 @@ h2.title {
 }
 
 .event-description-category {
-    font-weight: 1000;
+    font-weight: 900;
 }
 
 .event-description-value {
     margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+    .event {
+        flex-direction: column;
+        padding: 12px 12px 2px 12px !important;
+        max-height: calc(100vh - 36px - 24px);
+    }
+    .user-photo-container {
+        max-width: unset !important;
+        overflow-y: hidden;
+        text-align: center;
+        background-color: #ccc;
+        /* background: url(/images/-715466166576137530/asdf.jpg);
+        background-position: center;
+        filter: blur(5px);
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover; */
+    }
+    .user-photo {
+        width: unset;
+        height: 100%;
+    }
+    .event-description {
+        margin-left: 0px !important;
+        margin-top: 10px;
+    }
+    .event-description-value {
+        margin-bottom: 5px !important;
+    }
 }
 
 .message-for-worker {

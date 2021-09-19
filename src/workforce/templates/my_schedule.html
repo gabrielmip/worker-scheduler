@@ -42,19 +42,19 @@
 </div>
 
 {% for event in today_events %}
-<div class="event-start-time">
-    <i class="fas fa-clock"></i>
-    {{event.start | time}}
-</div>
 <div class="event">
+    <div class="event-start-time">
+        <i class="fas fa-clock"></i>
+        {{event.start | time}}
+    </div>
     <div class="user-photo-container">
         {% if event.user.photo %}
-            <a href="{{ event.user.photo.url }}">
+            <!-- <a href="{{ event.user.photo.url }}"> -->
             <img
                 class="user-photo"
                 src="{{ event.user.photo.url }}"
                 alt="Foto de {{ event.user.full_name }}">
-            </a>
+            <!-- </a> -->
         {% else %}
             <div class="user-photo">
                 {% trans "Sem foto" %}
@@ -62,7 +62,34 @@
         {% endif %}
     </div>
     <div class="event-description">
-        <div class="event-description-category">
+        <table class="table table-light table-sm mb-0">
+            <tbody>
+                <tr>
+                    <th scope="row" class="border-top-0">{% trans "Nome" %}</th>
+                    <td class="border-top-0">{{ event.user.full_name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">{% trans "Sessão" %}</th>
+                    <td>
+                        {% if event.is_live %}
+                            {% trans "Presencial" %}
+                        {% else %}
+                            {% trans "À distância" %}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">{% trans "Coment." %}</th>
+                    <td>
+                        {{event.comment}}
+                        {% if event.comment == '' %}
+                        {% trans 'Sem comentário' %}
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <div class="event-description-category">
             {% trans "Nome" %}
         </div>
         <div class="event-description-value">
@@ -76,7 +103,7 @@
             {% if event.comment == '' %}
             {% trans 'Sem comentário' %}
             {% endif %}
-        </div>
+        </div> -->
     </div>
 </div>
 {% endfor %}
