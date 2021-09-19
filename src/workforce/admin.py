@@ -5,7 +5,7 @@ from workforce.models import Calendar, Worker, Availability, WorkEvent, User
 class WorkEventAdmin(admin.ModelAdmin):
     date_hierarchy = 'start'
     list_display = ('full_name', 'email_address',
-                    'start', 'workers', 'calendar', 'canceled_at')
+                    'start', 'workers', 'calendar', 'canceled_at', 'created_at')
     search_fields = ('user__full_name', 'user__email_address')
 
     def full_name(self, event):
