@@ -1,21 +1,32 @@
-{% load i18n %}
-{% load tz %}
-{% timezone event.user.timezone %}
+{% load i18n %}{% load tz %}{% timezone event.user.timezone %}
 {% trans "Oi" %} {{ event.user.full_name }}, {% trans "tudo bem" %}?
 
-{% if is_live %}
-{% trans "Estamos enviando este email para confirmar sua sessão de Reiki presencial." %}
+{% if event.is_live %}
+{% trans "Sua sessão de Reiki presencial foi agendada com sucesso. Lembre-se de chegar com 5 minutos de antecedência." %}
 {% else %}
-{% trans "Estamos enviando este email para confirmar sua sessão de Reiki a distância." %}
-{% endif %}
-{% trans "A sessão foi marcada para o dia" %} {{ event.start | date }}, {% trans "às" %} {{ event.start | time }}.
-{% if is_live %}
-{% trans "Lembre-se de chegar com pelo menos X minutos de antecedência." %}
-{% else %}
-{% trans "Lembre-se de reservar um local tranquilo para a sessão." %}
+{% trans "Sua sessão de Reiki à distância foi agendada com sucesso. Lembre-se de reservar um local tranquilo para a sessão." %}
 {% endif %}
 
-{% trans "Abraços!" %}
+Informações:
+
+- {% trans "Sessão" %}: {% if event.is_live %}{% trans "Presencial" %}{% else %}{% trans "À distância" %}{% endif %}
+- {% trans "Data" %}: {{ event.start | date }}, {% trans "às" %} {{ event.start | time }}.
+- {% trans "Duração" %}: {% if event.is_live %}30 minutos{% else %}15 minutos{% endif %}
+{% if event.is_live %}- {% trans "Local" %}: R. Conceição do Pará, 946 (porta do meio) - Santa Inês, Belo Horizonte - MG. Veja no maps: https://goo.gl/maps/GPBGCqVY67VSikbX6{% endif %}
+
+{% if event.is_live %}
+Obrigatório:
+
+- Ter tomado no mínimo a primeira dose da vacina contra COVID.
+- Não ter apresentado sintomas de gripe ou COVID nos últimos 15 dias.
+- Usar máscara cobrindo nariz e boca enquanto estiver no local.
+- Higienizar as mãos ao chegar no local.
+{% else %}{% trans "Como funciona" %}:
+
+O Reiki à distância é feito com o reikiano criando sintonia contigo através de sua foto e nome. A partir daí, a energia é canalizada para você. Durante o período da sessão, sugerimos que você esteja em um ambiente tranquilo e que imagine toda a energia sendo absorvida pelo seu corpo.
+{% endif %}
+
+{% trans "Boa sessão!" %}
 
 {% trans "Obs.: acesse o link abaixo caso precise cancelar sua sessão." %}
 {{ cancelling_url }}

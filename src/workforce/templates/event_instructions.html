@@ -4,7 +4,7 @@
 
 <p>
     {% if event.is_live %}
-        Lembre-se de chegar com 5 minutos de antecedência.
+        {% trans "Lembre-se de chegar com 5 minutos de antecedência." %}
     {% else %}
         {% trans "Nós enviaremos um lembrete no email" %}
         {{ event.user.email_address }}
@@ -37,9 +37,9 @@
             <th scope="row">{% trans "Duração" %}</th>
             <td>
                 {% if event.is_live %}
-                    30 minutos
+                    {% trans "30 minutos" %}
                 {% else %}
-                    15 minutos
+                    {% trans "15 minutos" %}
                 {% endif %}
             </td>
         </tr>
@@ -48,7 +48,9 @@
             <th scope="row">{% trans "Local" %}</th>
             <td>
                 R. Conceição do Pará, 946<br />(Porta do meio)<br />Santa Inês, Belo Horizonte - MG<br />
-                <a href="https://goo.gl/maps/GPBGCqVY67VSikbX6" target="_blank" rel="noreferrer noopener">Ver no Maps</a>
+                <a href="https://goo.gl/maps/GPBGCqVY67VSikbX6" target="_blank" rel="noreferrer noopener">
+                    {% trans "Ver no Maps" %}
+                </a>
             </td>
         </tr>
         {% endif %}
@@ -69,7 +71,7 @@
 
 <h4 class="mt-32">{% trans "Como funciona" %}</h4>
 <p>
-    O Reiki a distância é feito com o reikiano criando sintonia contigo através de
+    O Reiki à distância é feito com o reikiano criando sintonia contigo através de
     sua foto e nome. A partir daí, a energia é canalizada para você.
 </p>
 

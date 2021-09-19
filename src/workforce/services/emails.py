@@ -13,7 +13,9 @@ def setup_email_sending(work_event):
     ''' schedules email confirmation for now and a
         reminder 20 minutes prior to the work event start.
     '''
-    when_to_remind = arrow.get(work_event.start).shift(minutes=-20).datetime
+    minutes_prior = -90 if work_event.is_live else -20
+    when_to_remind = arrow.get(work_event.start).shift(
+        minutes=minutes_prior).datetime
 
     send_confirmation_email(work_event.event_id)
     schedule_work_event_reminder(work_event.event_id, schedule=when_to_remind)
@@ -38,11 +40,8 @@ def send_event_email(work_event_id, email_template_name, email_subject):
     '''
     work_event = WorkEvent.objects.get(pk=work_event_id)
     cancelling_url = f"{settings.EXTERNAL_URL_BASE_PATH}/cancel/{work_event.cancelling_token}"
-    localized_event_start = arrow.get(work_event.start).to(
-        work_event.user.timezone).datetime
     context = {
         'event': work_event,
-        'localized_event_start': localized_event_start,
         'cancelling_url': cancelling_url
     }
     message = render_to_string(f'emails/{email_template_name}.txt', context)
