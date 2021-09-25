@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'workforce.apps.WorkforceConfig',
     'background_task',
     'crispy_forms',
+    'anymail',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
