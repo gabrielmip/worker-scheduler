@@ -121,6 +121,8 @@ class WorkEvent(models.Model):
     canceled_at = models.DateTimeField(
         _('Data cancelamento'), null=True, default=None)
 
+    objects = WorkEventQuerySet.as_manager()
+
     class Meta:
         verbose_name = _('Evento de trabalho')
         verbose_name_plural = _('Eventos de trabalho')

@@ -60,14 +60,19 @@ class TestServiceIsCancellingToken(UserEventsDbSetup):
 
 class TestDeleteEvent(UserEventsDbSetup):
     def test_deletes_event_if_exists(self):
-        prior_event_ids = {w.event_id for w in WorkEvent.objects.all()}
+        def get_active_ids(): return {
+            w.event_id
+            for w in WorkEvent.objects.active_work_events().all()
+        }
+
+        prior_event_ids = get_active_ids()
         id_to_be_deleted = self.user_event.event_id
 
         delete_event(self.user_event.cancelling_token)
         prior_event_ids.remove(id_to_be_deleted)
 
         expected = prior_event_ids
-        post_event_ids = {w.event_id for w in WorkEvent.objects.all()}
+        post_event_ids = get_active_ids()
 
         self.assertSetEqual(post_event_ids, expected)
 

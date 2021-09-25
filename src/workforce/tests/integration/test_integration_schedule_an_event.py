@@ -55,7 +55,6 @@ class GenericDriverSetup(StaticLiveServerTestCase):
 
     def insert_registered_email_and_click(self):
         self.selenium.get(self.live_server_url)
-        self.selenium.find_element_by_id('user-is-registered-btn').click()
 
         email_input = self.selenium.find_element_by_id('registered-email')
         email_input.send_keys(self.user_with_photo.email_address)
