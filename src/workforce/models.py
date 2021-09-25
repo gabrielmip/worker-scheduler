@@ -107,7 +107,7 @@ class WorkEvent(models.Model):
     def __str__(self):
         return f"{str(self.user)}: {self.start} - {self.end}"
 
-    event_id = models.IntegerField(unique=True, primary_key=True)
+    event_id = models.AutoField(unique=True, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
     comment = models.CharField(max_length=500, default='')
