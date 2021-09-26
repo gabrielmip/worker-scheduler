@@ -15,13 +15,8 @@ TIMEZONES_AS_CHOICES = [(a, a.replace('_', ' '))
 
 
 class MyUser(AbstractUser):
-    # email = models.EmailField(_('Endereço de email'), unique=True)
-    # timezone = models.CharField(
-    #     _('Fuso horário'),
-    #     max_length=200,
-    #     choices=TIMEZONES_AS_CHOICES,
-    #     default='America/Sao_Paulo'
-    # )
+    first_login = models.BooleanField(_('Primeiro login?'), default=False)
+
     class Meta:
         db_table = 'auth_user'
 
@@ -92,6 +87,10 @@ class Patient(models.Model):
     def __str__(self):
         return f"{self.full_name} ({self.email_address})"
 
+    auth_user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     full_name = models.CharField(verbose_name=_(
         'Seu nome completo'), max_length=200)
     email_address = models.EmailField(
