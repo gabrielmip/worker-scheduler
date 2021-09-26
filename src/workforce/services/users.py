@@ -1,4 +1,4 @@
-from workforce.models import User
+from workforce.models import Patient
 
 
 def get_user_object_from_email(email_address):
@@ -6,15 +6,15 @@ def get_user_object_from_email(email_address):
         the user is new.
     '''
     if not email_address:
-        return User(), True
+        return Patient(), True
 
     try:
-        return User.objects.get(email_address=email_address), False
-    except User.DoesNotExist:
-        return User(email_address=email_address), True
+        return Patient.objects.get(email_address=email_address), False
+    except Patient.DoesNotExist:
+        return Patient(email_address=email_address), True
 
 
-def has_missing_fields(user: User):
+def has_missing_fields(user: Patient):
     return (
         not bool(user.photo)
         or user.pk is None

@@ -2,9 +2,10 @@ import datetime
 from unittest import TestCase
 
 import arrow
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from workforce.models import Calendar, User, Worker, AuthUser, Availability, WorkEvent
+from workforce.models import Calendar, Patient, Worker, Availability, WorkEvent
 from workforce.utils import get_today_date_for_timezone
 
 
@@ -15,14 +16,14 @@ def get_tomorrow(timezone, **kwargs):
 class WorkerAvailabilityDbSetup(TestCase):
     def setUp(self) -> None:
         super().setUp()
-        auth_user = AuthUser.objects.create_user('robinho', 'robinho')
+        auth_user = get_user_model().objects.create_user('robinho', 'robinho')
 
         nihon_worker = Worker.objects.create(
             auth_user=auth_user,
             timezone='Asia/Tokyo'
         )
 
-        auth_user_2 = AuthUser.objects.create_user('robino', 'robino')
+        auth_user_2 = get_user_model().objects.create_user('robino', 'robino')
 
         sampa_worker = Worker.objects.create(
             auth_user=auth_user_2,
@@ -46,12 +47,12 @@ class WorkerAvailabilityDbSetup(TestCase):
         )  # 3 timeslots
 
         # creating user + one event
-        User.objects.create(
+        Patient.objects.create(
             email_address="b@b.com",
             full_name="John Dope",
             timezone="America/Sao_Paulo",
         )
-        user = User.objects.latest('id')
+        user = Patient.objects.latest('id')
         start = arrow.now().shift(days=1)
         end = start.shift(minutes=20)
 

@@ -1,8 +1,10 @@
-import arrow
-from django.db.models.query_utils import Q
 import pytz
+import arrow
+
+from django.contrib.auth.models import AbstractUser
+from django.db.models.query_utils import Q
 from django.db import models
-from django.contrib.auth.models import User as AuthUser
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from workforce.utils import build_path_for_user_picture
@@ -38,7 +40,8 @@ class Worker(models.Model):
             self.calendar = Calendar.objects.latest('calendar_id')
         super().save(**kwargs)
 
-    auth_user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
+    auth_user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     timezone = models.CharField(
         _('Fuso horário'),
         max_length=200,
@@ -73,7 +76,7 @@ class Availability(models.Model):
         verbose_name_plural = _('Disponibilidades')
 
 
-class User(models.Model):
+class Patient(models.Model):
     def __str__(self):
         return f"{self.full_name} ({self.email_address})"
 
@@ -108,7 +111,7 @@ class WorkEvent(models.Model):
         return f"{str(self.user)}: {self.start} - {self.end}"
 
     event_id = models.AutoField(unique=True, primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Patient, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
     comment = models.CharField(max_length=500, default='')
     start = models.DateTimeField()

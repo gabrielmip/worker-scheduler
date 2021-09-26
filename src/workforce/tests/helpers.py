@@ -5,12 +5,12 @@ from io import BytesIO
 from PIL import Image
 from django.core.files.base import File
 
-from workforce.models import User
+from workforce.models import Patient
 
 
 def delete_created_user_photos():
     users_with_photos = [
-        user for user in User.objects.all() if bool(user.photo)]
+        user for user in Patient.objects.all() if bool(user.photo)]
     uploads = {os.path.dirname(user.photo.path) for user in users_with_photos}
     for upload in uploads:
         rmtree(upload)

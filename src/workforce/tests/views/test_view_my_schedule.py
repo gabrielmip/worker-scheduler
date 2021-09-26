@@ -1,27 +1,28 @@
 from datetime import time, datetime
 import arrow
+from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 
 from workforce.views.my_schedule import _get_events_from_date
-from workforce.models import Worker, WorkEvent, AuthUser, User
+from workforce.models import Worker, WorkEvent, Patient
 from workforce.utils import get_today_date_for_timezone
 
 
 class TestWorkerSchedule(TestCase):
 
     def setUp(self):
-        User.objects.create(
+        Patient.objects.create(
             email_address="a@a.com",
             full_name="John Doe",
             timezone="America/Sao_Paulo")
-        self.user_without_photo = User.objects.latest('id')
+        self.user_without_photo = Patient.objects.latest('id')
 
-        self.auth_user_br = AuthUser.objects.create_user('robson', 'robson')
+        self.auth_user_br = get_user_model().objects.create_user('robson', 'robson')
         self.from_sao_paulo = Worker.objects.create(
             auth_user=self.auth_user_br,
             timezone='America/Sao_Paulo')  # -3
 
-        self.auth_user_japan = AuthUser.objects.create_user(
+        self.auth_user_japan = get_user_model().objects.create_user(
             'robinho', 'robinho')
         self.from_japan = Worker.objects.create(
             auth_user=self.auth_user_japan,

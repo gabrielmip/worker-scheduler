@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from workforce.models import User
+from workforce.models import Patient
 
 from workforce.tests.helpers import (
     get_client_with_user_in_session,
@@ -10,20 +10,20 @@ from workforce.tests.helpers import (
 
 class TestUserSessionRouting(TestCase):
     def setUp(self):
-        User.objects.create(
+        Patient.objects.create(
             email_address="a@a.com",
             full_name="John Doe",
             timezone="America/Sao_Paulo"
         )
-        self.user_without_photo = User.objects.latest('id')
+        self.user_without_photo = Patient.objects.latest('id')
 
-        User.objects.create(
+        Patient.objects.create(
             email_address="b@a.com",
             full_name="John Deo",
             timezone="America/Sao_Paulo",
             photo=create_some_image()
         )
-        self.user_with_photo = User.objects.latest('id')
+        self.user_with_photo = Patient.objects.latest('id')
         self.client = Client()
 
     def tearDown(self):
@@ -75,7 +75,7 @@ class TestUserSessionRouting(TestCase):
                            'complete user was not redirected')
 
     def test_can_register_new_user(self):
-        previous_count = User.objects.filter(
+        previous_count = Patient.objects.filter(
             email_address='robert@pattin.son').count()
 
         response = Client().post('/registration', {
@@ -89,7 +89,7 @@ class TestUserSessionRouting(TestCase):
         self.assertEqual(response.client.session.get(
             'email_address'), 'robert@pattin.son')
 
-        after_count = User.objects.filter(
+        after_count = Patient.objects.filter(
             email_address='robert@pattin.son').count()
         self.assertEqual(previous_count + 1, after_count)
 
@@ -107,6 +107,6 @@ class TestUserSessionRouting(TestCase):
         }, follow=True)
         self.assertEqual(len(response.redirect_chain), 0)
 
-        possibly_updated_user = User.objects.get(pk=self.user_with_photo.id)
+        possibly_updated_user = Patient.objects.get(pk=self.user_with_photo.id)
         self.assertEqual(possibly_updated_user.full_name,
                          self.user_with_photo.full_name)

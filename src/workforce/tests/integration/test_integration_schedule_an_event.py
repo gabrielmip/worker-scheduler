@@ -3,6 +3,7 @@ import datetime
 import unittest
 import arrow
 
+from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from selenium.common.exceptions import NoSuchElementException
@@ -10,7 +11,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 
-from workforce.models import User, Worker, AuthUser, Availability, WorkEvent
+from workforce.models import Patient, Worker, Availability, WorkEvent
 from workforce.utils import get_today_date_for_timezone
 
 from ..helpers import create_some_image, delete_created_user_photos
@@ -35,20 +36,20 @@ class GenericDriverSetup(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def setUp(self):
-        User.objects.create(
+        Patient.objects.create(
             email_address="b@a.com",
             full_name="John Deo",
             timezone="America/Sao_Paulo",
             photo=create_some_image()
         )
-        self.user_with_photo = User.objects.latest('id')
+        self.user_with_photo = Patient.objects.latest('id')
 
-        User.objects.create(
+        Patient.objects.create(
             email_address="b@b.com",
             full_name="John Dope",
             timezone="America/Sao_Paulo",
         )
-        self.other_user = User.objects.latest('id')
+        self.other_user = Patient.objects.latest('id')
 
     def tearDown(self):
         delete_created_user_photos()
@@ -78,7 +79,7 @@ class TestNoTimeslotAvailable(GenericDriverSetup):
 class TestSuccessfulEventRequest(GenericDriverSetup):
     def setUp(self) -> None:
         super().setUp()
-        auth_user = AuthUser.objects.create_user('robinho', 'robinho')
+        auth_user = get_user_model().objects.create_user('robinho', 'robinho')
         worker = Worker.objects.create(
             auth_user=auth_user,
             timezone='Asia/Tokyo'
@@ -119,7 +120,7 @@ class TestSuccessfulEventRequest(GenericDriverSetup):
 class TestSuccessfulEventRequestsSimultaneously(GenericDriverSetup):
     def setUp(self) -> None:
         super().setUp()
-        auth_user = AuthUser.objects.create_user('robinho', 'robinho')
+        auth_user = get_user_model().objects.create_user('robinho', 'robinho')
         worker = Worker.objects.create(
             auth_user=auth_user,
             timezone='Asia/Tokyo'

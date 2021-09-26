@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 from django.conf import settings
 from babel.dates import format_datetime
 
-from workforce.models import User
+from workforce.models import Patient
 
 
 def free_timeslots_to_choices(timeslots, user_timezone):
@@ -25,7 +25,7 @@ def free_timeslots_to_choices(timeslots, user_timezone):
 
 class Registration(forms.ModelForm):
     class Meta:
-        model = User
+        model = Patient
         fields = ['full_name', 'email_address', 'timezone', 'photo']
 
 
