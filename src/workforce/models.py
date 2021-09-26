@@ -14,6 +14,18 @@ TIMEZONES_AS_CHOICES = [(a, a.replace('_', ' '))
                         for a in pytz.common_timezones]
 
 
+class MyUser(AbstractUser):
+    # email = models.EmailField(_('Endereço de email'), unique=True)
+    # timezone = models.CharField(
+    #     _('Fuso horário'),
+    #     max_length=200,
+    #     choices=TIMEZONES_AS_CHOICES,
+    #     default='America/Sao_Paulo'
+    # )
+    class Meta:
+        db_table = 'auth_user'
+
+
 class Calendar(models.Model):
     def __str__(self):
         return str(self.calendar_id)
