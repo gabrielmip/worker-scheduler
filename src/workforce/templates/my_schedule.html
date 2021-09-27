@@ -50,12 +50,12 @@
     </div>
     <div class="user-photo-container">
         {% if event.user.photo %}
-            <!-- <a href="{{ event.user.photo.url }}"> -->
+            <a href="{{ event.user.photo.url }}">
             <img
                 class="user-photo"
                 src="{{ event.user.photo.url }}"
                 alt="Foto de {{ event.user.full_name }}">
-            <!-- </a> -->
+            </a>
         {% else %}
             <div class="user-photo">
                 {% trans "Sem foto" %}
