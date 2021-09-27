@@ -26,7 +26,10 @@ def get_free_timeslots(is_live: bool = False):
                 'calendar_id': calendar_id
             }
 
-    return [*free_timeslots.values()]
+    values = [*free_timeslots.values()]
+    values.sort(key=lambda x: x['timeslot'][0])
+
+    return values
 
 
 def _is_timeslot_available(timeslot, calendars):
