@@ -13,7 +13,7 @@ def get_free_timeslot_choices(user_timezone, locale, is_live):
 
 def get_free_timeslots(is_live: bool = False):
     worker_calendars = get_active_worker_calendars(is_live)
-    duration = 45 if is_live else 20
+    duration = 60 if is_live else 20
     free_timeslots = {}
 
     for timeslot in _get_timeslots_to_analyse(worker_calendars, duration):

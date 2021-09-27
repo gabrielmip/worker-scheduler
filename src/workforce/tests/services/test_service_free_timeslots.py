@@ -82,7 +82,7 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
                         get_tomorrow(self.sampa_worker.timezone,
                                      minute=0, hour=10),
                         get_tomorrow(self.sampa_worker.timezone,
-                                     minute=45, hour=10),
+                                     minute=60, hour=10),
                     ),
                     'calendar_id': self.sampa_worker.calendar_id
                 },
