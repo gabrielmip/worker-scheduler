@@ -17,7 +17,6 @@ def setup_email_sending(work_event):
     when_to_remind = arrow.get(work_event.start).shift(
         minutes=minutes_prior).datetime
 
-    send_confirmation_email(work_event.event_id)
     schedule_work_event_reminder(work_event.event_id, schedule=when_to_remind)
 
 
