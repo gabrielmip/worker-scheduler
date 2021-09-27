@@ -64,7 +64,10 @@ def _get_events_from_date(worker, requested_date):
               # with active events with the same start
               .order_by(F('canceled_at').asc(nulls_last=True)))
 
-    return [*index_by(events, 'start').values()]
+    unique_events = [*index_by(events, 'start').values()]
+    unique_events.sort(key=lambda x: x.start)
+
+    return unique_events
 
 
 def _calculate_event_hash(work_events):

@@ -298,11 +298,12 @@ h2.title {
     position: fixed;
     top: 80px;
     left: 41vw;
-    left: calc(100vw - 330px);
+    left: calc((100vw - 300px) / 2);
     color: white;
     box-shadow: 1px 4px 6px 1px rgba(0, 0, 0, 0.4);
     display: none;
     align-items: center;
+    z-index: 1;
 }
 
 #refresh-warner i {
