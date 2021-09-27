@@ -89,6 +89,7 @@ class Patient(models.Model):
 
     auth_user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
+        null=True,
         on_delete=models.CASCADE
     )
     full_name = models.CharField(verbose_name=_(
