@@ -1,5 +1,6 @@
 from django.contrib import admin
-from workforce.models import Calendar, Worker, Availability, WorkEvent, Patient
+from django.contrib.auth.models import Permission
+from workforce.models import Calendar, MyUser, Worker, Availability, WorkEvent, Patient
 
 
 class WorkEventAdmin(admin.ModelAdmin):
@@ -26,3 +27,5 @@ admin.site.register(Availability)
 admin.site.register(Worker)
 admin.site.register(WorkEvent, WorkEventAdmin)
 admin.site.register(Patient)
+admin.site.register(MyUser)
+admin.site.register(Permission)

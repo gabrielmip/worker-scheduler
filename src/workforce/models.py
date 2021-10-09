@@ -19,6 +19,8 @@ class MyUser(AbstractUser):
 
     class Meta:
         db_table = 'auth_user'
+        verbose_name = _('Usuário')
+        verbose_name_plural = _('Usuários')
 
 
 class Calendar(models.Model):
