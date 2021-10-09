@@ -26,6 +26,7 @@ def get_active_worker_calendars(is_live=False):
                 worker.availability_set.filter(is_live=is_live).all(),
                 worker.timezone
             ),
+            'worker_timezone': worker.timezone,
             'busy_timeslots': busy_timeslots_by_calendar[worker.calendar_id]
         }
         for worker in workers

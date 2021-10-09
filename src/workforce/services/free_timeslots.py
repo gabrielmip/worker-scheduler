@@ -33,12 +33,39 @@ def get_free_timeslots(is_live: bool = False):
 
 
 def _is_timeslot_available(timeslot, calendars):
-    for calendar in calendars:
-        if (_is_calendar_available_for_timeslot(calendar['busy_timeslots'], timeslot)
-                and not _is_calendar_available_for_timeslot(calendar['availabilities'], timeslot)):
-            return True, calendar['id']
+    available_calendars = list(filter(
+        lambda calendar: (
+            _is_calendar_available_for_timeslot(
+                calendar['busy_timeslots'], timeslot)
+            and not _is_calendar_available_for_timeslot(calendar['availabilities'], timeslot)),
+        calendars
+    ))
 
-    return False, None
+    if not available_calendars:
+        return False, None
+
+    available_calendars.sort(
+        key=lambda calendar: _count_busy_timeslots(calendar, timeslot))
+    least_busy_calendar = available_calendars[0]
+
+    return True, least_busy_calendar['id']
+
+
+def _count_busy_timeslots(calendar, timeslot):
+    timeslot_day = timeslot[0].to(
+        calendar['worker_timezone']).format('YYYY-MM-DD')
+
+    return len(
+        list(
+            filter(
+                lambda busy_timeslot: (
+                    busy_timeslot[0].to(
+                        calendar['worker_timezone']).format('YYYY-MM-DD')
+                ) == timeslot_day,
+                calendar['busy_timeslots']
+            )
+        )
+    )
 
 
 def _free_timeslots_to_choices(timeslots, user_timezone, locale):
