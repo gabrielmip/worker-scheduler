@@ -91,7 +91,7 @@ def _free_timeslots_to_choices(timeslots, user_timezone, locale):
     ]
 
 
-def _get_timeslots_to_analyse(worker_calendars, duration: int = 20):
+def _get_timeslots_to_analyse(worker_calendars, duration: int):
     start_time, end_time = get_range_to_analyse_availability()
 
     for calendar in worker_calendars:

@@ -92,3 +92,20 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
                 },
             ]
         )
+
+    def test_start_in_the_past_does_not_show_up(self):
+        Availability.objects.all().delete()
+
+        right_now = (get_today_date_for_timezone(self.nihon_worker.timezone)
+                     .replace(second=0, microsecond=0))
+
+        Availability.objects.create(
+            worker=self.nihon_worker,
+            day_of_the_week=right_now.date().weekday() + 1,
+            start_time=right_now.shift(hours=-1).time(),
+            end_time=right_now.shift(hours=3).time(),
+            is_live=True
+        )
+
+        response = get_free_timeslots(is_live=True)
+        self.assertEqual(response, [])
