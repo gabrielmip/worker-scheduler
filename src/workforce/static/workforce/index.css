@@ -208,10 +208,6 @@ h2.title {
     position: relative;
 }
 
-/* .canceled-event .user-photo-container {
-    filter: grayscale(1);
-} */
-
 .canceled-event .event-start-time {
     background-color: var(--orange);
 }
@@ -257,25 +253,15 @@ h2.title {
     .event {
         flex-direction: column;
         padding: 12px 12px 2px 12px !important;
-        max-height: calc(100vh - 36px - 24px);
+        max-height: 900px;
     }
     .user-photo-container {
         max-width: unset !important;
         overflow-y: hidden;
         text-align: center;
-        background-color: #ccc;
-        /* background: url(/images/-715466166576137530/asdf.jpg);
-        background-position: center;
-        filter: blur(5px);
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover; */
     }
     .user-photo {
-        width: unset;
-        max-width: 100%;
-        height: 100%;
+        width: 100%;
     }
     .event-description {
         margin-left: 0px !important;
