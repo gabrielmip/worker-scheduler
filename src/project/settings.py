@@ -154,3 +154,5 @@ EXTERNAL_URL_BASE_PATH = 'http://127.0.0.1:8000'
 LOGIN_REDIRECT_URL = 'my_schedule'
 
 LOGOUT_REDIRECT_URL = 'welcome'
+
+ALLOWED_HOSTS = ['*']

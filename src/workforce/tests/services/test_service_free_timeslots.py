@@ -34,20 +34,12 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
             [
                 {
                     'timeslot': (
-                        get_tomorrow(self.nihon_worker.timezone,
-                                     minute=0, hour=1),
-                        get_tomorrow(self.nihon_worker.timezone,
-                                     minute=20, hour=1),
-                    ),
-                    'calendar_id': self.nihon_worker.calendar_id
-                },
-                {
-                    'timeslot': (
                         get_tomorrow(self.sampa_worker.timezone,
                                      minute=0, hour=0),
                         get_tomorrow(self.sampa_worker.timezone,
                                      minute=20, hour=0),
                     ),
+                    'available_count': 1,
                     'calendar_id': self.sampa_worker.calendar_id
                 },
                 {
@@ -57,6 +49,7 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
                         get_tomorrow(self.sampa_worker.timezone,
                                      minute=40, hour=0),
                     ),
+                    'available_count': 1,
                     'calendar_id': self.sampa_worker.calendar_id
                 },
                 {
@@ -66,9 +59,19 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
                         get_tomorrow(self.sampa_worker.timezone,
                                      minute=0, hour=1),
                     ),
+                    'available_count': 1,
                     'calendar_id': self.sampa_worker.calendar_id
                 },
-
+                {
+                    'timeslot': (
+                        get_tomorrow(self.nihon_worker.timezone,
+                                     minute=0, hour=1),
+                        get_tomorrow(self.nihon_worker.timezone,
+                                     minute=20, hour=1),
+                    ),
+                    'available_count': 1,
+                    'calendar_id': self.nihon_worker.calendar_id
+                }
             ]
         )
 
@@ -84,6 +87,7 @@ class TestGetFreeTimeslots(WorkerAvailabilityDbSetup):
                         get_tomorrow(self.sampa_worker.timezone,
                                      minute=0, hour=11),
                     ),
+                    'available_count': 1,
                     'calendar_id': self.sampa_worker.calendar_id
                 },
             ]
