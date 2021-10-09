@@ -39,3 +39,8 @@ def index_by(items, key):
 
 def get_locale_from_settings(language_code):
     return language_code.split('-')[0]
+
+
+def partition(items, partition_size):
+    for index in range(0, len(items), partition_size):
+        yield items[index: index + partition_size]
