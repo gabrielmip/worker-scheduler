@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.operations.RunSQL(
-            'alter table auth_user_groups rename column user_id to myuser_id'
+            ''
+            # 'alter table auth_user_groups rename column user_id to myuser_id'
         )
     ]
