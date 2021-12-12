@@ -74,20 +74,25 @@ def _count_busy_timeslots(calendar, timeslot):
     )
 
 
-def _free_timeslots_to_choices(timeslots, user_timezone, locale):
+def _free_timeslots_to_choices(timeslot_objs, user_timezone, locale):
     def timeslot_to_identifier(timeslot):
         return timeslot[0].isoformat()
 
+    def to_choice(timeslot_obj):
+        datetime = format_datetime(
+            timeslot_obj['timeslot'][0].to(user_timezone).datetime,
+            "EEEE, H'h'mm",
+            locale=locale
+        ).capitalize()
+
+        return f'{datetime} ({timeslot_obj["available_count"]})'
+
     return [
         (
-            timeslot_to_identifier(timeslot['timeslot']),
-            format_datetime(
-                timeslot['timeslot'][0].to(user_timezone).datetime,
-                "EEEE, H'h'mm",
-                locale=locale
-            ).capitalize(),
+            timeslot_to_identifier(timeslot_obj['timeslot']),
+            to_choice(timeslot_obj),
         )
-        for timeslot in timeslots
+        for timeslot_obj in timeslot_objs
     ]
 
 
