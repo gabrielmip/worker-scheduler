@@ -47,6 +47,15 @@ a.disabled {
     padding: 0px;
 }
 
+.scrolled-list {
+    padding: 8px 8px 8px 32px;
+    border-radius: 5px;
+    border: 1px #ccc solid;
+    background: white;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 .g16 {
     gap: 16px;
 }

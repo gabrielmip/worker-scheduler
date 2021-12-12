@@ -89,4 +89,13 @@
     {% endif %}
 </p>
 
+{% if next_event and other_timeslots %}
+<p>Outros horários disponíveis:</p>
+<ul class="scrolled-list">
+    {% for timeslot in other_timeslots %}
+    <li>{{ timeslot.1 }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% endtimezone %}
