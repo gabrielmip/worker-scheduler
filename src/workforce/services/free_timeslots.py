@@ -85,7 +85,7 @@ def _free_timeslots_to_choices(timeslot_objs, user_timezone, locale):
             locale=locale
         ).capitalize()
 
-        return f'{datetime} ({timeslot_obj["available_count"]})'
+        return f'{datetime} ({timeslot_obj["available_count"]} disp.)'
 
     return [
         (
