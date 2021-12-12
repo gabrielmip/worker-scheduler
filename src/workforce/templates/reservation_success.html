@@ -11,7 +11,7 @@
         {% trans "Pronto! Sua reserva está feita." %}
     </p>
 
-    {% include "event_instructions.html" with event=event has_timeslots_available=True %}
+    {% include "event_instructions.html" with event=event has_timeslots_available=True other_timeslots=other_timeslots %}
 
     {% endtimezone %}
 
