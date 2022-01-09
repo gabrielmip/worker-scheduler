@@ -42,6 +42,9 @@ def send_event_email(work_event_id, email_template_name, email_subject):
         possible to store it in a database.
     '''
     work_event = WorkEvent.objects.get(pk=work_event_id)
+    if work_event.canceled_at:
+        return
+
     cancelling_url = f"{settings.EXTERNAL_URL_BASE_PATH}/cancel/{work_event.cancelling_token}"
     context = {
         'event': work_event,
