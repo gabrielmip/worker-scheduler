@@ -134,7 +134,7 @@ class WorkEvent(models.Model):
     cancelling_token = models.CharField(
         max_length=256, default=None, null=True)
     created_at = models.DateTimeField(
-        _('Data criaçã0'), auto_now=True, blank=True)
+        _('Data criação'), auto_now=True, blank=True)
     canceled_at = models.DateTimeField(
         _('Data cancelamento'), null=True, default=None)
 
