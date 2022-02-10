@@ -17,7 +17,7 @@ Informações:
 {% if event.is_live %}
 Obrigatório:
 
-- Ter tomado no mínimo a primeira dose da vacina contra COVID.
+- Ter tomado no mínimo duas doses da vacina contra COVID.
 - Não ter apresentado sintomas de gripe ou COVID nos últimos 15 dias.
 - Usar máscara cobrindo nariz e boca enquanto estiver no local.
 - Higienizar as mãos ao chegar no local.
