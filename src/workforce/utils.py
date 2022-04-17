@@ -44,3 +44,7 @@ def get_locale_from_settings(language_code):
 def partition(items, partition_size):
     for index in range(0, len(items), partition_size):
         yield items[index: index + partition_size]
+
+
+def enum_entries(enum_class):
+    return [(t, t.value) for t in enum_class]

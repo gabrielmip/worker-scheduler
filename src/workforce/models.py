@@ -1,3 +1,4 @@
+from enum import Enum
 import pytz
 import arrow
 
@@ -7,7 +8,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from workforce.utils import build_path_for_user_picture
+from workforce.utils import build_path_for_user_picture, enum_entries
 
 
 TIMEZONES_AS_CHOICES = [(a, a.replace('_', ' '))
@@ -86,8 +87,24 @@ class Availability(models.Model):
 
 
 class Patient(models.Model):
+
     def __str__(self):
         return f"{self.full_name} ({self.email_address})"
+
+    def save(self, **kwargs):
+        if self.auth_user is None:
+            self.auth_user = MyUser.objects.create_user(
+                username=self.email_address,
+                email=self.email_address,
+                first_name=self.full_name,
+                first_login=True,
+                password=MyUser.objects.make_random_password(length=30),
+            )
+        else:
+            self.auth_user.username = self.email_address
+            self.auth_user.email = self.email_address
+            self.auth_user.first_name = self.full_name
+        super().save(**kwargs)
 
     auth_user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -150,3 +167,19 @@ class WorkEvent(models.Model):
                 name='idx_active_event_start_calendar_user'
             )
         ]
+
+
+# class NotificationType(Enum):
+#     invalid_email = 'Email inválido'
+
+
+# class Notification(models.Model):
+
+#     user_id = models.ForeignKey(
+#         settings.AUTH_USER_MODEL,
+#         null=True,
+#         on_delete=models.CASCADE
+#     )
+#     notification_type = models.CharField(max_length=256, choices=enum_entries(NotificationType))
+#     seen_count = models.IntegerField(default=0)
+#     last_seen_at = models.DateTimeField(null=True)
