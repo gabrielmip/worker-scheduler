@@ -169,17 +169,23 @@ class WorkEvent(models.Model):
         ]
 
 
-# class NotificationType(Enum):
-#     invalid_email = 'Email inválido'
+class NotificationType(Enum):
+
+    invalid_email = 'Email inválido'
+    no_face_on_photo = 'Foto não mostra o rosto'
+    other_person_on_photo = 'Foto e nome são de pessoas diferentes'
 
 
-# class Notification(models.Model):
+class Notification(models.Model):
 
-#     user_id = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         null=True,
-#         on_delete=models.CASCADE
-#     )
-#     notification_type = models.CharField(max_length=256, choices=enum_entries(NotificationType))
-#     seen_count = models.IntegerField(default=0)
-#     last_seen_at = models.DateTimeField(null=True)
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, # in case the notification is for every one
+        on_delete=models.CASCADE
+    )
+    notification_type = models.CharField( _('Notificação'), max_length=256, choices=enum_entries(NotificationType))
+    custom_message = models.CharField( _('Mensagem personalizada'), null=True, max_length=500)
+    active = models.BooleanField( _('Ativa'), default=True)
+    seen_count = models.IntegerField(_('Vezes vista'), default=0)
+    last_seen_at = models.DateTimeField(_('Última visualização'), null=True)
+    created_at = models.DateTimeField( _('Data de criação'), auto_now=True, blank=True)
