@@ -1,0 +1,29 @@
+{% load tz %}
+{% load i18n %}
+{% timezone event.user.timezone %}
+
+<h4 class="mt-32">Cancelar</h4>
+<p>
+    Caso queira cancelar, clique no link de cancelamento no email que enviamos quando você agendou a sessão.
+    {% if not has_timeslots_available %}
+    <strong>Obs.: não há horários disponíveis nos próximos 7 dias.</strong>
+    {% endif %}
+</p>
+
+{% if event and has_timeslots_available %}
+<p>Outros horários disponíveis para Reiki a distância:</p>
+<ul class="scrolled-list form-instruction">
+    {% for timeslot in other_timeslots.remote %}
+    <li>{{ timeslot.1 }}</li>
+    {% endfor %}
+</ul>
+
+<p>Outros horários disponíveis para Reiki presencial:</p>
+<ul class="scrolled-list">
+    {% for timeslot in other_timeslots.live %}
+    <li>{{ timeslot.1 }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endtimezone %}

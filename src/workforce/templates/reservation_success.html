@@ -7,11 +7,20 @@
     <h2 class="title">{% trans "Confirmação" %}</h2>
 
     {% timezone event.user.timezone %}
-    <p class="form-instruction">
+    <p>
         {% trans "Pronto! Sua reserva está feita." %}
     </p>
 
-    {% include "event_instructions.html" with event=event has_timeslots_available=True other_timeslots=other_timeslots %}
+    <p>
+        Enviamos agora um email para você com as informações completas sobre o agendamento.
+    </p>
+
+    <p>
+        Em caso de dúvida, <a class="alert-link" href="mailto:contato@reikidosantaines.site">clique aqui</a>
+        e entre em contato conosco.
+    </p>
+
+    {% include "cancelling_instructions.html" with event=event has_timeslots_available=has_timeslots_available other_timeslots=other_timeslots %}
 
     {% endtimezone %}
 

@@ -2,62 +2,6 @@
 {% load i18n %}
 {% timezone event.user.timezone %}
 
-<p>
-    {% if event.is_live %}
-        {% trans "Lembre-se de chegar com 5 minutos de antecedência." %}
-    {% else %}
-        {% trans "Nós enviaremos um lembrete no email" %}
-        {{ event.user.email_address }}
-        {% trans "perto do horário de início da sessão." %}
-    {% endif %}
-</p>
-
-<div>
-<table class="table table-light">
-    <tbody>
-        <tr>
-            <th scope="row">{% trans "Sessão" %}</th>
-            <td>
-                {% if event.is_live %}
-                    {% trans "Presencial" %}
-                {% else %}
-                    {% trans "À distância" %}
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">{% trans "Data" %}</th>
-            <td>
-                {{ event.start | date }},
-                {% trans "às" %}
-                {{ event.start | time }}.
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">{% trans "Duração" %}</th>
-            <td>
-                {% if event.is_live %}
-                    {% trans "30 minutos" %}
-                {% else %}
-                    {% trans "15 minutos" %}
-                {% endif %}
-            </td>
-        </tr>
-        {% if event.is_live %}
-        <tr>
-            <th scope="row">{% trans "Local" %}</th>
-            <td>
-                R. Conceição do Pará, 946<br />(Porta do meio)<br />Santa Inês, Belo Horizonte - MG<br />
-                <a href="https://goo.gl/maps/GPBGCqVY67VSikbX6" target="_blank" rel="noreferrer noopener">
-                    {% trans "Ver no Maps" %}
-                </a>
-            </td>
-        </tr>
-        {% endif %}
-    </tbody>
-</table>
-</div>
-
 {% if event.is_live %}
 <h4 class="mt-32">Obrigatório</h4>
 <ol class="contained-list">
@@ -81,21 +25,6 @@
 </p>
 {% endif %}
 
-<h4 class="mt-32">Cancelar</h4>
-<p>
-    Caso queira cancelar, clique no link de cancelamento no email que enviamos para {{ event.user.email_address }}.
-    {% if not has_timeslots_available %}
-    <strong>Obs.: não há horários disponíveis nos próximos 7 dias.</strong>
-    {% endif %}
-</p>
-
-{% if event and other_timeslots %}
-<p>Outros horários disponíveis:</p>
-<ul class="scrolled-list">
-    {% for timeslot in other_timeslots %}
-    <li>{{ timeslot.1 }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+{% include "cancelling_instructions.html" with event=event has_timeslots_available=has_timeslots_available other_timeslots=other_timeslots %}
 
 {% endtimezone %}
