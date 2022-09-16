@@ -14,7 +14,7 @@ def reservation_success(request, user):
     if not next_event:
         return HttpResponse(
             'Algo de errado aconteceu. Se você tiver acabado de '
-            'marcar uma sessão e recebeu esta mensagem, por favor, '
+            'agendar uma sessão e recebeu esta mensagem, por favor, '
             'mande um email para contato@reikidosantaines.site')
 
     other_timeslots = None if not next_event else {

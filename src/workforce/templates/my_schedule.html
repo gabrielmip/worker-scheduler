@@ -30,8 +30,8 @@
 <div class="message-for-worker">
     <p>{% trans "Olá" %}, {{worker_name}}!</p>
     <p>
-        {% trans 'Aqui, ficam as sessões marcadas para você no dia selecionado.' %}
-        {% trans 'Vamos mostrar um aviso aqui na página quando novas sessões forem marcadas.' %}
+        {% trans 'Aqui, ficam as sessões agendadas para você no dia selecionado.' %}
+        {% trans 'Vamos mostrar um aviso aqui na página quando novas sessões forem agendadas.' %}
     </p>
     <label for="selected-day"><strong>{% trans 'Selecionar dia' %}</strong>:</label>
     <input
@@ -111,7 +111,7 @@
 
 {% if not today_events %}
 <div>
-    {% trans "Você não tem nenhuma sessão marcada para o dia selecionado." %}
+    {% trans "Você não tem nenhuma sessão agendada para o dia selecionado." %}
 </div>
 {% endif %}
 

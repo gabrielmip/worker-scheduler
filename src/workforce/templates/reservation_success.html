@@ -8,7 +8,7 @@
 
     {% timezone event.user.timezone %}
     <p>
-        {% trans "Pronto! Sua reserva está feita." %}
+        <strong>{% trans "Pronto! Sua reserva está feita." %}</strong>
     </p>
 
     <p>
@@ -20,6 +20,7 @@
         e entre em contato conosco.
     </p>
 
+    <hr />
     {% include "cancelling_instructions.html" with event=event has_timeslots_available=has_timeslots_available other_timeslots=other_timeslots %}
 
     {% endtimezone %}

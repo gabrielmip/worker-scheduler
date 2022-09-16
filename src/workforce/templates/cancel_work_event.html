@@ -11,7 +11,7 @@
     {% else %}
         {% timezone event.user.timezone %}
         <p class="form-instruction">
-            {% trans "Você deseja mesmo desmarcar sua sessão marcada para" %}
+            {% trans "Você deseja mesmo cancelar sua sessão agendada para" %}
             {{ event.start | date }},
             {% trans "às" %}
             {{ event.start | time }}?
@@ -23,7 +23,7 @@
         </a>
         <form style="display: inline-block" method="post" action="{% url 'cancel_work_event' event.cancelling_token %}">
             {% csrf_token %}
-            <input class="btn btn-danger" type="submit" value="{% trans 'Desmarcar sessão' %}">
+            <input class="btn btn-danger" type="submit" value="{% trans 'Cancelar sessão' %}">
         </form>
     {% endif %}
 

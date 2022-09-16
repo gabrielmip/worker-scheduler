@@ -7,18 +7,19 @@
     <h2 class="title">{% trans "Escolha o tipo de sessão" %}</h2>
 
     {% if next_event %}
-    {% timezone user.timezone %}
-    <p>Parece que você já tem um Reiki marcado com a gente.</p>
+        {% timezone user.timezone %}
+        <p><strong>Parece que você já tem um Reiki agendado com a gente.</strong></p>
 
-    <p>
-        Confira as informações completas sobre o agendamento no email que enviamos para você.
-        Em caso de dúvida, <a class="alert-link" href="mailto:contato@reikidosantaines.site">clique aqui</a>
-        e entre em contato conosco.
-    </p>
+        <p>
+            Confira as informações completas sobre o agendamento no email que enviamos para você.
+            Em caso de dúvida, <a class="alert-link" href="mailto:contato@reikidosantaines.site">clique aqui</a>
+            e entre em contato conosco.
+        </p>
 
-    {% include "cancelling_instructions.html" with event=next_event has_timeslots_available=has_timeslots_available other_timeslots=other_timeslots %}
+        <hr />
+        {% include "cancelling_instructions.html" with event=next_event has_timeslots_available=has_timeslots_available other_timeslots=other_timeslots %}
 
-    {% endtimezone %}
+        {% endtimezone %}
     {% endif %}
 
 
