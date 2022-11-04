@@ -25,14 +25,14 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
+            - name: Install poetry
+              run: pip install poetry==1.1.8
+
             # this provides built-in cache for poetry
             - uses: actions/setup-python@v4
               with:
                   python-version: ${{ matrix.version }}
                   cache: 'poetry'
-
-            - name: Install poetry
-              run: pip install poetry==1.1.8
 
             - name: Install dependencies
               run: poetry install
