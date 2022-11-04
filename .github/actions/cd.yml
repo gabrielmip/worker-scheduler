@@ -1,0 +1,53 @@
+name: Continuous deployment
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+      key:
+        required: true
+        type: string
+
+      hostname:
+        required: true
+        type: string
+
+      known_hosts:
+        required: true
+        type: string
+
+      config:
+        required: true
+        type: string
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        name: Deploy ${{ inputs.environment }}
+
+        steps:
+            - name: Install SSH Key
+              uses: shimataro/ssh-key-action@v2
+              with:
+                key: ${{ inputs.key }}
+                known_hosts: ${{ inputs.known_hosts }}
+                config: ${{ inputs.config }}
+
+            - uses: actions/checkout@v2
+
+            - uses: actions/setup-python@v2
+              with:
+                  python-version: 3.9.6
+
+            - name: Install poetry
+              run: pip install poetry==1.1.8
+
+            - name: Install dependencies
+              run: poetry install
+
+            - name: Deploy files to server
+              run: poetry run python -m deploy.fabfile ${{ inputs.hostname }}

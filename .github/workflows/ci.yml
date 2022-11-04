@@ -1,8 +1,9 @@
-name: build
+name: Continuous integration
 on:
     push:
         branches:
             - main
+            - cd-workflow  
         tags:
             - "!*" # Do not execute on tags
     pull_request:
@@ -15,14 +16,18 @@ jobs:
             run:
                 shell: bash
                 working-directory: src
-
+                    
+        strategy:
+            matrix:
+                version: ['3.7', '3.10.1']
+            
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
 
             - uses: actions/setup-python@v2
               with:
-                  python-version: 3.9.6
+                  python-version: ${{ matrix.version }}
 
             - name: Install poetry
               run: pip install poetry==1.1.8
@@ -43,3 +48,28 @@ jobs:
                   workingDirectory: src
                   coverageCommand: poetry run coverage xml
                   coverageLocations: ${{ github.workspace }}/src/coverage.xml:coverage.py
+                      
+    # staging:
+    #     needs: tests
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: ./.github/actions/cd.yml
+    #           with:
+    #             environment: staging
+    #             key: ${{ secrets.STAGING_SSH_KEY }} 
+    #             hostname: ${{ secrets.STAGING_SSH_HOSTNAME }} 
+    #             known_hosts: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }} 
+    #             config: ${{ secrets.STAGING_SSH_CONFIG }} 
+                
+    # production:
+    #     needs: tests
+    #     runs-on: ubuntu-latest
+    #     if: github.ref_name == 'main'
+    #     steps:
+    #         - uses: ./.github/actions/cd.yml
+    #           with:
+    #             environment: production
+    #             key: ${{ secrets.PRODUCTION_SSH_KEY }} 
+    #             hostname: ${{ secrets.PRODUCTION_SSH_HOSTNAME }} 
+    #             known_hosts: ${{ secrets.PRODUCTION_SSH_KNOWN_HOSTS }} 
+    #             config: ${{ secrets.PRODUCTION_SSH_CONFIG }} 

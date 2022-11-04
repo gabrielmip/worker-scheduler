@@ -1,3 +1,4 @@
+import sys
 import os
 import subprocess
 
@@ -5,14 +6,13 @@ import fabric
 import sysrsync
 
 
-ssh_destination = 'reiki-do-santa-ines'
 destination = "/home/gabriel/worker-scheduler"
 repo_base_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 source_files_root = os.path.join(repo_base_folder, "src")
 
 
 
-def send_source_files():
+def send_source_files(ssh_destination):
     create_destination_folder(destination, ssh_destination)
     ignored_patterns = get_ignored_patterns("src")
 
@@ -46,7 +46,7 @@ def get_ignored_patterns(work_tree):
     ]
 
 
-def send_production_specific_files():
+def send_production_specific_files(ssh_destination):
     file_paths = [
         'poetry.lock',
         'src/project/production_settings_extension.py',
@@ -64,5 +64,8 @@ def send_production_specific_files():
 
 
 if __name__ == "__main__":
-    send_source_files()
-    send_production_specific_files()
+    # send_source_files(sys.argv[1])
+    # send_production_specific_files()
+    print(f'Deploying to {sys.argv[1]}...')
+    print('Done!')
+    
