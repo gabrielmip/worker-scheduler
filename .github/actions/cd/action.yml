@@ -1,0 +1,51 @@
+name: Continuous deployment
+description: Deploys the code to the active server
+
+inputs:
+  key:
+    description: 'The servers SSH key'
+    required: true
+
+  hostname:
+    description: 'The servers SSH hostname defined in config'
+    required: true
+
+  known_hosts:
+    description: 'The line from .ssh/known_hosts for the server'
+    required: true
+
+  config:
+    description: 'The contents of .ssh/config with the servers hostname defined'
+    required: true
+
+runs:
+    using: "composite"
+    steps:
+        - name: Install SSH Key
+          uses: shimataro/ssh-key-action@v2
+          with:
+            key: ${{ inputs.key }}
+            known_hosts: ${{ inputs.known_hosts }}
+            config: ${{ inputs.config }}
+
+        - uses: actions/checkout@v2
+          
+        - name: Install poetry
+          run: pip install poetry==1.1.8
+          shell: bash
+          working-directory: src
+
+        # this provides built-in cache for poetry
+        - uses: actions/setup-python@v4
+          with:
+              python-version: 3.10.1
+              cache: 'poetry'
+
+        - name: Install dependencies
+          run: poetry install
+          shell: bash
+          working-directory: src
+
+        - name: Deploy files to server
+          run: poetry run python -m deploy.fabfile ${{ inputs.hostname }}
+          shell: bash

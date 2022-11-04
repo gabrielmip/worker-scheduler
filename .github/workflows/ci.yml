@@ -53,13 +53,17 @@ jobs:
                       
     staging:
         # needs: tests
-        uses: ./.github/workflows/cd.yml
-        with:
-          environment_name: staging
-          key: ${{ secrets.STAGING_SSH_KEY }} 
-          hostname: ${{ secrets.STAGING_SSH_HOSTNAME }} 
-          known_hosts: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }} 
-          config: ${{ secrets.STAGING_SSH_CONFIG }} 
+        runs-on: ubuntu-latest
+        environment: staging
+        steps:
+            - uses: actions/checkout@v2
+              
+            - uses: ./.github/actions/cd
+              with:
+                key: ${{ secrets.STAGING_SSH_KEY }} 
+                hostname: ${{ secrets.STAGING_SSH_HOSTNAME }} 
+                known_hosts: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }} 
+                config: ${{ secrets.STAGING_SSH_CONFIG }} 
 
     # production:
     #     needs: tests
