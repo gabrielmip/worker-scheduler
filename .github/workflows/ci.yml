@@ -64,19 +64,18 @@ jobs:
                 hostname: ${{ secrets.STAGING_SSH_HOSTNAME }} 
                 known_hosts: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }} 
                 config: ${{ secrets.STAGING_SSH_CONFIG }} 
-
-    # production:
-    #     needs: tests
-    #     runs-on: ubuntu-latest
-    #     if: github.ref_name == 'main'
-    #     environment: production
-    #     steps:
-    #         - uses: actions/checkout@v2
-    #           
-    #         - uses: ./.github/actions/cd.yml
-    #           with:
-    #             environment: production
-    #             key: ${{ secrets.PRODUCTION_SSH_KEY }} 
-    #             hostname: ${{ secrets.PRODUCTION_SSH_HOSTNAME }} 
-    #             known_hosts: ${{ secrets.PRODUCTION_SSH_KNOWN_HOSTS }} 
-    #             config: ${{ secrets.PRODUCTION_SSH_CONFIG }} 
+                    
+    production:
+        needs: tests
+        runs-on: ubuntu-latest
+        environment: production
+        # if: github.ref_name == 'main'
+        steps:
+            - uses: actions/checkout@v2
+              
+            - uses: ./.github/actions/cd
+              with:
+                key: ${{ secrets.PRODUCTION_SSH_KEY }} 
+                hostname: ${{ secrets.PRODUCTION_SSH_HOSTNAME }} 
+                known_hosts: ${{ secrets.PRODUCTION_SSH_KNOWN_HOSTS }} 
+                config: ${{ secrets.PRODUCTION_SSH_CONFIG }} 
