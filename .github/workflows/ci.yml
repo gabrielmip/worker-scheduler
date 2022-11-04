@@ -25,7 +25,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-python@v2
+            # this provides built-in cache for poetry
+            - uses: actions/setup-python@v4
               with:
                   python-version: ${{ matrix.version }}
 
@@ -49,22 +50,24 @@ jobs:
                   coverageCommand: poetry run coverage xml
                   coverageLocations: ${{ github.workspace }}/src/coverage.xml:coverage.py
                       
-    # staging:
-    #     needs: tests
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - uses: ./.github/actions/cd.yml
-    #           with:
-    #             environment: staging
-    #             key: ${{ secrets.STAGING_SSH_KEY }} 
-    #             hostname: ${{ secrets.STAGING_SSH_HOSTNAME }} 
-    #             known_hosts: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }} 
-    #             config: ${{ secrets.STAGING_SSH_CONFIG }} 
-                
+    staging:
+        needs: tests
+        runs-on: ubuntu-latest
+        environment: staging
+        steps:
+            - uses: ./.github/actions/cd.yml
+              with:
+                environment_name: staging
+                key: ${{ secrets.STAGING_SSH_KEY }} 
+                hostname: ${{ secrets.STAGING_SSH_HOSTNAME }} 
+                known_hosts: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }} 
+                config: ${{ secrets.STAGING_SSH_CONFIG }} 
+
     # production:
     #     needs: tests
     #     runs-on: ubuntu-latest
     #     if: github.ref_name == 'main'
+    #     environment: production
     #     steps:
     #         - uses: ./.github/actions/cd.yml
     #           with:

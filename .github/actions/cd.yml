@@ -3,7 +3,7 @@ name: Continuous deployment
 on:
   workflow_call:
     inputs:
-      environment:
+      environment_name:
         required: true
         type: string
 
@@ -27,7 +27,7 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
 
-        name: Deploy ${{ inputs.environment }}
+        name: Deploy ${{ inputs.environment_name }}
 
         steps:
             - name: Install SSH Key
@@ -39,9 +39,10 @@ jobs:
 
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-python@v2
+            # this provides built-in cache for poetry
+            - uses: actions/setup-python@v4
               with:
-                  python-version: 3.9.6
+                  python-version: 3.10.1
 
             - name: Install poetry
               run: pip install poetry==1.1.8
