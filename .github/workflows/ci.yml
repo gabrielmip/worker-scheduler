@@ -55,6 +55,8 @@ jobs:
         runs-on: ubuntu-latest
         environment: staging
         steps:
+            - uses: actions/checkout@v2
+              
             - uses: ./.github/actions/cd.yml
               with:
                 environment_name: staging
@@ -69,6 +71,8 @@ jobs:
     #     if: github.ref_name == 'main'
     #     environment: production
     #     steps:
+    #         - uses: actions/checkout@v2
+    #           
     #         - uses: ./.github/actions/cd.yml
     #           with:
     #             environment: production
