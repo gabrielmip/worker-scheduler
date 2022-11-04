@@ -53,7 +53,7 @@ jobs:
                       
     staging:
         # needs: tests
-        uses: ./.github/actions/cd.yml
+        uses: ./.github/workflows/cd.yml
         with:
           environment_name: staging
           key: ${{ secrets.STAGING_SSH_KEY }} 
