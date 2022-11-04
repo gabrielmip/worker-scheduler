@@ -1,4 +1,4 @@
-name: Continuous integration
+name: Continuous integration + Deploy
 on:
     push:
         branches:
@@ -11,48 +11,48 @@ on:
             - "**"
 
 jobs:
-    # tests:
-    #     defaults:
-    #         run:
-    #             shell: bash
-    #             working-directory: src
+    tests:
+        defaults:
+            run:
+                shell: bash
+                working-directory: src
                     
-    #     strategy:
-    #         matrix:
-    #             version: ['3.7', '3.10.1']
+        strategy:
+            matrix:
+                version: ['3.7', '3.10.1']
             
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - uses: actions/checkout@v2
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
 
-    #         - name: Install poetry
-    #           run: pip install poetry==1.1.8
+            - name: Install poetry
+              run: pip install poetry==1.1.8
 
-    #         # this provides built-in cache for poetry
-    #         - uses: actions/setup-python@v4
-    #           with:
-    #               python-version: ${{ matrix.version }}
-    #               cache: 'poetry'
+            # this provides built-in cache for poetry
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.version }}
+                  cache: 'poetry'
 
-    #         - name: Install dependencies
-    #           run: poetry install
+            - name: Install dependencies
+              run: poetry install
 
-    #         - run: cp project/emails.py.dist project/emails.py
+            - run: cp project/emails.py.dist project/emails.py
 
-    #         - name: Run tests
-    #           run: INCLUDE_E2E=true poetry run coverage run --source='.' manage.py test workforce
+            - name: Run tests
+              run: INCLUDE_E2E=true poetry run coverage run --source='.' manage.py test workforce
 
-    #         - name: Code climate
-    #           uses: paambaati/codeclimate-action@v2.7.5
-    #           env:
-    #               CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-    #           with:
-    #               workingDirectory: src
-    #               coverageCommand: poetry run coverage xml
-    #               coverageLocations: ${{ github.workspace }}/src/coverage.xml:coverage.py
+            - name: Code climate
+              uses: paambaati/codeclimate-action@v2.7.5
+              env:
+                  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+              with:
+                  workingDirectory: src
+                  coverageCommand: poetry run coverage xml
+                  coverageLocations: ${{ github.workspace }}/src/coverage.xml:coverage.py
                       
     staging:
-        # needs: tests
+        needs: tests
         runs-on: ubuntu-latest
         environment: staging
         steps:

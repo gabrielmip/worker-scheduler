@@ -44,7 +44,6 @@ runs:
         - name: Install dependencies
           run: poetry install
           shell: bash
-          working-directory: src
 
         - name: Deploy files to server
           run: poetry run python -m deploy.fabfile ${{ inputs.hostname }}
