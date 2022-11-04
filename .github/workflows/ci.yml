@@ -69,7 +69,7 @@ jobs:
         needs: tests
         runs-on: ubuntu-latest
         environment: production
-        # if: github.ref_name == 'main'
+        if: github.ref_name == 'main'
         steps:
             - uses: actions/checkout@v2
               
