@@ -153,7 +153,11 @@ class WorkEvent(models.Model):
     created_at = models.DateTimeField(
         _('Data criação'), auto_now=True, blank=True)
     canceled_at = models.DateTimeField(
-        _('Data cancelamento'), null=True, default=None)
+        _('Data cancelamento'),
+        null=True,
+        default=None,
+        blank=True,
+    )
 
     objects = WorkEventQuerySet.as_manager()
 
