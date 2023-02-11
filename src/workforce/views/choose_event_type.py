@@ -10,14 +10,16 @@ from workforce.views.rules import finished_registration_required
 @finished_registration_required
 def choose_event_type(request, user):
     remote_count = get_available_count(is_live=False)
-    live_count = get_available_count(is_live=True)
+    live_count = (get_available_count(is_live=True)
+                  if user.can_schedule_live
+                  else 0)
     next_event = get_user_next_event(user.email_address)
     other_timeslots = None if not next_event else {
         'live': get_free_timeslot_choices(
             user.timezone,
             locale=get_locale_from_settings(settings.LANGUAGE_CODE),
             is_live=True,
-        ),
+        ) if user.can_schedule_live else [],
         'remote': get_free_timeslot_choices(
             user.timezone,
             locale=get_locale_from_settings(settings.LANGUAGE_CODE),

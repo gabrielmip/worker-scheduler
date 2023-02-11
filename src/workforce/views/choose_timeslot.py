@@ -1,5 +1,6 @@
 import arrow
 from django.http import HttpResponseRedirect
+from django.http.response import HttpResponseForbidden
 from django.shortcuts import render, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -25,10 +26,14 @@ class ChooseTimeslotView(View):
         if get_user_next_event(user.email_address):
             return HttpResponseRedirect(reverse(get_redirect_view_name(is_live)))
 
-        choices = get_free_timeslot_choices(
-            user_timezone=user.timezone,
-            locale=get_locale_from_settings(settings.LANGUAGE_CODE),
-            is_live=is_live
+        choices = (
+            []
+            if is_live and not user.can_schedule_live
+            else get_free_timeslot_choices(
+                user_timezone=user.timezone,
+                locale=get_locale_from_settings(settings.LANGUAGE_CODE),
+                is_live=is_live
+            )
         )
         appointment_form = ScheduleAnAppointment(choices)
 
@@ -44,6 +49,9 @@ class ChooseTimeslotView(View):
     def post(self, request, user, is_live):
         if get_user_next_event(user.email_address):
             return HttpResponseRedirect(reverse(get_redirect_view_name(is_live)))
+
+        if is_live and not user.can_schedule_live:
+            return HttpResponseForbidden("Você não pode agendar Reiki presencial")
 
         comment = request.POST.get('comment')
         timeslot_start = arrow.get(request.POST.get('timeslots_available'))

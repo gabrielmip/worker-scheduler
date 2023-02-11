@@ -126,6 +126,10 @@ class Patient(models.Model):
     photo = models.ImageField(
         verbose_name=_('Uma foto do seu rosto'),
         upload_to=build_path_for_user_picture)
+    can_schedule_live = models.BooleanField(
+        verbose_name=_('Pode agendar presencial?'),
+        default=True,
+    )
 
     class Meta:
         verbose_name = _('Paciente')
@@ -171,7 +175,6 @@ class WorkEvent(models.Model):
                 name='idx_active_event_start_calendar_user'
             )
         ]
-
 
 # class NotificationType(Enum):
 
