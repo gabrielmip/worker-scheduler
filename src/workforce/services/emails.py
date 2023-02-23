@@ -27,13 +27,13 @@ def setup_email_sending(work_event):
 @background()
 def send_confirmation_email(work_event_id):
     return send_event_email(
-        work_event_id, 'confirmation_email', _('Confirmação de reserva de Reiki da distância'))
+        work_event_id, 'confirmation_email', _('Confirmação de reserva de Reiki'))
 
 
 @background()
 def schedule_work_event_reminder(work_event_id):
     send_event_email(work_event_id, 'reminder_email', _(
-        'Lembrete de sessão de Reiki da distância'))
+        'Lembrete de sessão de Reiki'))
 
 
 def send_event_email(work_event_id, email_template_name, email_subject):
