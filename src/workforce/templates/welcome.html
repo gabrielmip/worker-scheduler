@@ -17,13 +17,36 @@
     </blockquote>
 
     <p>O Reiki é uma prática secular de origem tibetana para equilíbrio do corpo
-       físico, emocional e espiritual, através da canalização da energia
-       universal que o reikiano absorve e transmite para o paciente.
+        físico, emocional e espiritual, através da canalização da energia
+        universal que o reikiano absorve e transmite para o paciente.
     </p>
 
-    <p>Nós, do Reiki do Santa Inês, ofertamos Reiki à distância <span class="highlight">e retornamos com o reiki presencial com agendamento</span>.
+    <p>Nós, do Reiki do Santa Inês, ofertamos Reiki à distância e presencial com agendamento.
         Os reikis são gratuitos e você deve agendar aqui nesse site. Confira abaixo.
     </p>
+
+    <div class="card" role="alert">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: orange"></i>
+                Mudança no atendimento das terças-feiras
+            </h5>
+            <p>
+                A partir de 28/02, <strong><u>às terças-feiras</u></strong>, haverá uma pessoa liberada
+                para atender aqueles que não conseguiram ou preferiram não agendar. Estas
+                pessoas serão atendidas por <strong>ordem de chegada</strong>, a partir de 17:30h
+                e com horário máximo de chegada às 20:30h.
+            </p>
+            <p>
+                As pessoas agendadas passarão a ter uma tolerância de 10 minutos de atraso.
+                Caso ultrapassem esse tempo de tolerância e no local tenha pessoas que
+                possam ser atendidas, terão que aguardar a próxima vaga.
+            </p>
+            <p style="margin-bottom: 0;">
+                Os horários das <strong><u>quinta-feiras</u></strong> continuarão somente com agendamento.
+            </p>
+        </div>
+    </div>
 
     <h2 class="mt-5">Agendar</h2>
     <form action="{% url 'welcome' %}" method="post">
@@ -31,10 +54,7 @@
         <label for="registered_email" class="d-block mt-3">{% trans 'Endereço de email cadastrado:' %}</label>
         <div class="d-flex">
             <input type="email" name="registered_email" id="registered-email" required />
-            <input
-                class="btn btn-primary cta-button ml-2"
-                type="submit"
-                value="{% trans 'Entrar' %}" />
+            <input class="btn btn-primary cta-button ml-2" type="submit" value="{% trans 'Entrar' %}" />
         </div>
         {% if error_message %}
         <small class="text-danger">{{ error_message }}</small>
