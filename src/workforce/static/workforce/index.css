@@ -60,6 +60,10 @@ a.disabled {
     gap: 16px;
 }
 
+.mb-0 {
+    margin-bottom: 0px;
+}
+
 .mt-32 {
     margin-top: 32px;
 }
