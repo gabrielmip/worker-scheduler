@@ -5,11 +5,9 @@ description = ""
 authors = []
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "3.10.13"
 requests = "^2.21.0"
 Django = "^3.2.7"
-mypy = "^0.770"
-mypy-extensions = "^0.4.3"
 google-api-python-client = "^1.8.0"
 google-auth-httplib2 = "^0.0.3"
 google-auth-oauthlib = "^0.4.1"
@@ -29,8 +27,6 @@ django-anymail = {extras = ["mailgun"], version = "^8.4"}
 [tool.poetry.dev-dependencies]
 rope = "^0.16.0"
 pylint = "^2.4.4"
-mypy_extensions = "^0.4.3"
-mypy = "^0.770"
 jupyter = "^1.0.0"
 coverage = "^5.0.4"
 fabric = "^2.5.0"
