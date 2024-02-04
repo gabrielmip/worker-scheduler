@@ -1,6 +1,7 @@
 from enum import Enum
 import pytz
 import arrow
+from datetime import date
 
 from django.contrib.auth.models import AbstractUser
 from django.db.models.query_utils import Q
@@ -68,8 +69,8 @@ class Worker(models.Model):
     )
 
     class Meta:
-        verbose_name = _("Trabalhadora")
-        verbose_name_plural = _("Trabalhadoras")
+        verbose_name = _("Trabalhador")
+        verbose_name_plural = _("Trabalhadores")
 
     objects = WorkerQuerySet.as_manager()
 
@@ -85,6 +86,9 @@ class Availability(models.Model):
     )
     start_time = models.TimeField(_("Hora de início"))
     end_time = models.TimeField(_("Hora de término"))
+    validity_start = models.DateField(_("Válido a partir de"), default=date(2021, 1, 1))
+    validity_end = models.DateField(_("Válido até"), null=True, default=None, blank=True)
+    session_duration = models.PositiveSmallIntegerField(_("Duração da sessão"))
     is_live = models.BooleanField(_("Presencial"), default=False)
 
     class Meta:

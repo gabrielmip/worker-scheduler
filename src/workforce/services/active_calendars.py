@@ -1,8 +1,10 @@
 import arrow
 from django.conf import settings
+from django.db.models import Q
 
 from workforce.services.events import get_all_events_by_calendar
 from workforce.models import Worker
+from .types import AvailabilityTuple
 
 
 def get_active_worker_calendars(is_live=False):
@@ -19,11 +21,17 @@ def get_active_worker_calendars(is_live=False):
         is_live=is_live
     )
 
+    current_date = arrow.get().datetime
+
     return [
         {
             'id': worker.calendar_id,
             'availabilities': _map_availabilities_to_date(
-                worker.availability_set.filter(is_live=is_live).all(),
+                worker.availability_set
+                    .filter(is_live=is_live)
+                    .filter(validity_start__lte=current_date)
+                    .filter(Q(validity_end=None) | Q(validity_end__gte=current_date))
+                    .all(),
                 worker.timezone
             ),
             'worker_timezone': worker.timezone,
@@ -71,11 +79,12 @@ def _availability_as_datetime(availability, reference_datetime, worker_timezone)
     weeks_to_shift = (1 if availability_end_as_datetime <
                       reference_datetime else 0)
 
-    return (
-        _availability_to_system_zone(availability_start_as_datetime,
+    return AvailabilityTuple(
+        start=_availability_to_system_zone(availability_start_as_datetime,
                                      weeks_to_shift, worker_timezone),
-        _availability_to_system_zone(availability_end_as_datetime,
+        end=_availability_to_system_zone(availability_end_as_datetime,
                                      weeks_to_shift, worker_timezone),
+        session_duration=availability.session_duration,
     )
 
 
