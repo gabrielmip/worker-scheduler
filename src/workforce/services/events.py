@@ -4,7 +4,7 @@ from datetime import datetime
 
 from workforce.models import WorkEvent
 from workforce.utils import group_by
-from .types import Timeslot
+from .types import AvailabilityTuple
 
 
 def get_user_next_event(email_address):
@@ -56,7 +56,7 @@ def get_all_events_by_calendar(calendar_ids: list[int], start: datetime, end: da
                    .filter(is_live=is_live)
                    .all())
 
-    grouped: dict[int, Timeslot] = group_by(
+    grouped: dict[int, AvailabilityTuple] = group_by(
         work_events,
         'calendar_id',
         _work_event_to_timeslot,
@@ -65,9 +65,11 @@ def get_all_events_by_calendar(calendar_ids: list[int], start: datetime, end: da
     return grouped
 
 
-def _work_event_to_timeslot(work_event):
-    return Timeslot(
-        start=arrow.get(work_event.start), end=arrow.get(work_event.end)
+def _work_event_to_timeslot(work_event: WorkEvent):
+    return AvailabilityTuple(
+        start=arrow.get(work_event.start),
+        end=arrow.get(work_event.end),
+        session_duration=int((work_event.end - work_event.start).total_seconds() / 60)
     )
 
 
