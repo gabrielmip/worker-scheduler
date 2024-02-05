@@ -1,8 +1,10 @@
 import arrow
 import uuid
+from datetime import datetime
 
 from workforce.models import WorkEvent
 from workforce.utils import group_by
+from .types import AvailabilityTuple
 
 
 def get_user_next_event(email_address):
@@ -45,7 +47,7 @@ def create_event(user, calendar_id, start_time, end_time, comment, is_live):
     )
 
 
-def get_all_events_by_calendar(calendar_ids, start, end, is_live):
+def get_all_events_by_calendar(calendar_ids: list[int], start: datetime, end: datetime, is_live: bool):
     work_events = (WorkEvent.objects
                    .filter(calendar_id__in=calendar_ids)
                    .filter(start__gte=arrow.get(start).datetime)
@@ -54,11 +56,21 @@ def get_all_events_by_calendar(calendar_ids, start, end, is_live):
                    .filter(is_live=is_live)
                    .all())
 
-    return group_by(work_events, 'calendar_id', _work_event_to_timeslot)
+    grouped: dict[int, AvailabilityTuple] = group_by(
+        work_events,
+        'calendar_id',
+        _work_event_to_timeslot,
+    )
+
+    return grouped
 
 
-def _work_event_to_timeslot(work_event):
-    return (arrow.get(work_event.start), arrow.get(work_event.end))
+def _work_event_to_timeslot(work_event: WorkEvent):
+    return AvailabilityTuple(
+        start=arrow.get(work_event.start),
+        end=arrow.get(work_event.end),
+        session_duration=int((work_event.end - work_event.start).total_seconds() / 60)
+    )
 
 
 def is_cancelling_token(token_to_verify):
